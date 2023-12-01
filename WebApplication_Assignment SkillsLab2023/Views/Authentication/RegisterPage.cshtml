@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "RegisterPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@*<div class="row">
+    <div class="col">*@
+
+<div class="register-container">
+    <h2>Register</h2>
+    <form method="post" class="register-form">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+            @*<span>validation</span>*@
+        </div>
+
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            @*<span>validation</span>*@
+        </div>
+
+        <div>
+            <label for="nic">NIC:</label>
+            <input type="text" id="nic" name="nic">
+            @*<span>validation</span>*@
+        </div>
+
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            @*<span>validation</span>*@
+        </div>
+
+        <div>
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password">
+            @*<span>validation</span>*@
+        </div>
+
+        <div>
+            <button type="submit" name="loginBtn" value="Login" id="loginBtn" onclick="Register()">Register</button>
+        </div>
+
+    </form>
+</div>
+<p>
+    @Html.ActionLink("Go back to Login Page", "LoginPage", "Authentication", new { msg = "Hello from action link" }, null)
+</p>
+
+
+
+@*</div>
+    </div>*@
