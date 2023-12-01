@@ -14,47 +14,31 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
     public class AuthenticationDAL : IAuthenticationDAL
     {
         private readonly IDBCommand _command;
+        public const string RETRIEVE_USER_CREDENTIALS_QUERY = @"SELECT * FROM [Credential] WHERE UserId = @UserId AND Password = @Password";
+        public const string RETRIEVE_USER_MODEL_QUERY = @"SELECT * FROM [User] WHERE UserId = @UserId";
+        public const string CHECK_UNIQUE_USER_MODEL_QUERY = @"SELECT * FROM Students WHERE NIC = @NIC OR Email= @Email OR MobileNum=@MobileNum";
+        public const string INSERT_USER_MODEL_QUERY = @"INSERT INTO Users(NIC,UserName,DepartmentId,Email,MobileNum,GuardianName,Role,ManagerId)
+                                               SELECT @NIC,@UserName,@DepartmentId,@Email,@MobileNum,@GuardianName,@Role,@ManagerId";
+
         public AuthenticationDAL(IDBCommand command)
         {
             _command = command;
         }
-        public const string AUTHENTICATE_USER_QUERY = @"
-            SELECT * 
-            FROM [Credential] 
-            WHERE
-            UserId = @UserId 
-            AND
-            Password = @Password";
-        public const string RETRIEVE_USER_QUERY = @"
-            SELECT * 
-            FROM [User] 
-            WHERE
-            UserId = @UserId";
-        public const string CHECK_UNIQUE_QUERY = @"
-            SELECT *
-            FROM Students 
-            WHERE NIC = @NIC OR Email= @Email OR MobileNum=@MobileNum";
-        public const string INSERT_USER = @"
-            INSERT INTO Users 
-            (NIC,UserName,DepartmentId,Email,MobileNum,GuardianName,Role,ManagerId)
-            SELECT @NIC,@UserName,@DepartmentId,@Email,@MobileNum,@GuardianName,@Role,@ManagerId";
-
-        public bool CheckCredentials(CredentialModel model)
+        public bool IsCredentialsExists(CredentialModel model)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@UserId", model.UserId));
             parameters.Add(new SqlParameter("@Password", model.Password));
-            var dt = _command.GetDataWithConditions(AUTHENTICATE_USER_QUERY, parameters);
+            var dt = _command.GetDataWithConditions(RETRIEVE_USER_CREDENTIALS_QUERY, parameters);
             return dt.Rows.Count > 0;
         }
 
-        public UserModel GetUserModel(CredentialModel model)
+        public UserModel GetUserModelByID(CredentialModel model)
         {
             UserModel userModel = new UserModel();
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@UserId", model.UserId));
-            //DBCommand cmd = new DBCommand(new DataAccessLayer());
-            var dt = _command.GetDataWithConditions(RETRIEVE_USER_QUERY, parameters);
+            var dt = _command.GetDataWithConditions(RETRIEVE_USER_MODEL_QUERY, parameters);
             foreach (DataRow row in dt.Rows)
             {
                 userModel.UserId = (int)row["UserId"];
@@ -64,20 +48,15 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             return userModel;
         }
 
-        public bool CheckUniqueness(UserModel model)
+        public bool IsUserModelUnique(UserModel model)
         {
-            //this can be done in a more generic way whereby a generic methof
-            //of type T can be used to query for each of attributes and this method can
-            //be used many times 
-            //for different attributes query
+            //this can be done in a more generic way whereby a generic method of type T can be used to query for each of attributes
+            //and this method can be used many times for different attributes query
             List<SqlParameter> parameters = new List<SqlParameter>();
-
             parameters.Add(new SqlParameter("@NIC", model.NIC));
             parameters.Add(new SqlParameter("@Email", model.Email));
             parameters.Add(new SqlParameter("@MobileNum", model.MobileNum));
-            
-            var dt = _command.GetDataWithConditions(CHECK_UNIQUE_QUERY, parameters);
-
+            var dt = _command.GetDataWithConditions(CHECK_UNIQUE_USER_MODEL_QUERY, parameters);
             if (dt.Rows.Count > 0)
             {
                 return false;
@@ -87,11 +66,9 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 return true;
             }
         }
-        public void AddUser(UserModel model)
+        public bool InsertUserModel(UserModel model)
         {
-
             List<SqlParameter> parameters = new List<SqlParameter>();
-
             //parameters.Add(new SqlParameter("@NIC", model.NIC));
             //parameters.Add(new SqlParameter("@UserName", model.UserName));
             //parameters.Add(new SqlParameter("@DepartmentId", model.DepartmentId));
@@ -102,8 +79,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             //parameters.Add(new SqlParameter("@NID", student.NID));
             //parameters.Add(new SqlParameter("@Status", student.Status));
             //parameters.Add(new SqlParameter("@TotalPoints", student.TotalPoints));
-
             //DBCommand.InsertUpdateData(INSERT_USER, parameters);
+            return true;
         }
     }
 }

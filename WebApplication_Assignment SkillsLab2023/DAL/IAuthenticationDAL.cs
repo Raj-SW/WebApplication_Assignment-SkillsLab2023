@@ -4,8 +4,10 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
 {
     public interface IAuthenticationDAL
     {
-        bool CheckCredentials(CredentialModel model);
-        UserModel GetUserModel(CredentialModel model);
-        bool CheckUniqueness(UserModel model);
+        bool IsCredentialsExists(CredentialModel model);
+        UserModel GetUserModelByID(CredentialModel model);
+        bool IsUserModelUnique(UserModel model);
+        bool InsertUserModel(UserModel model);
+
     }
 }

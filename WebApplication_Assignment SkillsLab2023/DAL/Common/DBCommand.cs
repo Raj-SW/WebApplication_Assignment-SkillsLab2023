@@ -10,8 +10,6 @@ using WebApplication_Assignment_SkillsLab2023.Common;
 namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
 {
     public class DBCommand: IDBCommand
-
-
     {
         private readonly IDataAccessLayer _dal;
         public DBCommand(IDataAccessLayer dal) { 
@@ -19,82 +17,71 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
         }
         public DataTable GetData(string query)
         {
-            
-
-            _dal.OpenConnection();
-            DataTable dt = new DataTable();
-            using (SqlCommand cmd = new SqlCommand(query, _dal.connection))
+            DataAccessLayer dataAccessLayer = new DataAccessLayer();
+            dataAccessLayer.OpenConnection();
+            DataTable datatable = new DataTable();
+            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
-                cmd.CommandType = CommandType.Text;
-                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                command.CommandType = CommandType.Text;
+                using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command))
                 {
-                    sda.Fill(dt);
+                    sqlDataAdapter.Fill(datatable);
                 }
             }
-            _dal.CloseConnection();
-            return dt;
+            dataAccessLayer.CloseConnection();
+            return datatable;
         }
-
         public void InsertUpdateData(string query, List<SqlParameter> parameters)
         {
-            DataAccessLayer dal = new DataAccessLayer();
-            using (SqlCommand cmd = new SqlCommand(query, dal.connection))
+            DataAccessLayer dataAccessLayer = new DataAccessLayer();
+            dataAccessLayer.OpenConnection();
+            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
-                cmd.CommandType = CommandType.Text;
+                command.CommandType = CommandType.Text;
                 if (parameters != null)
                 {
                     parameters.ForEach(parameter => {
-                        cmd.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
+                        command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
                     });
                 }
-                cmd.ExecuteNonQuery();
+                command.ExecuteNonQuery();
             }
-            dal.CloseConnection();
+            dataAccessLayer.CloseConnection();
         }
 
         public DataTable GetDataWithConditions(string query, List<SqlParameter> parameters)
         {
-            //DataAccessLayer dal = new DataAccessLayer();
-            _dal.OpenConnection();
-            DataTable dt = new DataTable();
-            try
+            DataAccessLayer dataAccessLayer = new DataAccessLayer();
+            dataAccessLayer.OpenConnection();
+            DataTable datatable = new DataTable();
+            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
-
-            using (SqlCommand cmd = new SqlCommand(query, _dal.connection))
-            {
-                cmd.CommandType = CommandType.Text;
+                command.CommandType = CommandType.Text;
                 if (parameters != null)
                 {
                     parameters.ForEach(parameter =>
                     {
-                        cmd.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
+                        command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
                     });
                 }
-                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command))
                 {
-                    sda.Fill(dt);
+                    sqlDataAdapter.Fill(datatable);
                 }
             }
-
-            _dal.CloseConnection();
-            return dt;
-            }
-            catch (Exception ex) {
-                throw ex;
-            }
-
+            dataAccessLayer.CloseConnection();
+            return datatable;
         }
-
-        //public void UpdateDataNoConditions(String query)
-        //{
-        //    DAL dal = new DAL();
-        //    using (SqlCommand cmd = new SqlCommand(query, dal.connection))
-        //    {
-        //        cmd.CommandType = CommandType.Text;
-
-        //        cmd.ExecuteNonQuery();
-        //    }
-        //    dal.CloseConnection();
-        //}
+        public void UpdateDataNoConditions(String query)
+        {
+            DataAccessLayer dataAccessLayer = new DataAccessLayer();
+            dataAccessLayer.OpenConnection();  
+            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
+            {
+                command.CommandType = CommandType.Text;
+                command.ExecuteNonQuery();
+            }
+            dataAccessLayer.CloseConnection();
+        }
     }
 }

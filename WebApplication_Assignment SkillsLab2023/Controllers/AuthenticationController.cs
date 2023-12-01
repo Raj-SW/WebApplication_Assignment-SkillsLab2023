@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http.ExceptionHandling;
-using System.Web.Mvc;
-using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
+﻿using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
@@ -13,52 +7,33 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
     public class AuthenticationController : Controller
     {
         private readonly IAuthenticationBL _authenticationBL;
-
-
         public AuthenticationController(IAuthenticationBL authenticationBL)
         {
             _authenticationBL = authenticationBL;
         }
-
-
-
-
-        // GET: Authentication
         public ActionResult LoginPage()
         {
-            try
-            {
-                var temp = 0 / 1;
-            }catch (Exception ex)
-            {
-                throw ex;
-            }
-
             return View();
         }
-        public ActionResult RegisterPage()
+        public ActionResult RegistrationPage()
         {
             return View();
         }
         [HttpPost]
-        public JsonResult Authenticate(CredentialModel model)
+        public JsonResult LoginUser(CredentialModel model)
         {
-
-            var userModel = _authenticationBL.Login(model);
+            UserModel userModel = _authenticationBL.LoginUser(model);
             if (userModel != null)
             {
-                this.Session["User"] = userModel.UserName;
-                return Json(new { result = true, url = Url.Action("Index", $"{userModel.Role}") });
+                Session["User"] = userModel.UserName;
+                return Json(new { result = true, url = Url.Action("Index", $"{userModel.Role}"),user=userModel,message="Successful login" });
             }
-            return Json(new { result = false, url = Url.Action("LoginPage", "Authentication") });
+            return Json(new { result = false, url = Url.Action("LoginPage", "Authentication"),user= userModel,message = "User Id or Password wrong" });
         }
-
         [HttpPost]
-        public ActionResult Register()
+        public ActionResult RegisterUser()
         {
-            
-
-            return Json(new { result = true, url = "/Home/Index" /*Url.Action("Index", "Home")*/ });
+            return Json(new { result = true, url = "/Home/Index"});
         }
     }
 }

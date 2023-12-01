@@ -15,12 +15,45 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
     {
         private readonly IAuthenticationDAL _authenticationDAL;
         public AuthenticationBL(IAuthenticationDAL authenticationDAL) {
-        _authenticationDAL = authenticationDAL;
+            _authenticationDAL = authenticationDAL;
+        }
+        public UserModel LoginUser(CredentialModel model)
+        {
+            UserModel UserModel;
+                if (IsCredentialsExists(model))
+                {
+                    UserModel = _authenticationDAL.GetUserModelByID(model);
+                    return UserModel;
+                }
+            return null;
+        }
+        public void Logout()
+        {
+            throw new NotImplementedException();
+        }
+        public bool RegisterUser(UserModel model)
+        {
+            if(IsUserModelUnique(model))
+            {
+                return InsertUserModel(model);
+            }
+            return false;
+        }
+        public bool IsUserModelUnique(UserModel model)
+        {
+            return _authenticationDAL.IsUserModelUnique(model);
+        }
+        public bool IsCredentialsExists(CredentialModel model)
+        {
+            return _authenticationDAL.IsCredentialsExists(model);
+        }
+        public bool InsertUserModel(UserModel model)
+        {
+            return _authenticationDAL.InsertUserModel(model);
         }
         //public UserModel Login(CredentialModel model)
         //{
         //    UserModel requestUserModel;
-
         //    GenericDAL<CredentialModel> credentialDAL = new GenericDAL<CredentialModel>();
         //    var requestModel = credentialDAL.GetByID(model.UserId);
         //    if (requestModel != null)
@@ -31,36 +64,5 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         //    }
         //    throw new Exception();
         //}
-
-        public UserModel Login(CredentialModel model)
-        {
-            UserModel RequestedUserModel;
-            var request = _authenticationDAL.CheckCredentials(model);
-            if (request)
-            {
-                //retrieve user model
-                RequestedUserModel = _authenticationDAL.GetUserModel(model);
-                return RequestedUserModel;
-            }
-            return null;
-        }
-
-
-        public void Logout()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Register(UserModel model)
-        {
-            //check if employee nic, email an phone is unique
-            var IsUserValid = _authenticationDAL.CheckUniqueness(model);
-            //add to DB
-            if(IsUserValid)
-            {
-
-            }
-            return false;
-        }
     }
 }
