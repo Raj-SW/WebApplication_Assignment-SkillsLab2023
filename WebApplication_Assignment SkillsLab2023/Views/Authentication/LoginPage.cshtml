@@ -1,26 +1,31 @@
 ﻿
 @{
     ViewBag.Title = "Login Page";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-        
+    Layout = "~/Views/Shared/_Layout.cshtml";        
 }
 
-<div class="row">
-    <div class="col">
-
+<head>
+    <script type="text/javascript" src="~/Scripts/LoginScript1.js"></script>
+</head>
+<div class="row login-wrapper">
+    <div class="col login-container">
         <h2>Login</h2>
 
-        <form action="/login" method="post" onsubmit="">
+        <form action="/login" method="post" onsubmit="" class="form">
 
-            <label for="userId">User ID:</label>
-            <input type="text" id="userId" name="userId" required value="101">
-            <br>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required >
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required value="1">
-            <br>
-
-            <button type="submit" name="loginBtn" value="Login" id="loginBtn" onclick="login()">Login</button>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <div>
+                <button type="submit" name="loginBtn" value="Login" id="loginBtn" onclick="login()">Login</button>
+            </div>
         </form>
 
         <p>

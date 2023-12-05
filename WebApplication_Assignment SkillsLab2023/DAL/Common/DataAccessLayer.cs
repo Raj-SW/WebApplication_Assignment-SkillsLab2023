@@ -8,25 +8,28 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
 {
     public class DataAccessLayer : IDataAccessLayer
     {
-        public const string connectionstring = @"server=localhost;database=TrainingAssignment;uid=wbpoc;pwd=sql@tfs2008";
+        //public const string connectionString = @"server=localhost;database=TrainingAssignment;uid=wbpoc;pwd=sql@tfs2008";
         //public SqlConnection connection;
-
         public SqlConnection connection { get; set; }
 
         public DataAccessLayer()
         {
-            connection = new SqlConnection(connectionstring);
             OpenConnection();
         }
         public void OpenConnection()
         {
             try
             {
-                if (connection.State == System.Data.ConnectionState.Open)
+                var connecionString = ConfigurationManager.AppSettings["DBConnection"];
+                if (!string.IsNullOrEmpty(connecionString))
+                {
+                    connection = new SqlConnection(connecionString);
+                    connection.Open();
+                }
+                /*if (connection.State == System.Data.ConnectionState.Open)
                 {
                     connection.Close();
-                }
-                connection.Open();
+                }*/
             }
             catch (SqlException ex)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -20,22 +21,41 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public UserModel LoginUser(CredentialModel model)
         {
             UserModel UserModel;
-                if (IsCredentialsExists(model))
+            try
+            {
+                model.UserId = IsCredentialsExists(model);
+                if (model.UserId!=0)
                 {
                     UserModel = _authenticationDAL.GetUserModelByID(model);
                     return UserModel;
                 }
+            }
+            catch(Exception exception) 
+            {
+                throw exception;
+            }
             return null;
         }
         public void Logout()
         {
             throw new NotImplementedException();
         }
-        public bool RegisterUser(UserModel model)
+        public bool RegisterUser(RegistrationModel model)
         {
-            if(IsUserModelUnique(model))
-            {
-                return InsertUserModel(model);
+            var unique = IsUserModelUnique(model.userModel);
+            if (unique)
+            { 
+                var insertUsermodel = InsertUserModel(model.userModel);
+                if (insertUsermodel)
+                { var usermodel=_authenticationDAL.GetUserModelbyNIC(model.userModel);
+                    model.credentialModel.UserId = usermodel.UserId;
+                    //get UserId here
+                    var insert = InsertCredentialModel(model.credentialModel);
+                    if (insert)
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }
@@ -43,7 +63,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _authenticationDAL.IsUserModelUnique(model);
         }
-        public bool IsCredentialsExists(CredentialModel model)
+        public int IsCredentialsExists(CredentialModel model)
         {
             return _authenticationDAL.IsCredentialsExists(model);
         }
@@ -51,18 +71,60 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _authenticationDAL.InsertUserModel(model);
         }
-        //public UserModel Login(CredentialModel model)
-        //{
-        //    UserModel requestUserModel;
-        //    GenericDAL<CredentialModel> credentialDAL = new GenericDAL<CredentialModel>();
-        //    var requestModel = credentialDAL.GetByID(model.UserId);
-        //    if (requestModel != null)
-        //    {
-        //        GenericDAL<UserModel> UserModelDAL = new GenericDAL<UserModel>();
-        //        requestUserModel = UserModelDAL.GetByID(requestModel.UserId);
-        //        return requestUserModel;
-        //    }
-        //    throw new Exception();
-        //}
+        public bool IsUserActivated(CredentialModel model)
+        {
+            throw new NotImplementedException();
+        }
+        public bool InsertCredentialModel(CredentialModel model)
+        {
+            return _authenticationDAL.InsertCredentialModel(model);
+        }
+        public UserModel GetUserModelbyNIC(UserModel model)
+        {
+            return _authenticationDAL.GetUserModelbyNIC(model);
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//public UserModel Login(CredentialModel model)
+//{
+//    UserModel requestUserModel;
+//    GenericDAL<CredentialModel> credentialDAL = new GenericDAL<CredentialModel>();
+//    var requestModel = credentialDAL.GetByID(model.UserId);
+//    if (requestModel != null)
+//    {
+//        GenericDAL<UserModel> UserModelDAL = new GenericDAL<UserModel>();
+//        requestUserModel = UserModelDAL.GetByID(requestModel.UserId);
+//        return requestUserModel;
+//    }
+//    throw new Exception();
+//}

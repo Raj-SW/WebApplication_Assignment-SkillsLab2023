@@ -12,12 +12,14 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
     public interface IAuthenticationBL
     {
         UserModel LoginUser(CredentialModel model);
-        bool RegisterUser(UserModel model);
+        bool RegisterUser(RegistrationModel model);
         void Logout();
         bool IsUserModelUnique(UserModel model);
-        bool IsCredentialsExists(CredentialModel model);
+        int IsCredentialsExists(CredentialModel model);
         bool InsertUserModel(UserModel model);
-
+        bool InsertCredentialModel(CredentialModel model);
+        bool IsUserActivated(CredentialModel model);
+        UserModel GetUserModelbyNIC(UserModel model);
 
     }
 }

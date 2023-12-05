@@ -1,8 +1,34 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Employee view</h2>
+<h2>@Session["User"] is logged in</h2>
 
+<div class="row">
+    <div class="col-md">
+        <table cellspacing="10" cellpadding="10">
+            <tr>
+                <th>Training Name</th>
+                <th>Training Description</th>
+                <th>Training Status</th>
+                <th>Registration Dealine</th>
+                <th>Seats Available</th>
+                <th>Actions</th>
+            </tr>
+            @{
+                foreach (var item in ViewBag.ListOfTrainings)
+                {
+                    <tr>
+                        <td>@item.TrainingName</td>
+                        <td>@item.TrainingDescription</td>
+                        <td>@item.TrainingStatus</td>
+                        <td>@item.TrainingRegistrationDeadline</td>
+                        <td>@item.SeatsAvailable</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>

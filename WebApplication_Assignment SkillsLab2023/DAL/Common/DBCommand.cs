@@ -15,6 +15,11 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
         public DBCommand(IDataAccessLayer dal) { 
             _dal = dal;
         }
+
+        public DBCommand()
+        {
+        }
+
         public DataTable GetData(string query)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();

@@ -8,13 +8,12 @@ function login() {
         return false;
     });
 
-    var Id = parseInt($("#userId").val());
+    var email = $("#email").val().toString();
     var Password = $("#password").val().toString();
 
     var loginObject = {
-        UserId: parseInt(Id),
+        Email: email,
         Password: Password,
-        AccessId:1
     };
     $.ajax({
         type: "POST",
@@ -23,19 +22,16 @@ function login() {
         dataType: "json",
         success: function (response) {
             if (response.result) {
+                console.log(response.user);
                 window.location = response.url;
-                alert(response.message);
             }
             else {
-                alert(response.message);
                 window.location = response.url;
             }
         },
         failure: function (response) {
-            console.log(response.message);
         },
         error: function (response) {
-            console.log(response.message);
         }
     });
 

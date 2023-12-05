@@ -11,7 +11,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
     {
         void OpenConnection();
         void CloseConnection();
-        SqlConnection connection {get;set;}
+        //SqlConnection connection {get;set;}
 
     }
 }

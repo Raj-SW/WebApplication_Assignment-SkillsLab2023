@@ -6,24 +6,43 @@
         return false;
     });
     // Inputs - using FormData()
-    const userData = {
-        username: 'exampleUser',
-        email: 'user@example.com',
-        password: 'securePassword',
+    var firstName = document.getElementById("FirstName").value;
+    var lastName = document.getElementById("LastName").value;
+    var nic = document.getElementById("nic").value;
+    var mobileNum = document.getElementById("MobileNum").value;
+
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    var UserModel = {
+        NIC: nic,
+        UserFirstName: firstName,
+        UserLastName: lastName,
+        MobileNum: mobileNum
+    }
+    var CredentialModel = {
+        Email: email,
+        Password: password
+    }
+    var RegistrationModel = {
+        userModel: UserModel,
+        credentialModel: CredentialModel
     };
+
     fetch( "/Authentication/RegisterUser", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             //( authorization token)
         },
-        //body: userData
+        body: JSON.stringify(RegistrationModel)
     })
         .then(response => {
             console.log(response)
             if (response.ok) {
                 return response.json();
             } else {
+                console.log(response)
                 //toastr.success(`Internal Server error  ${ response.status }`);
                 //throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -31,12 +50,12 @@
         .then(data => {
             //authtoken logic happens here
             if (data.result) {
-                //toastr.success('User Registered Please Login Now');
-                window.location = data.url
+                window.location = data.url;
+                alert(data.message);
             }
+            alert(data.message);
         })
         .catch(error => {
-            //toastr.success('Registration error ', error);
-
+            alert(error);
         });
 }

@@ -10,12 +10,12 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
         [Key]
         public int UserId { get; set; }
         public string NIC { get; set; }
-        public string UserName { get; set; }
+        public string UserFirstName { get; set; }
+        public string UserLastName { get; set; }
         public int DepartmentId {  get; set; }
-        public string Email { get; set; }
         public string MobileNum {  get; set; }
         public string Role { get; set; }
         //public RolesEnum Role { get; set; }
-        public int ManagerId { get; set; }
+        public bool Activated { get; set; }
     }
 }

@@ -25,15 +25,21 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             UserModel userModel = _authenticationBL.LoginUser(model);
             if (userModel != null)
             {
-                Session["User"] = userModel.UserName;
+                Session["User"] = userModel.UserFirstName;
                 return Json(new { result = true, url = Url.Action("Index", $"{userModel.Role}"),user=userModel,message="Successful login" });
             }
             return Json(new { result = false, url = Url.Action("LoginPage", "Authentication"),user= userModel,message = "User Id or Password wrong" });
         }
-        [HttpPost]
-        public ActionResult RegisterUser()
+        [HttpPost]                      
+        public ActionResult RegisterUser(RegistrationModel model)
         {
-            return Json(new { result = true, url = "/Home/Index"});
+            var result = _authenticationBL.RegisterUser(model);
+            if (result)
+            {
+                return Json(new { result = true, url = "/Authentication/LoginPage", message = "Registration Successful. Administrator will Activate your acount shortly" });
+            }
+            return Json(new { result = true, url = "/Authentication/RegistrationPage", message = "Registration Unsuccessful." });
+
         }
     }
 }

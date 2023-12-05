@@ -12,6 +12,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
         public int NoOfEmployees {  get; set; }
-        public int ManagerId {  get; set; }
+        //public int ManagerId {  get; set; }
     }
 }

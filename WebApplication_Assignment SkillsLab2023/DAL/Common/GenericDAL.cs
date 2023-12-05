@@ -29,8 +29,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             DBCommand cmd = new DBCommand(new DataAccessLayer());
             string tableName = GetTableName<T>();
             string key = GetPrimaryKeyName<T>();
-            string SELECTQUERY= $"SELECT * FROM [{tableName}] WHERE {key}= {id}";
-            var dt = cmd.GetData(SELECTQUERY);
+            string SELECT_QUERY= $"SELECT * FROM [{tableName}] WHERE {key}= {id}";
+            var dt = cmd.GetData(SELECT_QUERY);
             if (dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];

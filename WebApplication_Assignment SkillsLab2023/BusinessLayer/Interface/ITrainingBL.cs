@@ -9,6 +9,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 {
     public interface ITrainingBL
     {
-        IEnumerable<TrainingModel> GetAllTraining();
+        List<TrainingModel> GetAllTraining();
     }
 }

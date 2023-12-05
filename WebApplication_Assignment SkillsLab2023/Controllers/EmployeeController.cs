@@ -3,15 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
+using WebApplication_Assignment_SkillsLab2023.DAL;
+using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly ITrainingBL _itrainingbl;
+        private readonly ITrainingDAL _itrainingdal;
+
+        public EmployeeController()
+        {
+            this._itrainingbl = new TrainingBL(_itrainingdal);
+        }
+
         // GET: Employee
         public ActionResult Index()
         {
-
+            List<TrainingModel> ListOfTrainings = _itrainingbl.GetAllTraining();
+            ViewBag.ListOfTrainings = ListOfTrainings;
             return View();
         }
     }
