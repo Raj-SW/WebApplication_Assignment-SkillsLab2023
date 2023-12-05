@@ -23,10 +23,14 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         public JsonResult LoginUser(CredentialModel model)
         {
             UserModel userModel = _authenticationBL.LoginUser(model);
-            if (userModel != null)
+            if (userModel != null )
             {
-                Session["User"] = userModel.UserFirstName;
-                return Json(new { result = true, url = Url.Action("Index", $"{userModel.Role}"),user=userModel,message="Successful login" });
+                if (userModel.Activated) {
+                    Session["User"] = userModel.UserFirstName;
+                    return Json(new { result = true, url = Url.Action("Index", $"{userModel.Role}"),user=userModel,message="Successful login" });
+                }
+                return Json(new { result = false, url = Url.Action("LoginPage", "Authentication"),user= userModel,message = "Your Account has not been activated yet. Please contact Admin or Your Manager" });
+
             }
             return Json(new { result = false, url = Url.Action("LoginPage", "Authentication"),user= userModel,message = "User Id or Password wrong" });
         }

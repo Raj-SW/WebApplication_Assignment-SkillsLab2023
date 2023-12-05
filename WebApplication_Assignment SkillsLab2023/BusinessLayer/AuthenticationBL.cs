@@ -32,7 +32,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             }
             catch(Exception exception) 
             {
-                throw exception;
+                throw;
             }
             return null;
         }
@@ -42,14 +42,14 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         }
         public bool RegisterUser(RegistrationModel model)
         {
-            var unique = IsUserModelUnique(model.userModel);
-            if (unique)
+            var isUserModelUnique = IsUserModelUnique(model.userModel);
+            if (isUserModelUnique)
             { 
                 var insertUsermodel = InsertUserModel(model.userModel);
                 if (insertUsermodel)
-                { var usermodel=_authenticationDAL.GetUserModelbyNIC(model.userModel);
-                    model.credentialModel.UserId = usermodel.UserId;
-                    //get UserId here
+                { 
+                    var userId=_authenticationDAL.GetUserModelIDbyNIC(model.userModel);
+                    model.credentialModel.UserId = userId;
                     var insert = InsertCredentialModel(model.credentialModel);
                     if (insert)
                     {
@@ -79,9 +79,9 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _authenticationDAL.InsertCredentialModel(model);
         }
-        public UserModel GetUserModelbyNIC(UserModel model)
+        public int GetUserModelIDbyNIC(UserModel model)
         {
-            return _authenticationDAL.GetUserModelbyNIC(model);
+            return _authenticationDAL.GetUserModelIDbyNIC(model);
         }
     }
 }

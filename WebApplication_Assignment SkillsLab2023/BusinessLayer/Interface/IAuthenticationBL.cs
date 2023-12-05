@@ -19,7 +19,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         bool InsertUserModel(UserModel model);
         bool InsertCredentialModel(CredentialModel model);
         bool IsUserActivated(CredentialModel model);
-        UserModel GetUserModelbyNIC(UserModel model);
+        int GetUserModelIDbyNIC(UserModel model);
 
     }
 }

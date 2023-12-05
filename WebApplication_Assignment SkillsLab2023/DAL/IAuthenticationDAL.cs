@@ -9,7 +9,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         bool IsUserModelUnique(UserModel model);
         bool InsertUserModel(UserModel model);
         bool InsertCredentialModel(CredentialModel model);
-        UserModel GetUserModelbyNIC(UserModel model);
+        int GetUserModelIDbyNIC(UserModel model);
 
 
     }

@@ -4,17 +4,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<head>
+    <script type="text/javascript" src="~/Scripts/RegistrationScript.js"></script>
+    <script type="text/javascript" src="~/Scripts/RegistrationValidationScript.js"></script>
 
+</head>
 @*<div class="row">
     <div class="col">*@
 
 <div class="register-container">
     <h2>Register</h2>
-    <form method="post" class="register-form">
+    <form method="post" class="register-form" @*onsubmit="return RegistrationValidation()"*@>
         <div>
             <label for="FirstName">First Name:</label>
             <input type="text" id="FirstName" name="FirstName">
-            @*<span>validation</span>*@
+            <p id="firstNameValidation">Undefined</p>
         </div>
         <div>
             <label for="LastName">Last Name:</label>
@@ -62,8 +66,3 @@
 <p>
     @Html.ActionLink("Go back to Login Page", "LoginPage", "Authentication", new { msg = "Hello from action link" }, null)
 </p>
-
-
-
-@*</div>
-    </div>*@

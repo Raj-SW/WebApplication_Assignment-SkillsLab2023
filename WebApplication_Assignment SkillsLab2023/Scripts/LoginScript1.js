@@ -4,7 +4,7 @@ function login() {
     let form = document.querySelector('form');
 
     form.addEventListener('submit', (e) => {
-        e.preventDefault();
+        //e.preventDefault();
         return false;
     });
 
@@ -22,10 +22,12 @@ function login() {
         dataType: "json",
         success: function (response) {
             if (response.result) {
-                console.log(response.user);
+                alert(response.message);
                 window.location = response.url;
+                console.log(response.user);
             }
             else {
+                alert(response.message);
                 window.location = response.url;
             }
         },

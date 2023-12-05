@@ -49,6 +49,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 userModel.UserId = (int)row["UserId"];
                 userModel.UserFirstName = (string)row["UserFirstName"];
                 userModel.UserLastName = (string)row["UserLastName"];
+                userModel.Activated = Convert.ToBoolean(row["Activated"]);
+                //this breaks the code
                 userModel.Role = (string)row["Role"];
             }
             return userModel;
@@ -84,7 +86,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             catch (Exception ex)
             { 
-            return false;
+                throw;
             }
         }
         public bool InsertCredentialModel(CredentialModel model)
@@ -103,19 +105,14 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 return false;
             }
         }
-        public UserModel GetUserModelbyNIC(UserModel model)
+        public int GetUserModelIDbyNIC(UserModel model)
         {
-            UserModel userModel = new UserModel();
+            int userId;
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@NIC", model.NIC));
             var dt = _command.GetDataWithConditions(RETRIEVE_USER_MODEL_QUERY_BY_NIC, parameters);
-            foreach (DataRow row in dt.Rows)
-            {
-                userModel.UserId = (int)row["UserId"];
-                userModel.UserFirstName = (string)row["UserFirstName"];
-                userModel.UserLastName = (string)row["UserLastName"];
-            }
-            return userModel;
+            userId =(int) dt.Rows[0]["UserId"];
+            return userId;
         }
     }
 }

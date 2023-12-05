@@ -1,10 +1,15 @@
 ﻿function Register()
 {
     let form = document.querySelector('form');
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         return false;
     });
+    if (!RegistrationValidation()) {
+        return false;
+    }
+    
     // Inputs - using FormData()
     var firstName = document.getElementById("FirstName").value;
     var lastName = document.getElementById("LastName").value;
@@ -42,9 +47,7 @@
             if (response.ok) {
                 return response.json();
             } else {
-                console.log(response)
-                //toastr.success(`Internal Server error  ${ response.status }`);
-                //throw new Error(`HTTP error! Status: ${response.status}`);
+                alert("Sorry we're having some trouble with response", response)
             }
         })
         .then(data => {
@@ -56,6 +59,9 @@
             alert(data.message);
         })
         .catch(error => {
-            alert(error);
+            alert("Sorry we're having some trouble with youre registration, We'll get back to you", error)
+
         });
+
+    
 }
