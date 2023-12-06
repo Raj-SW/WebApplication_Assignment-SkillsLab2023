@@ -6,9 +6,9 @@
         e.preventDefault();
         return false;
     });
-    if (!RegistrationValidation()) {
-        return false;
-    }
+    //if (!RegistrationValidation()) {
+    //    return false;
+    //}
     
     // Inputs - using FormData()
     var firstName = document.getElementById("FirstName").value;

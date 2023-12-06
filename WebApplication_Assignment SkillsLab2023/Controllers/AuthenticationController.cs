@@ -26,7 +26,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             if (userModel != null )
             {
                 if (userModel.Activated) {
-                    Session["User"] = userModel.UserFirstName;
+                    Session["CurrentUser"] = userModel.UserFirstName;
+                    Session["CurrentRole"] = userModel.Role;
                     return Json(new { result = true, url = Url.Action("Index", $"{userModel.Role}"),user=userModel,message="Successful login" });
                 }
                 return Json(new { result = false, url = Url.Action("LoginPage", "Authentication"),user= userModel,message = "Your Account has not been activated yet. Please contact Admin or Your Manager" });
