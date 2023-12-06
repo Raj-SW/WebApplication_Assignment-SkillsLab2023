@@ -9,52 +9,55 @@
     <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidateFirstOrLastNameScript.js"></script>
     <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidateEmail.js"></script>
     <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidateMobileNum.js"></script>
+    <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidatePassword.js"></script>
+    <script type="text/javascript" src="~/Scripts/ValidationScripts/RegistrationValidationScript.js"></script>
+    <script type="text/javascript" src="~/Scripts/ValidationScripts/RegistrationScript.js"></script>
 </head>
 
 
 <div class="register-container">
     <h2>Register</h2>
-    <form method="post" class="register-form" @*onsubmit="return RegistrationValidation()"*@>
+    <form method="post" class="register-form">
         <div>
             <label for="FirstName">First Name:</label>
             <input type="text" id="FirstName" name="FirstName" oninput="validateFirstOrLastName('FirstName','firstNameValidation')">
-            <p id="firstNameValidation">Undefined</p>
+            <p id="firstNameValidation"></p>
         </div>
         <div>
             <label for="LastName">Last Name:</label>
             <input type="text" id="LastName" name="LastName" oninput="validateFirstOrLastName('LastName','lastNameValidation')">
-            <p id="lastNameValidation">Undefined</p>
+            <p id="lastNameValidation"></p>
         </div>
 
         <div>
             <label for="nic">NIC:</label>
             <input type="text" id="nic" name="nic" oninput="ValidateNIC('nic','nicValidation')">
-            <p id="nicValidation">Undefined</p>
+            <p id="nicValidation"></p>
         </div>
 
         <div>
             <label for="MobileNum">Mobile Number</label>
             <input type="text" id="MobileNum" name="MobileNum" oninput="ValidateMobileNum('MobileNum','mobileNumValidation')">
-            <p id="mobileNumValidation">Undefined</p>
+            <p id="mobileNumValidation"></p>
         </div>
 
         <div>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" oninput="validateEmail()">
-            <p id="emailValidation">Undefined</p>
+            <p id="emailValidation"></p>
         </div>
 
 
         <div>
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password">
-            <p id="passwordValidation">Undefined</p>
+            <input type="password" id="password" name="password" oninput="validatePasswords('password','passwordValidation','confirm-password','confirmPasswordValidation')">
+            <p id="passwordValidation"></p>
         </div>
 
         <div>
             <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" name="confirm-password">
-            <p id="confirmPasswordValidation">Undefined</p>
+            <input type="password" id="confirm-password" name="confirm-password" oninput="validatePasswords('password','passwordValidation','confirm-password','confirmPasswordValidation')">
+            <p id="confirmPasswordValidation"></p>
         </div>
 
         <div>

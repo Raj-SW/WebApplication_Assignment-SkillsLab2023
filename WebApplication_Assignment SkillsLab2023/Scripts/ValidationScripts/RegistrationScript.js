@@ -2,15 +2,15 @@
 {
     let form = document.querySelector('form');
 
+    if (!RegistrationValidation()) {
+        return false;
+    }
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         return false;
     });
-    //if (!RegistrationValidation()) {
-    //    return false;
-    //}
-    
-    // Inputs - using FormData()
+   
     var firstName = document.getElementById("FirstName").value;
     var lastName = document.getElementById("LastName").value;
     var nic = document.getElementById("nic").value;
@@ -59,9 +59,7 @@
             alert(data.message);
         })
         .catch(error => {
-            alert("Sorry we're having some trouble with youre registration, We'll get back to you", error)
+            alert("Sorry we're having some trouble with you're registration, We'll get back to you", error)
 
         });
-
-    
 }
