@@ -1,15 +1,15 @@
-﻿function validateEmail() {
-    const emailInput = document.getElementById('email');
-    const errorMessage = document.getElementById('emailValidation');
-
-    //emailInput.addEventListener('change', validateEmail);
+﻿function validateEmail(email,emailValidation) {
+    const emailInput = document.getElementById(email);
+    const errorMessage = document.getElementById(emailValidation);
 
     const emailValue = emailInput.value;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (emailRegex.test(emailValue)) {
-        errorMessage.innerText = '';
-    } else {
+    errorMessage.innerText = '';
+
+    if (!emailRegex.test(emailValue)) {
         errorMessage.innerText = 'Invalid email address';
+    } else {
+        errorMessage.innerText = '';
     }
 }

@@ -6,6 +6,9 @@ function login() {
         e.preventDefault();
         return false;
     });
+    if (LoginValidation() === false) {
+        return false;
+    }
 
     var email = $("#email").val().toString();
     var Password = $("#password").val().toString();

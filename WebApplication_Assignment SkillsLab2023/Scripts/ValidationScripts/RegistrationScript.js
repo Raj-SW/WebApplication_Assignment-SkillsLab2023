@@ -2,14 +2,13 @@
 {
     let form = document.querySelector('form');
 
-    if (!RegistrationValidation()) {
-        return false;
-    }
-
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         return false;
     });
+    if (RegistrationValidation()===false) {
+        return false;
+    }
    
     var firstName = document.getElementById("FirstName").value;
     var lastName = document.getElementById("LastName").value;

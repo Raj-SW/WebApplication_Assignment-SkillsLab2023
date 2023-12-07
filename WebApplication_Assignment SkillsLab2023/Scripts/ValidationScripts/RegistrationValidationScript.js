@@ -19,19 +19,19 @@
     const emailregex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordregex = /^[a-zA-Z0-9]{8,}$/;
 
-    const validationString = "";
+    var validationString = "";
 
     inputFieldsArray.forEach((input,index) => {
         if (input.value.trim() === "") {
             validationMessagesArray[index].innerText = "Please do not leave field empty.";
-            validationString = validationString + "\n Input: " + input.id + " at index: " + index;
+            validationString = "Input: " + input.id + " at index: " + index;
         }
     });
-    //if (!nameRegex.test(firstName) || !nameRegex.test(lastName) || !nicRegex.test(nic) || !mobileNumregex.test(mobileNum) || !emailregex.test(email) || !passwordregex.test(password)
-    //    || !passwordregex.test(confirmPassword) || (password != confirmPassword))
-    //{
-    //    return false;
-    //}
+    if (!nameRegex.test(firstName) || !nameRegex.test(lastName) || !nicRegex.test(nic) || !mobileNumregex.test(mobileNum) || !emailregex.test(email) || !passwordregex.test(password)
+        || !passwordregex.test(confirmPassword) || (password != confirmPassword))
+    {
+        return false;
+    }
 
     if (validationString.length > 0)
     {

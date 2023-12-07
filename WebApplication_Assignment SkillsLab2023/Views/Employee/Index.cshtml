@@ -20,13 +20,17 @@
             @{
                 foreach (var item in ViewBag.ListOfTrainings)
                 {
-                    <tr>
-                        <td>@item.TrainingName</td>
-                        <td>@item.TrainingDescription</td>
-                        <td>@item.TrainingStatus</td>
-                        <td>@item.TrainingRegistrationDeadline</td>
-                        <td>@item.SeatsAvailable</td>
-                    </tr>
+                        <tr>
+                            <td>@item.TrainingName</td>
+                            <td>@item.TrainingDescription</td>
+                            <td>@item.TrainingStatus</td>
+                            <td>@item.TrainingRegistrationDeadline</td>
+                            <td>@item.SeatsAvailable</td>
+                            <td>
+                            <button type="submit" name="registerTrainingBtn" value="@item.TrainingId" id="loginBtn" onclick="login()">Register</button>
+                            </td>
+
+                        </tr>
                 }
             }
         </table>
