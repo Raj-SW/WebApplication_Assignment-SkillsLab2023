@@ -3,8 +3,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
 <h2>Employee view</h2>
-<h2>@Session["User"] is logged in</h2>
+<h2>@Session["CurrentUser"] is logged in</h2>
 
 <div class="row">
     <div class="col-md">
@@ -20,19 +25,95 @@
             @{
                 foreach (var item in ViewBag.ListOfTrainings)
                 {
-                        <tr>
-                            <td>@item.TrainingName</td>
-                            <td>@item.TrainingDescription</td>
-                            <td>@item.TrainingStatus</td>
-                            <td>@item.TrainingRegistrationDeadline</td>
-                            <td>@item.SeatsAvailable</td>
-                            <td>
-                            <button type="submit" name="registerTrainingBtn" value="@item.TrainingId" id="loginBtn" onclick="login()">Register</button>
-                            </td>
+                    <tr>
+                        <td>@item.TrainingName</td>
+                        <td>@item.TrainingDescription</td>                        <td>@item.TrainingStatus</td>
+                        <td>@item.TrainingRegistrationDeadline</td>
+                        <td>@item.SeatsAvailable</td>
+                        <td>
+                            <!-- Button to trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registrationModal" onclick='PopulateModal(@Html.Raw(Json.Encode(item)))'>
+                                Enroll
+                            </button>
 
-                        </tr>
+                        </td>
+                    </tr>
                 }
             }
         </table>
     </div>
 </div>
+
+<!-- Registration Modal with File Upload -->
+<div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" aria-labelledby="registrationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registrationModalLabel">User Registration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body" id="modalBody">
+                    <!-- Registration form with file upload -->
+                    @*<form>
+                        <div class="form-group">
+                            <h3>Training Requirements</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="fileInput">Prerequisite</label>
+                            <input type="file" class="form-control-file" id="fileInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="fileInput">Prerequisite</label>
+                            <input type="file" class="form-control-file" id="fileInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="fileInput">Prerequisite</label>
+                            <input type="file" class="form-control-file" id="fileInput">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>*@
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+    </div>
+</div>
+</div>
+<!-- Add this script to dynamically populate the modal content -->
+<script>
+    function PopulateModal(training) {
+        // Access the modal body element
+        var modalBody = document.getElementById("modalBody");
+
+        getTrainingPrerequisite(training);
+        // Clear existing content
+        modalBody.innerHTML = "";
+        // Convert the timestamp to a JavaScript Date object
+        var registrationDeadline = new Date(parseInt(training.TrainingRegistrationDeadline.substr(6)));
+
+        // Format the date as a string (adjust the format as needed)
+        var formattedDeadline = registrationDeadline.toLocaleString();
+
+        // Create elements to display training details
+        var detailsContainer = document.createElement("div");
+        detailsContainer.innerHTML = "<h3>Training Details</h3>" +
+            "<p><strong>Name:</strong> " + training.TrainingName + "</p>" +
+            "<p><strong>Description:</strong> " + training.TrainingDescription + "</p>" +
+            "<p><strong>Status:</strong> " + training.TrainingStatus + "</p>" +
+            "<p><strong>Deadline:</strong> " + formattedDeadline + "</p>" +
+            "<p><strong>Seats Available:</strong> " + training.SeatsAvailable + "</p>"
+            + "<button type='submit' class='btn btn-primary'> Submit</button>"
+            ;
+                
+        // Append the details to the modal body
+        modalBody.appendChild(detailsContainer);
+
+    }
+    function getTrainingPrerequisite(training) {
+        console.log("ine pez moi", training.TrainingName);
+    }
+</script>

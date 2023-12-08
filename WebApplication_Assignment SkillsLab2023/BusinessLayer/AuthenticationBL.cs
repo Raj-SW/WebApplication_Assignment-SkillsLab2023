@@ -45,16 +45,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             var isUserModelUnique = IsUserModelUnique(model.userModel);
             if (isUserModelUnique)
             { 
-                var insertUsermodel = InsertUserModel(model.userModel);
-                if (insertUsermodel)
-                { 
-                    var userId=_authenticationDAL.GetUserModelIDbyNIC(model.userModel);
-                    model.credentialModel.UserId = userId;
-                    var insert = InsertCredentialModel(model.credentialModel);
-                    if (insert)
-                    {
-                        return true;
-                    }
+                var isInsertUserAndCredentialModel = _authenticationDAL.InsertUserModelCredentialModel(model.userModel,model.credentialModel);
+                if (isInsertUserAndCredentialModel)
+                {
+                    return true;
                 }
             }
             return false;

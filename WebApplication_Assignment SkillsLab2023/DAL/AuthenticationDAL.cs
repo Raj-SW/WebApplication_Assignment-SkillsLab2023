@@ -17,11 +17,9 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         public const string RETRIEVE_USER_MODEL_QUERY_BY_ID = @"SELECT * FROM [User] WHERE UserId = @UserId";
         public const string RETRIEVE_USER_MODEL_QUERY_BY_NIC = @"SELECT * FROM [User] WHERE NIC = @NIC";
         public const string CHECK_UNIQUE_USER_MODEL_QUERY = @"SELECT * FROM [User] WHERE NIC = @NIC OR MobileNum=@MobileNum";
-        public const string INSERT_USER_MODEL_QUERY = @"INSERT INTO [User](NIC,UserFirstName,UserLastName,MobileNum)
-                                                        SELECT @NIC,@UserFirstName,@UserLastName,@MobileNum";
         public const string INSERT_USER_CREDENTIAL_MODEL_QUERY = @"INSERT INTO [Credential] (UserId,Email,Password) SELECT @UserId,@Email,@Password";
         public const string RETRIEVE_USER_CREDENTIALS_QUERY = @"SELECT * FROM [Credential] WHERE Email = @Email AND Password = @Password";
-
+        //public const string INSERT_USER_MODEL_QUERY= @"INSERT INTO [User](NIC,UserFirstName,UserLastName,MobileNum)  SELECT @NIC,@UserFirstName,@UserLastName,@MobileNum";
         public AuthenticationDAL(IDBCommand command)
         {
             _command = command;
@@ -72,16 +70,27 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 return true;
             }
         }
-        public bool InsertUserModel(UserModel model)
+        public bool InsertUserModelCredentialModel(UserModel userModel,CredentialModel credentialModel)
         {
+            const string INSERT_USER_MODEL_CREDENTIAL_MODEL_QUERY
+                = @"INSERT INTO [User] (NIC, UserFirstName, UserLastName, MobileNum)
+                    SELECT @NIC,@UserFirstName,@UserLastName,@MobileNum;
+
+                    DECLARE @UserId INT;
+                    SET @UserId = SCOPE_IDENTITY();
+
+                    INSERT INTO [Credential] (UserId, Email, [Password])
+                    SELECT @UserId, @Email, @Password;";
             try
             {
             List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@NIC", model.NIC));
-            parameters.Add(new SqlParameter("@UserFirstName", model.UserFirstName));
-            parameters.Add(new SqlParameter("@UserLastName", model.UserLastName));
-            parameters.Add(new SqlParameter("@MobileNum", model.MobileNum));
-            _command.InsertUpdateData(INSERT_USER_MODEL_QUERY, parameters);
+            parameters.Add(new SqlParameter("@NIC", userModel.NIC));
+            parameters.Add(new SqlParameter("@UserFirstName", userModel.UserFirstName));
+            parameters.Add(new SqlParameter("@UserLastName", userModel.UserLastName));
+            parameters.Add(new SqlParameter("@MobileNum", userModel.MobileNum));
+            parameters.Add(new SqlParameter("@Email", credentialModel.Email));
+            parameters.Add(new SqlParameter("@Password", credentialModel.Password));
+            _command.InsertUpdateData(INSERT_USER_MODEL_CREDENTIAL_MODEL_QUERY, parameters);
             return true;
             }
             catch (Exception ex)
@@ -102,7 +111,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             catch (Exception ex)
             {
-                return false;
+                throw;
             }
         }
         public int GetUserModelIDbyNIC(UserModel model)
@@ -113,6 +122,11 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             var dt = _command.GetDataWithConditions(RETRIEVE_USER_MODEL_QUERY_BY_NIC, parameters);
             userId =(int) dt.Rows[0]["UserId"];
             return userId;
+        }
+
+        public bool InsertUserModel(UserModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

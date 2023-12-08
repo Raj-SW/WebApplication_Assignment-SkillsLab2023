@@ -1,4 +1,5 @@
-﻿function Register()
+﻿
+function Register()
 {
     let form = document.querySelector('form');
 
