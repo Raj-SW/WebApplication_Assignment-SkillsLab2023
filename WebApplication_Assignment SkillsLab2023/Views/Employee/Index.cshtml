@@ -7,7 +7,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
+<script src="~/Scripts/GetTrainingData/FetchPrerequisiteScript.js"></script>
+<script src="~/Scripts/ModalManipulation/ModalManipulationscript.js"></script>
+<script src="~/Scripts/TrainingEnrollment/TrainingHandlerScript.js"></script>
 <h2>Employee view</h2>
 <h2>@Session["CurrentUser"] is logged in</h2>
 
@@ -60,99 +62,12 @@
             <form>
                 <div class="modal-body" id="modalBody">
                     <!-- Registration form with file upload -->
-                    @*<form>
-                            <div class="form-group">
-                                <h3>Training Requirements</h3>
-                            </div>
-                            <div class="form-group">
-                                <label for="fileInput">Prerequisite</label>
-                                <input type="file" class="form-control-file" id="fileInput">
-                            </div>
-                            <div class="form-group">
-                                <label for="fileInput">Prerequisite</label>
-                                <input type="file" class="form-control-file" id="fileInput">
-                            </div>
-                            <div class="form-group">
-                                <label for="fileInput">Prerequisite</label>
-                                <input type="file" class="form-control-file" id="fileInput">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>*@
                 </div>
             </form>
             <div class="modal-footer">
+                <button type='submit' class='btn btn-primary' data-dismiss="modal" onclick="EnrolEmployee()">Submit</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-<!-- Add this script to dynamically populate the modal content -->
-<script>
-    function PopulateModal(training) {
-        // Access the modal body element
-        var modalBody = document.getElementById("modalBody");
-
-        var preReqList = getTrainingPrerequisite(training);
-
-        console.log(preReqList);
-        // Clear existing content
-        modalBody.innerHTML = "";
-        // Convert the timestamp to a JavaScript Date object
-        var registrationDeadline = new Date(parseInt(training.TrainingRegistrationDeadline.substr(6)));
-
-        // Format the date as a string (adjust the format as needed)
-        var formattedDeadline = registrationDeadline.toLocaleString();
-
-        // Create elements to display training details
-        var detailsContainer = document.createElement("div");
-        detailsContainer.innerHTML = "<h3>Training Details</h3>" +
-            "<p><strong>Name:</strong> " + training.TrainingName + "</p>" +
-            "<p><strong>Description:</strong> " + training.TrainingDescription + "</p>" +
-            "<p><strong>Status:</strong> " + training.TrainingStatus + "</p>" +
-            "<p><strong>Deadline:</strong> " + formattedDeadline + "</p>" +
-            "<p><strong>Seats Available:</strong> " + training.SeatsAvailable + "</p>"
-            + "<button type='submit' class='btn btn-primary'> Submit</button>"
-            ;
-        var preRequisiteContainer = document.createElement("div");
-
-        if (preReqList && Array.isArray(preReqList)) {
-            preReqList.forEach(preReq => {
-                preRequisiteContainer.innerHTML = "";
-                preRequisiteContainer.innerHTML = "< div class='form-group' ><label for='fileInput'>Prerequisite" + preReq.PrerequisiteDescription + "</label><input type='file' class='form-control-file' id='fileInput'></div>";
-                modalBody.appendChild(preRequisiteContainer);
-            });
-        }
-        else {
-            console.error("preReqList is undefined or not an array");
-        }
-        // Append the details to the modal body
-        modalBody.appendChild(detailsContainer);
-
-    }
-    function getTrainingPrerequisite(training) {
-        var trainingId = training.TrainingId;
-        fetch('/Training/GetTrainingPrerequisitebyID', {
-            method: 'POST',
-            body: JSON.stringify(trainingId)
-        })
-            .then(response => {
-                console.log(response)
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    console.error("Error: ", response.status)
-                }
-            })
-            .then(data => {
-                if (data.result) {
-                    console("pre req response successful");
-                    return data.preReqList;
-                }
-            })
-            .catch(error => {
-                alert("Sorry we're having some trouble with you're registration, We'll get back to you", error)
-
-            });
-        console.log(training.TrainingName);
-    }
-</script>

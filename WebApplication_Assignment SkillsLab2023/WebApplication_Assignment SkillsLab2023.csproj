@@ -233,6 +233,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\GetTrainingData\FetchPrerequisiteScript.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -242,6 +243,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\ModalManipulation\ModalManipulationscript.js" />
+    <Content Include="Scripts\TrainingEnrollment\TrainingHandlerScript.js" />
     <Content Include="Scripts\TrainingRegistrationScripts\TrainingDetailsAndEnrolmentByModal.js" />
     <Content Include="Scripts\ValidationScripts\LoginValidationScript.js" />
     <Content Include="Scripts\ValidationScripts\ValidateEmail.js" />
