@@ -9,12 +9,19 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 {
     public class TrainingBL : ITrainingBL
     {
-        private ITrainingDAL _itrainingDAL;
-        public TrainingBL(ITrainingDAL trainingDAL) { this._itrainingDAL = trainingDAL; }
+        private readonly ITrainingDAL _itrainingDAL;
+        public TrainingBL(ITrainingDAL trainingDAL)
+        {
+            _itrainingDAL = trainingDAL;
+        }
         public List<TrainingModel> GetAllTraining()
         {
-            TrainingDAL dal =new TrainingDAL();
-            return dal.GetAllTrainingModels();
+            
+            return _itrainingDAL.GetAllTrainingModels();
+        }
+        public List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId)
+        {
+            return _itrainingDAL.GetTrainingPrerequisitesById(trainingId);
         }
     }
 }

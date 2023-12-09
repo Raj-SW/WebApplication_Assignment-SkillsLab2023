@@ -10,5 +10,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
     public interface ITrainingDAL
     {
         List<TrainingModel> GetAllTrainingModels();
+        List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
+
     }
 }

@@ -27,6 +27,7 @@ namespace WebApplication_Assignment_SkillsLab2023
             container.RegisterType<ITrainingDAL, TrainingDAL>();
 
 
+
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

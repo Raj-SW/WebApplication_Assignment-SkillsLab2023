@@ -10,5 +10,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
     public interface ITrainingBL
     {
         List<TrainingModel> GetAllTraining();
+        List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
+
     }
 }

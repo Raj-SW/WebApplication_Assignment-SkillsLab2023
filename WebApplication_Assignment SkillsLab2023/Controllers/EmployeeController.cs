@@ -14,11 +14,10 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
     public class EmployeeController : Controller
     {
         private readonly ITrainingBL _itrainingbl;
-        private readonly ITrainingDAL _itrainingdal;
-
-        public EmployeeController()
+ 
+        public EmployeeController(ITrainingBL itrainingbl)
         {
-            this._itrainingbl = new TrainingBL(_itrainingdal);
+            _itrainingbl = itrainingbl;
         }
 
         // GET: Employee
