@@ -11,6 +11,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
     {
         List<TrainingModel> GetAllTrainingModels();
         List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
+        bool EnrolEmployeeIntoTraining();
 
     }
 }

@@ -40,7 +40,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             throw new NotImplementedException();
         }
-        public bool RegisterUser(RegistrationModel model)
+        public bool RegisterUser(RegistrationDTO model)
         {
             var isUserModelUnique = IsUserModelUnique(model.userModel);
             if (isUserModelUnique)

@@ -39,6 +39,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             List<TrainingPrerequisiteModel> trainingPrerequisiteModelListById = _trainingBl.GetTrainingPrerequisitesById(trainingId);
             return Json(new { result = true, preReqList=trainingPrerequisiteModelListById});
         }
+        [HttpPost]
+        public JsonResult EnrolEmployeeIntoTraining() {
+
+            return null;
+        }
     }
 
 }

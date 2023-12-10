@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebApplication_Assignment_SkillsLab2023.Models
 {
-    public class RegistrationModel
+    public class RegistrationDTO
     {
         public UserModel userModel { get; set; }
         public CredentialModel credentialModel { get; set; }

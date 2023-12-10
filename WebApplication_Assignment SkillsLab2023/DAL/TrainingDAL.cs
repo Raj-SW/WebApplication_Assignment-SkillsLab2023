@@ -58,5 +58,10 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
                 return ListOfTrainingPrerequisiteModelsByTrainingId;
         }
+        public bool EnrolEmployeeIntoTraining()
+        {
+            return true;
+        }
+
     }
 }

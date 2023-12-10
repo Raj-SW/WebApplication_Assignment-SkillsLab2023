@@ -23,5 +23,11 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _itrainingDAL.GetTrainingPrerequisitesById(trainingId);
         }
+
+        public bool EnrolEmployeeIntoTraining()
+        {
+
+            return true;
+        }
     }
 }
