@@ -16,7 +16,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         //query function
         public static List<CustomerModel> GetCustomerModels()
         {
-            DBCommand cmd = new DBCommand(new DataAccessLayer());
+            DBCommand cmd = new DBCommand();
             var dt = cmd.GetData(GET_ALL_CUSTOMERS);
             List<CustomerModel> customerModelList= new List<CustomerModel>();
             CustomerModel customerModel;

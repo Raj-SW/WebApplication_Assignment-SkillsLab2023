@@ -1,21 +1,23 @@
 ﻿
 @{
     ViewBag.Title = "Login Page";
-    Layout = "~/Views/Shared/_Layout.cshtml";        
+    Layout = null;
 }
 
 <head>
+    <link rel="stylesheet" href="~/Content/Styling/LoginPageStyling.css">
     <script type="text/javascript" src="~/Scripts/ValidationScripts/LoginScript1.js"></script>
     <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidatePassword.js"></script>
     <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidateEmail.js"></script>
     <script type="text/javascript" src="~/Scripts/ValidationScripts/LoginValidationScript.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
-<div class="row login-wrapper">
-    <div class="col login-container">
-        <h2>Login</h2>
 
-        <form method="post"  class="form">
+<div class="login-wrapper">
+    <div class="login-container">
+        <h2>Welcome Back</h2>
 
+        <form method="post" class="form">
             <div>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required oninput="validateEmail('email','emailValidation')">
@@ -27,7 +29,7 @@
                 <input type="password" id="password" name="password" required oninput="validatePasswords('password','passwordValidation','password','passwordValidation')">
                 <p id="passwordValidation"></p>
             </div>
-            
+
             <div>
                 <button type="submit" name="loginBtn" value="Login" id="loginBtn" onclick="login()">Login</button>
             </div>

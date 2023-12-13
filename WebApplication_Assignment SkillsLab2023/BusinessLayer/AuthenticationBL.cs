@@ -1,11 +1,4 @@
-﻿using Microsoft.Ajax.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Security.AccessControl;
-using System.Web;
-using System.Web.Mvc;
+﻿using System;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.Models;
@@ -18,46 +11,83 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public AuthenticationBL(IAuthenticationDAL authenticationDAL) {
             _authenticationDAL = authenticationDAL;
         }
-        public UserModel LoginUser(CredentialModel model)
+        public DataModelResult<UserModel> LoginUser(CredentialModel model)
         {
-            UserModel UserModel;
-            try
+            DataModelResult<CredentialModel> CredentialModelResult = GetCredentialModelByEmailAndPassword(model);
+            DataModelResult<UserModel> UserDataModelResult = new DataModelResult<UserModel>();
+            if (CredentialModelResult.ResultTask.isSuccess)
             {
-                model.UserId = IsCredentialsExists(model);
-                if (model.UserId!=0)
+                if (CredentialModelResult.ResultObject.Activated)
                 {
-                    UserModel = _authenticationDAL.GetUserModelByID(model);
-                    return UserModel;
+                    UserDataModelResult.ResultObject = GetUserModelByCredentials(model);
+                    if (UserDataModelResult.ResultObject != null)
+                    {
+                        UserDataModelResult.ResultTask.isSuccess = true;
+                        UserDataModelResult.ResultTask.AddResultMessage("Login Successful");
+                    }
+                    else
+                    {
+                        UserDataModelResult.ResultTask.isSuccess = false;
+                        UserDataModelResult.ResultTask.AddResultMessage("Internal Server Error");
+                    }
+                }
+                else
+                {
+                    UserDataModelResult.ResultTask.isSuccess=false;
+                    UserDataModelResult.ResultTask.AddResultMessage("Your account has not yet been activated. Please contact the Admin");
                 }
             }
-            catch(Exception exception) 
+            else
             {
-                throw;
+                UserDataModelResult.ResultTask.isSuccess = false;
+                UserDataModelResult.ResultTask.AddResultMessage("Sorry, Wrong Credentials!");
             }
-            return null;
+          return UserDataModelResult;
         }
         public void Logout()
         {
             throw new NotImplementedException();
         }
-        public bool RegisterUser(RegistrationDTO model)
+        public TaskResult RegisterUser(RegistrationDTO dto)
         {
-            var isUserModelUnique = IsUserModelUnique(model.userModel);
-            if (isUserModelUnique)
-            { 
-                var isInsertUserAndCredentialModel = _authenticationDAL.InsertUserModelCredentialModel(model.userModel,model.credentialModel);
-                if (isInsertUserAndCredentialModel)
+            TaskResult result = IsUserModelUnique(dto);
+            if (result.isSuccess)
+            {
+                result.isSuccess = _authenticationDAL.InsertUserModelCredentialModel(dto.userModel, dto.credentialModel);
+                if (result.isSuccess)
                 {
-                    return true;
+                    result.AddResultMessage("Successfull Registration. Wait For Admin to Activate your Account");
+                }
+                else
+                {
+                    result.AddResultMessage("Internal Server Error. We'll get back to you soon");
                 }
             }
-            return false;
+            return result;
         }
-        public bool IsUserModelUnique(UserModel model)
+        public TaskResult IsUserModelUnique(RegistrationDTO dto)
         {
-            return _authenticationDAL.IsUserModelUnique(model);
+            TaskResult taskResult = new TaskResult();
+            taskResult.isSuccess = true;
+            if (isEmailUnique(dto))
+            {
+                taskResult.AddResultMessage("Email is already taken");
+                taskResult.isSuccess = false;
+            }
+            if (isNicUnique(dto))
+            {
+                taskResult.AddResultMessage("NIC is already taken");
+                taskResult.isSuccess = false;
+            }
+            if (isMobileNumUnique(dto))
+            {
+                taskResult.AddResultMessage("Mobile Number is already taken");
+                taskResult.isSuccess = false;
+            }
+
+            return taskResult;
         }
-        public int IsCredentialsExists(CredentialModel model)
+        public bool IsCredentialsExists(CredentialModel model)
         {
             return _authenticationDAL.IsCredentialsExists(model);
         }
@@ -77,6 +107,42 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _authenticationDAL.GetUserModelIDbyNIC(model);
         }
+        public bool isEmailUnique(RegistrationDTO dto)
+        {
+
+           return _authenticationDAL.isEmailUnique(dto);
+        }
+        public bool isNicUnique(RegistrationDTO dto)
+        {
+            return _authenticationDAL.isNicUnique(dto);
+        }
+        public bool isMobileNumUnique(RegistrationDTO dto)
+        {
+            return _authenticationDAL.isMobileNumUnique(dto);
+        }
+        public int GetUserIdByCredentials(CredentialModel model) 
+        {
+            return _authenticationDAL.GetUserIdByCredentials(model);    
+        }
+        public UserModel GetUserModelByID(int id)
+        {
+            return _authenticationDAL.GetUserModelByID(id);
+        }
+        public UserModel GetUserModelByCredentials(CredentialModel model)
+        {
+            DataModelResult<UserModel> result= new DataModelResult<UserModel>();
+            return _authenticationDAL.GetUserModelByCredentials(model);
+        }
+        public DataModelResult<CredentialModel> GetCredentialModelByEmailAndPassword(CredentialModel model) 
+        {
+            DataModelResult<CredentialModel> result= _authenticationDAL.GetCredentialModelByEmailAndPassword(model);
+            if (result.ResultObject!=null)
+            {
+                result.ResultTask.isSuccess=true;
+            }
+           return result;
+        }
+
     }
 }
 

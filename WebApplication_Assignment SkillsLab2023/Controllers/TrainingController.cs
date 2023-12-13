@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
-using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
@@ -35,14 +31,14 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public JsonResult GetTrainingPrerequisitebyID(int trainingId)
         {
-            //int temp=int.Parse(trainingId);
             List<TrainingPrerequisiteModel> trainingPrerequisiteModelListById = _trainingBl.GetTrainingPrerequisitesById(trainingId);
             return Json(new { result = true, preReqList=trainingPrerequisiteModelListById});
         }
         [HttpPost]
-        public JsonResult EnrolEmployeeIntoTraining() {
+        public JsonResult EnrolEmployeeIntoTraining()
+        {
 
-            return null;
+            return Json(new { result = true });
         }
     }
 

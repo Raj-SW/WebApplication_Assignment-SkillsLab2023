@@ -15,7 +15,5 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
         public int DepartmentId {  get; set; }
         public string MobileNum {  get; set; }
         public string Role { get; set; }
-        //public RolesEnum Role { get; set; }
-        public bool Activated { get; set; }
     }
 }

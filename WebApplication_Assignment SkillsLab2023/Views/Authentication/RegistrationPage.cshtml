@@ -1,10 +1,11 @@
 ﻿
 @{
     ViewBag.Title = "RegisterPage";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
 <head>
+    <link rel="stylesheet" href="~/Content/Styling/RegistrationPageStyling.css">
     <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidateNIC.js"></script>
     <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidateFirstOrLastNameScript.js"></script>
     <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidateEmail.js"></script>
@@ -12,60 +13,62 @@
     <script type="text/javascript" src="~/Scripts/ValidationScripts/ValidatePassword.js"></script>
     <script type="text/javascript" src="~/Scripts/ValidationScripts/RegistrationValidationScript.js"></script>
     <script type="text/javascript" src="~/Scripts/ValidationScripts/RegistrationScript.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
+<div class="register-wrapper">
+    <div class="register-container">
+        <h2>Register</h2>
+        <form method="post" class="register-form">
+            <div>
+                <label for="FirstName">First Name:</label>
+                <input type="text" id="FirstName" name="FirstName" oninput="validateFirstOrLastName('FirstName','firstNameValidation')">
+                <p id="firstNameValidation"></p>
+            </div>
+            <div>
+                <label for="LastName">Last Name:</label>
+                <input type="text" id="LastName" name="LastName" oninput="validateFirstOrLastName('LastName','lastNameValidation')">
+                <p id="lastNameValidation"></p>
+            </div>
 
-<div class="register-container">
-    <h2>Register</h2>
-    <form method="post" class="register-form">
-        <div>
-            <label for="FirstName">First Name:</label>
-            <input type="text" id="FirstName" name="FirstName" oninput="validateFirstOrLastName('FirstName','firstNameValidation')">
-            <p id="firstNameValidation"></p>
-        </div>
-        <div>
-            <label for="LastName">Last Name:</label>
-            <input type="text" id="LastName" name="LastName" oninput="validateFirstOrLastName('LastName','lastNameValidation')">
-            <p id="lastNameValidation"></p>
-        </div>
+            <div>
+                <label for="nic">NIC:</label>
+                <input type="text" id="nic" name="nic" oninput="ValidateNIC('nic','nicValidation')">
+                <p id="nicValidation"></p>
+            </div>
 
-        <div>
-            <label for="nic">NIC:</label>
-            <input type="text" id="nic" name="nic" oninput="ValidateNIC('nic','nicValidation')">
-            <p id="nicValidation"></p>
-        </div>
+            <div>
+                <label for="MobileNum">Mobile Number</label>
+                <input type="text" id="MobileNum" name="MobileNum" oninput="ValidateMobileNum('MobileNum','mobileNumValidation')">
+                <p id="mobileNumValidation"></p>
+            </div>
 
-        <div>
-            <label for="MobileNum">Mobile Number</label>
-            <input type="text" id="MobileNum" name="MobileNum" oninput="ValidateMobileNum('MobileNum','mobileNumValidation')">
-            <p id="mobileNumValidation"></p>
-        </div>
-
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" oninput="validateEmail('email','emailValidation')">
-            <p id="emailValidation"></p>
-        </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" oninput="validateEmail('email','emailValidation')">
+                <p id="emailValidation"></p>
+            </div>
 
 
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" oninput="validatePasswords('password','passwordValidation','confirm-password','confirmPasswordValidation')">
-            <p id="passwordValidation"></p>
-        </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" oninput="validatePasswords('password','passwordValidation','confirm-password','confirmPasswordValidation')">
+                <p id="passwordValidation"></p>
+            </div>
 
-        <div>
-            <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" name="confirm-password" oninput="validatePasswords('password','passwordValidation','confirm-password','confirmPasswordValidation')">
-            <p id="confirmPasswordValidation"></p>
-        </div>
+            <div>
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" oninput="validatePasswords('password','passwordValidation','confirm-password','confirmPasswordValidation')">
+                <p id="confirmPasswordValidation"></p>
+            </div>
 
-        <div>
-            <button type="submit" name="loginBtn" value="Login" id="loginBtn" onclick="Register()">Register</button>
-        </div>
+            <div>
+                <button type="submit" name="loginBtn" value="Login" id="loginBtn" onclick="Register()">Register</button>
+            </div>
 
-    </form>
+        </form>
+    <p>
+        @Html.ActionLink("Go back to Login Page", "LoginPage", "Authentication", new { msg = "Hello from action link" }, null)
+    </p>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Go back to Login Page", "LoginPage", "Authentication", new { msg = "Hello from action link" }, null)
-</p>

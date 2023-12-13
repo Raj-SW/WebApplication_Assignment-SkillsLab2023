@@ -8,7 +8,7 @@ using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace ConsoleApp5.DAL
 {
-    class EmployeeDAL : IGenericDAL<UserModel>
+    class EmployeeDAL /*: IGenericDAL<UserModel>*/
     {
         public bool DeleteByID(int Id)
         {

@@ -18,23 +18,18 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         public const string RETRIEVE_USER_MODEL_QUERY_BY_NIC = @"SELECT * FROM [User] WHERE NIC = @NIC";
         public const string CHECK_UNIQUE_USER_MODEL_QUERY = @"SELECT * FROM [User] WHERE NIC = @NIC OR MobileNum=@MobileNum";
         public const string INSERT_USER_CREDENTIAL_MODEL_QUERY = @"INSERT INTO [Credential] (UserId,Email,Password) SELECT @UserId,@Email,@Password";
-        public const string RETRIEVE_USER_CREDENTIALS_QUERY = @"SELECT * FROM [Credential] WHERE Email = @Email AND Password = @Password";
-        //public const string INSERT_USER_MODEL_QUERY= @"INSERT INTO [User](NIC,UserFirstName,UserLastName,MobileNum)  SELECT @NIC,@UserFirstName,@UserLastName,@MobileNum";
         public AuthenticationDAL(IDBCommand command)
         {
             _command = command;
         }
-        public int IsCredentialsExists(CredentialModel model)
+        public bool IsCredentialsExists(CredentialModel model)
         {
+            const string RETRIEVE_USER_CREDENTIALS_QUERY = @"SELECT * FROM [Credential] WHERE @Password = Password AND @Email=Email";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@Password", model.Password));
             parameters.Add(new SqlParameter("@Email", model.Email));
             var dt = _command.GetDataWithConditions(RETRIEVE_USER_CREDENTIALS_QUERY, parameters);
-            if(dt.Rows.Count > 0)
-            {
-                return (int)dt.Rows[0]["UserId"];
-            }
-            return 0;
+            return dt.Rows.Count > 0;
         }
         public UserModel GetUserModelByID(CredentialModel model)
         {
@@ -47,8 +42,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 userModel.UserId = (int)row["UserId"];
                 userModel.UserFirstName = (string)row["UserFirstName"];
                 userModel.UserLastName = (string)row["UserLastName"];
-                userModel.Activated = Convert.ToBoolean(row["Activated"]);
-                //this breaks the code
                 userModel.Role = (string)row["Role"];
             }
             return userModel;
@@ -61,14 +54,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             parameters.Add(new SqlParameter("@NIC", model.NIC));
             parameters.Add(new SqlParameter("@MobileNum", model.MobileNum));
             var dt = _command.GetDataWithConditions(CHECK_UNIQUE_USER_MODEL_QUERY, parameters);
-            if (dt.Rows.Count > 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return dt.Rows.Count > 0;
         }
         public bool InsertUserModelCredentialModel(UserModel userModel,CredentialModel credentialModel)
         {
@@ -95,7 +81,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             catch (Exception ex)
             { 
-                throw;
+                throw ex;
             }
         }
         public bool InsertCredentialModel(CredentialModel model)
@@ -111,11 +97,12 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
         public int GetUserModelIDbyNIC(UserModel model)
         {
+
             int userId;
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@NIC", model.NIC));
@@ -123,10 +110,87 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             userId =(int) dt.Rows[0]["UserId"];
             return userId;
         }
-
         public bool InsertUserModel(UserModel model)
         {
+
             throw new NotImplementedException();
+        }
+        public bool isEmailUnique(RegistrationDTO dto)
+        {
+            const string GET_MODEL_BY_EMAIL = @"SELECT * FROM [CREDENTIAL] WHERE Email=@Email";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@Email", dto.credentialModel.Email));
+            var dt = _command.GetDataWithConditions(GET_MODEL_BY_EMAIL, parameters);
+            return dt.Rows.Count > 0;
+        }
+        public bool isNicUnique(RegistrationDTO dto)
+        {
+            const string GET_MODEL_BY_NIC = @"SELECT * FROM [User] WHERE NIC=@NIC";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@NIC", dto.userModel.NIC));
+            var dt = _command.GetDataWithConditions(GET_MODEL_BY_NIC, parameters);
+            return dt.Rows.Count > 0;
+        }
+        public bool isMobileNumUnique(RegistrationDTO dto)
+        {
+            const string GET_MODEL_BY_MONILE_NUMBER = @"SELECT * FROM [User] WHERE MobileNum=@MobileNum";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@MobileNum", dto.userModel.MobileNum));
+            var dt = _command.GetDataWithConditions(GET_MODEL_BY_MONILE_NUMBER, parameters);
+            return dt.Rows.Count > 0;
+        }
+        public int GetUserIdByCredentials(CredentialModel model)
+        {
+            const string GET_USER_ID_BY_CREDENTIAL = @"SELECT UserId FROM [Credential] WHERE Email=@Email AND Password=@Password";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@Email", model.Email));
+            parameters.Add(new SqlParameter("@Password", model.Password));
+            var dt = _command.GetDataWithConditions(GET_USER_ID_BY_CREDENTIAL, parameters);
+            return (int)dt.Rows[0]["UserId"];
+        }
+        public UserModel GetUserModelByCredentials(CredentialModel model) 
+        {
+            const string RETRIEVE_USER_MODEL_BY_CREDENTIALS_QUERY = @"SELECT u.*
+                    FROM [User] u
+                    INNER JOIN [Credential] c 
+                    ON u.UserId = c.UserId
+                    WHERE c.Email=@Email AND c.Password=@Password;";
+            UserModel userModel = new UserModel();
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@Email", model.Email));
+            parameters.Add(new SqlParameter("@Password", model.Password));
+            var dt = _command.GetDataWithConditions(RETRIEVE_USER_MODEL_BY_CREDENTIALS_QUERY, parameters);
+            foreach (DataRow row in dt.Rows)
+            {
+                userModel.UserId = (int)row["UserId"];
+                userModel.UserFirstName = (string)row["UserFirstName"];
+                userModel.UserLastName = (string)row["UserLastName"];
+                userModel.Role = (string)row["Role"];
+            }
+            return userModel;
+        }
+        public UserModel GetUserModelByID(int id)
+        {
+            throw new NotImplementedException();
+        }
+        public DataModelResult<CredentialModel> GetCredentialModelByEmailAndPassword(CredentialModel model)
+        {
+            const string RETRIEVE_USER_CREDENTIALS_BY_EMAIL_AND_PASSWORD_QUERY = @"SELECT * FROM [Credential] WHERE Email = @Email AND Password = @Password";
+            DataModelResult<CredentialModel> result = new DataModelResult<CredentialModel>();
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@Email", model.Email));
+            parameters.Add(new SqlParameter("@Password", model.Password));
+            var dt = _command.GetDataWithConditions(RETRIEVE_USER_CREDENTIALS_BY_EMAIL_AND_PASSWORD_QUERY, parameters);
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+                result.ResultObject.AccessId = (int)row["AccessId"];
+                result.ResultObject.UserId = (int)row["UserId"];
+                result.ResultObject.Email = (string)row["Email"];
+                result.ResultObject.Password = (string)row["Password"];
+                result.ResultObject.Activated = Convert.ToBoolean(row["Activated"]);
+            }
+            return result;
         }
     }
 }

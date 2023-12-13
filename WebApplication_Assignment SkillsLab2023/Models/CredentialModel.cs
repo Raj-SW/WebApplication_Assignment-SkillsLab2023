@@ -15,6 +15,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
         public int UserId { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public bool Activated { get; set; }
 
     }
 }

@@ -12,7 +12,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
 {
     public class TrainingDAL : ITrainingDAL
     {
-        private readonly IDBCommand _idBCommand;
+        //private readonly IDBCommand _idBCommand;
 
         public TrainingDAL()
         {

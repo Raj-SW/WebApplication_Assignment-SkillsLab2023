@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http.Results;
+using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
@@ -22,30 +23,25 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public JsonResult LoginUser(CredentialModel model)
         {
-            UserModel userModel = _authenticationBL.LoginUser(model);
-            if (userModel != null )
+            DataModelResult<UserModel> UserDataModelResult= _authenticationBL.LoginUser(model);
+            if (UserDataModelResult.ResultTask.isSuccess)
             {
-                if (userModel.Activated) {
-                    Session["CurrentUser"] = userModel.UserFirstName;
-                    Session["CurrentRole"] = userModel.Role;
-                    ViewBag.UserModel=userModel;
-                    return Json(new { result = true, url = Url.Action("Index", $"{userModel.Role}"),user=userModel,message="Successful login" });
-                }
-                return Json(new { result = false, url = Url.Action("LoginPage", "Authentication"),user= userModel,message = "Your Account has not been activated yet. Please contact Admin or Your Manager" });
-
+                Session["CurrentUser"] = UserDataModelResult.ResultObject.UserFirstName;
+                Session["CurrentRole"] = UserDataModelResult.ResultObject.Role;
+                Session["CurrentUserId"] = UserDataModelResult.ResultObject.UserId ;
+                return Json(new { result = true, url = Url.Action("Index", $"{UserDataModelResult.ResultObject.Role}"), user = UserDataModelResult.ResultObject, message = UserDataModelResult.ResultTask.GetAllResultMessageAsString() });
             }
-            return Json(new { result = false, url = Url.Action("LoginPage", "Authentication"),user= userModel,message = "User Id or Password wrong" });
+            return Json(new { result = true, url = Url.Action("LoginPage", "Authentication"), message = UserDataModelResult.ResultTask.GetAllResultMessageAsString() });
         }
         [HttpPost]                      
         public ActionResult RegisterUser(RegistrationDTO model)
         {
-            var result = _authenticationBL.RegisterUser(model);
-            if (result)
+            TaskResult taskresult = _authenticationBL.RegisterUser(model);
+            if (taskresult.isSuccess)
             {
-                return Json(new { result = true, url = "/Authentication/LoginPage", message = "Registration Successful. Administrator will Activate your acount shortly" });
+                return Json(new { result = taskresult.isSuccess, url = "/Authentication/LoginPage", message = taskresult.GetAllResultMessageAsString() });
             }
-            return Json(new { result = true, url = "/Authentication/RegistrationPage", message = "Registration Unsuccessful." });
-
+            return Json(new { result = taskresult.isSuccess, url = "/Authentication/RegistrationPage", message =taskresult.GetAllResultMessageAsString() });
         }
     }
 }

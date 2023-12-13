@@ -26,10 +26,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                     connection = new SqlConnection(connecionString);
                     connection.Open();
                 }
-                /*if (connection.State == System.Data.ConnectionState.Open)
-                {
-                    connection.Close();
-                }*/
             }
             catch (SqlException ex)
             {

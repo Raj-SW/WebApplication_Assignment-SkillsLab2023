@@ -11,14 +11,11 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
 {
     public class DBCommand: IDBCommand
     {
-        private readonly IDataAccessLayer _dal;
-        public DBCommand(IDataAccessLayer dal) { 
-            _dal = dal;
-        }
-
-        public DBCommand()
-        {
-        }
+        //private readonly IDataAccessLayer _dal;
+        //public DBCommand(IDataAccessLayer dal) { 
+        //    _dal = dal;
+        //}
+        //todos..
 
         public DataTable GetData(string query)
         {
@@ -33,6 +30,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
                     sqlDataAdapter.Fill(datatable);
                 }
             }
+            //list of --generic list T, scan through DT   
             dataAccessLayer.CloseConnection();
             return datatable;
         }
