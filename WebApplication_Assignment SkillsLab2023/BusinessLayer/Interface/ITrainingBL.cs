@@ -1,8 +1,6 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
@@ -11,7 +9,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
     {
         List<TrainingModel> GetAllTraining();
         List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
-        bool EnrolEmployeeIntoTraining();
+        bool EnrolEmployeeIntoTraining(int userId, int trainingId, HttpFileCollectionBase files);
 
     }
 }

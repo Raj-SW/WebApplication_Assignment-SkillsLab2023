@@ -6,6 +6,8 @@ using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.Common;
 using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
+using WebApplication_Assignment_SkillsLab2023.Services;
+using WebApplication_Assignment_SkillsLab2023.Services.Interfaces;
 
 namespace WebApplication_Assignment_SkillsLab2023
 {
@@ -25,6 +27,7 @@ namespace WebApplication_Assignment_SkillsLab2023
             container.RegisterType<IAuthenticationBL, AuthenticationBL>();
             container.RegisterType<ITrainingBL, TrainingBL>();
             container.RegisterType<ITrainingDAL, TrainingDAL>();
+            container.RegisterType<IFileHandlerService, LocalFileHandlerService>();
 
 
 

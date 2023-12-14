@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
-using System.Web.Http;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
-using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
-using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
+using WebApplication_Assignment_SkillsLab2023.Services.Interfaces;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
     public class TrainingController : Controller
     {
         private readonly ITrainingBL _trainingBl;
-         public TrainingController(ITrainingBL trainingBl)
+
+        public TrainingController(ITrainingBL trainingBl)
         {
             _trainingBl = trainingBl;
-
         }
         // GET: Training
         public ActionResult Index()
@@ -24,7 +25,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         public  ActionResult GetTraining() 
         {
             return null;
-
         }
         public ActionResult GetTrainingPrerequisite()
         {
@@ -40,17 +40,36 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public JsonResult EnrolEmployeeIntoTraining()
         {
-            var userId = HttpContext.Request.Form["userId"];
-            var trainingId = HttpContext.Request.Form["trainingId"];
+            var userId = int.Parse(HttpContext.Request.Form["userId"]);
+            var trainingId = int.Parse(HttpContext.Request.Form["trainingId"]);
 
+            //this also works
             // Handle the files
-            var files = HttpContext.Request.Files;
-            foreach (string fileName in files.AllKeys)
-            {
-                var file = files[fileName];
-                System.Diagnostics.Debug.WriteLine($"File Name: {file.FileName}");
-            }
-            // Your logic here...
+            // var files = HttpContext.Request.Files;
+
+            //foreach (string fileName in files.AllKeys)
+            //{
+            //    var file = files[fileName];
+            //    System.Diagnostics.Debug.WriteLine($"File Name from HttpContext: {file.FileName}");
+            //}
+
+            //////////////////////////////////
+            // Your logic here..
+
+            //foreach (string fileName in Request.Files)
+            //{
+            //    HttpPostedFileBase file = Request.Files[fileName];
+
+            //    if (file != null && file.ContentLength > 0)
+            //    {
+            //        // Handle each file as needed
+            //        var uploadedFileName = Path.GetFileName(file.FileName);
+            //        System.Diagnostics.Debug.WriteLine($"File Name: {uploadedFileName}");
+            //    }
+            //}
+
+            var result = _trainingBl.EnrolEmployeeIntoTraining(userId,trainingId,Request.Files);
+
 
             return Json(new { result = true });
         }
