@@ -31,34 +31,18 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 
         public bool EnrolEmployeeIntoTraining(int userId, int trainingId, HttpFileCollectionBase FileCollection)
         {
-            if (FileCollection.Count > 0)
-            {
-                try
-                {
-                    HttpFileCollectionBase files = FileCollection;
-                    // Create the uploads folder if it doesn't exist
-                    string uploadsFolder = System.Web.Hosting.HostingEnvironment.MapPath("~/Storage/");
-                    Directory.CreateDirectory(uploadsFolder);
-                    // Loop through each file in the collection
-                    foreach (string fileName in files)
-                    {
-                        HttpPostedFileBase file = files[fileName];
-                        // Get the file name
-                        string actualFileName = file.FileName;
-                        // Combine the uploads folder path with the actual file name
-                        string path = Path.Combine(uploadsFolder,actualFileName);
-                        // Save the file
-                        file.SaveAs(path);
-                    }
-
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    throw;
-                }
-            }
-            return false;
+            //TODO:
+            //Upload files
+            var isUploadSuccess = _iFileHandlerService.FileUpload(userId,trainingId,FileCollection);
+            //Get paths of User submittedPrerequisites
+            //Insert into Enrolment table
+            //Get the EnrolmentID
+            //Insert n number of User Uploaded files into EnrolmentPrerequisite
+            return true;
+        }
+        public bool InsertEnrolmentDetailsIntoDatabase()
+        {
+            return true;
         }
     }
 }
