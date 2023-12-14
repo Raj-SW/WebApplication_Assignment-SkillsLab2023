@@ -8,7 +8,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DataTransferObjects
 {
     public class EnrolmentDTO
     {
-        public TrainingModel trainingModel {get;set;}
-        List<UserPrerequisiteModel> userPrerequisiteModels { get;set;}
+        public int TrainingId {get;set;}
+        public int UserId {get;set; }
+        public List<HttpPostedFileBase> Files { get;set;}
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Web.Http;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
+using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
+using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
@@ -37,6 +40,17 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public JsonResult EnrolEmployeeIntoTraining()
         {
+            var userId = HttpContext.Request.Form["userId"];
+            var trainingId = HttpContext.Request.Form["trainingId"];
+
+            // Handle the files
+            var files = HttpContext.Request.Files;
+            foreach (string fileName in files.AllKeys)
+            {
+                var file = files[fileName];
+                System.Diagnostics.Debug.WriteLine($"File Name: {file.FileName}");
+            }
+            // Your logic here...
 
             return Json(new { result = true });
         }
