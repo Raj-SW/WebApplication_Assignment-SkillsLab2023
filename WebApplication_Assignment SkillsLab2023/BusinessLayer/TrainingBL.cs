@@ -31,18 +31,35 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 
         public bool EnrolEmployeeIntoTraining(int userId, int trainingId, HttpFileCollectionBase FileCollection)
         {
+            TaskResult uploadTaskResult= new TaskResult();
             //TODO:
+            //Security protocols here
             //Upload files
-            var isUploadSuccess = _iFileHandlerService.FileUpload(userId,trainingId,FileCollection);
+            uploadTaskResult = _iFileHandlerService.FileUpload(userId,trainingId,FileCollection);
             //Get paths of User submittedPrerequisites
             //Insert into Enrolment table
-            //Get the EnrolmentID
-            //Insert n number of User Uploaded files into EnrolmentPrerequisite
+            if (uploadTaskResult.isSuccess)
+            {
+                //Get the EnrolmentID
+                var enrolmentId = InsertEnrolmentDetailsIntoDatabase(userId,trainingId,uploadTaskResult);
+                //Insert n number of User Uploaded files into EnrolmentPrerequisite
+                foreach(String FilePath in uploadTaskResult.ResultMessageList)
+                {
+                    var isFileInserted = InsertAttachmentDetailsIntoEnrolmentPrerequisiteTable(enrolmentId, FilePath);
+                }
+            }
             return true;
         }
-        public bool InsertEnrolmentDetailsIntoDatabase()
+        public int InsertEnrolmentDetailsIntoDatabase(int userId, int trainingId, TaskResult uploadTaskResult)
         {
-            return true;
+            //Insert into the Enrolment Table
+            var enrolmentId=_itrainingDAL.InsertIntoEnrolmentTable(userId,trainingId);
+            //and EnrolmentPrerequisiteTable
+            return enrolmentId;
+        }
+        public bool InsertAttachmentDetailsIntoEnrolmentPrerequisiteTable(int enrolmentId, string filepath)
+        {
+            return _itrainingDAL.InsertIntoEnrolmentPrerequisiteTable( enrolmentId,filepath);
         }
     }
 }

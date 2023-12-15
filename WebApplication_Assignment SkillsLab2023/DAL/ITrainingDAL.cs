@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.DAL
@@ -12,6 +13,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         List<TrainingModel> GetAllTrainingModels();
         List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
         bool EnrolEmployeeIntoTraining();
-
+        int InsertIntoEnrolmentTable(int userId,int trainingId);
+        bool InsertIntoEnrolmentPrerequisiteTable(int enrolmentId,string filepath);
     }
 }

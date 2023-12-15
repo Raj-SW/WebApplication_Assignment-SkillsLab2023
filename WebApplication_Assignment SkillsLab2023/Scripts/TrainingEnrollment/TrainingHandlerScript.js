@@ -34,7 +34,7 @@
     const url = '/Training/EnrolEmployeeIntoTraining';
     fetch(url, {
         method: 'POST',
-        body: formData  // Use FormData as the request body
+        body: formData 
     })
         .then(response => response.json())
         .then(result => {

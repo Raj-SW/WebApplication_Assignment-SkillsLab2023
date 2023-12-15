@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.DynamicData.ModelProviders;
+using WebApplication_Assignment_SkillsLab2023.Models;
 using WebApplication_Assignment_SkillsLab2023.Services.Interfaces;
 
 namespace WebApplication_Assignment_SkillsLab2023.Services
@@ -14,8 +16,10 @@ namespace WebApplication_Assignment_SkillsLab2023.Services
             throw new NotImplementedException();
         }
 
-        public bool FileUpload(int userId, int trainingId, HttpFileCollectionBase FileCollection)
+        public TaskResult FileUpload(int userId, int trainingId, HttpFileCollectionBase FileCollection)
         {
+            TaskResult taskModelResult = new TaskResult();
+            
             if (FileCollection.Count > 0)
             {
                 try
@@ -29,15 +33,20 @@ namespace WebApplication_Assignment_SkillsLab2023.Services
                         string actualFileName = file.FileName;
                         string path = Path.Combine(uploadsFolder, actualFileName);
                         file.SaveAs(path);
+                        taskModelResult.AddResultMessage(path);
                     }
-                    return true;
+                    taskModelResult.isSuccess= true;
+                    return taskModelResult;
                 }
                 catch (Exception e)
                 {
+                    taskModelResult.isSuccess = false;
                     throw;
                 }
             }
-            return false;
+            taskModelResult.isSuccess = false;
+            taskModelResult.AddResultMessage("Internal Server Storage Error.\n No Files were received.\n We will get back to you");
+            return taskModelResult;
         }
     }
 }

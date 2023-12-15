@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
@@ -63,5 +64,31 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             return true;
         }
 
+        public int InsertIntoEnrolmentTable(int userId, int trainingId)
+        {
+            const string ENROLL_USER_RETRIEVE_ENROLMENT_ID_SCALAR_QUERY=
+                  @"INSERT INTO Enrolment (UserId, TrainingId)
+                    VALUES (@UserId, @TrainingId)
+                    SELECT SCOPE_IDENTITY();";
+            DBCommand command = new DBCommand();
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@UserId", userId));
+            parameters.Add(new SqlParameter("@TrainingId", trainingId));
+            var obj = command.ExecuteScalar(ENROLL_USER_RETRIEVE_ENROLMENT_ID_SCALAR_QUERY, parameters);
+            return Convert.ToInt32(obj);
+        }
+
+        public bool InsertIntoEnrolmentPrerequisiteTable(int enrolmentId, string filepath)
+        {
+            const string INSERT_ATTACHMENT_DETAILS_INTO_TABLE =
+                  @"INSERT INTO EnrolmentPrerequisite (EnrolmentId,FilePath)
+                    VALUES (@EnrolmentId, @FilePath);";
+            DBCommand command = new DBCommand();
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@EnrolmentId", enrolmentId));
+            parameters.Add(new SqlParameter("@FilePath", filepath));
+            command.InsertUpdateData(INSERT_ATTACHMENT_DETAILS_INTO_TABLE, parameters);
+            return true;
+        }
     }
 }

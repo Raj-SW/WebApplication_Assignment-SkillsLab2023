@@ -51,7 +51,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
             }
             dataAccessLayer.CloseConnection();
         }
-
         public DataTable GetDataWithConditions(string query, List<SqlParameter> parameters)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
@@ -85,6 +84,30 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
                 command.ExecuteNonQuery();
             }
             dataAccessLayer.CloseConnection();
+        }
+        public object ExecuteScalar(string query, List<SqlParameter> parameters)
+        {
+            DataAccessLayer dataAccessLayer = new DataAccessLayer();
+            dataAccessLayer.OpenConnection();
+
+            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
+            {
+                command.CommandType = CommandType.Text;
+
+                if (parameters != null)
+                {
+                    parameters.ForEach(parameter =>
+                    {
+                        command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
+                    });
+                }
+
+                object result = command.ExecuteScalar();
+
+                dataAccessLayer.CloseConnection();
+
+                return result;
+            }
         }
     }
 }
