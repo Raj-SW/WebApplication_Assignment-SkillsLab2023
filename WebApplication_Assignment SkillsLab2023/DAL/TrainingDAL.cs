@@ -59,35 +59,32 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
                 return ListOfTrainingPrerequisiteModelsByTrainingId;
         }
-        public bool EnrolEmployeeIntoTraining()
+        public bool EnrolEmployeeIntoTraining(int userId, int trainingId, List<string> filepath)
         {
-            return true;
-        }
+            string INSERT_ENROLMENT_QUERY =
+            @"
+            DECLARE @EnrolmentId INT;
+            INSERT INTO Enrolment (UserId, TrainingId)
+            VALUES (@UserId, @TrainingId);
+            SET @EnrolmentId = SCOPE_IDENTITY();
 
-        public int InsertIntoEnrolmentTable(int userId, int trainingId)
-        {
-            const string ENROLL_USER_RETRIEVE_ENROLMENT_ID_SCALAR_QUERY=
-                  @"INSERT INTO Enrolment (UserId, TrainingId)
-                    VALUES (@UserId, @TrainingId)
-                    SELECT SCOPE_IDENTITY();";
-            DBCommand command = new DBCommand();
-            List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@UserId", userId));
-            parameters.Add(new SqlParameter("@TrainingId", trainingId));
-            var obj = command.ExecuteScalar(ENROLL_USER_RETRIEVE_ENROLMENT_ID_SCALAR_QUERY, parameters);
-            return Convert.ToInt32(obj);
-        }
+            INSERT INTO EnrolmentPrerequisite (EnrolmentId, FilePath)
+            VALUES ";
 
-        public bool InsertIntoEnrolmentPrerequisiteTable(int enrolmentId, string filepath)
-        {
-            const string INSERT_ATTACHMENT_DETAILS_INTO_TABLE =
-                  @"INSERT INTO EnrolmentPrerequisite (EnrolmentId,FilePath)
-                    VALUES (@EnrolmentId, @FilePath);";
             DBCommand command = new DBCommand();
-            List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@EnrolmentId", enrolmentId));
-            parameters.Add(new SqlParameter("@FilePath", filepath));
-            command.InsertUpdateData(INSERT_ATTACHMENT_DETAILS_INTO_TABLE, parameters);
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@UserId", userId),
+                new SqlParameter("@TrainingId", trainingId)
+            };
+            foreach (string filePathEntry in filepath)
+            {   
+                int index=filepath.IndexOf(filePathEntry);
+                INSERT_ENROLMENT_QUERY += $"(@EnrolmentId, @FilePath{index}),";
+                parameters.Add(new SqlParameter($"@FilePath{index}", filePathEntry));
+            }
+            INSERT_ENROLMENT_QUERY = INSERT_ENROLMENT_QUERY.TrimEnd(',') + ";";
+            command.InsertUpdateData(INSERT_ENROLMENT_QUERY , parameters);
             return true;
         }
     }

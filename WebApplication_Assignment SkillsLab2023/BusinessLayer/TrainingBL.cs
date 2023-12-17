@@ -34,32 +34,12 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             TaskResult uploadTaskResult= new TaskResult();
             //TODO:
             //Security protocols here
-            //Upload files
             uploadTaskResult = _iFileHandlerService.FileUpload(userId,trainingId,FileCollection);
-            //Get paths of User submittedPrerequisites
-            //Insert into Enrolment table
             if (uploadTaskResult.isSuccess)
             {
-                //Get the EnrolmentID
-                var enrolmentId = InsertEnrolmentDetailsIntoDatabase(userId,trainingId,uploadTaskResult);
-                //Insert n number of User Uploaded files into EnrolmentPrerequisite
-                foreach(String FilePath in uploadTaskResult.ResultMessageList)
-                {
-                    var isFileInserted = InsertAttachmentDetailsIntoEnrolmentPrerequisiteTable(enrolmentId, FilePath);
-                }
+                var result = _itrainingDAL.EnrolEmployeeIntoTraining(userId,trainingId,uploadTaskResult.ResultMessageList);
             }
             return true;
-        }
-        public int InsertEnrolmentDetailsIntoDatabase(int userId, int trainingId, TaskResult uploadTaskResult)
-        {
-            //Insert into the Enrolment Table
-            var enrolmentId=_itrainingDAL.InsertIntoEnrolmentTable(userId,trainingId);
-            //and EnrolmentPrerequisiteTable
-            return enrolmentId;
-        }
-        public bool InsertAttachmentDetailsIntoEnrolmentPrerequisiteTable(int enrolmentId, string filepath)
-        {
-            return _itrainingDAL.InsertIntoEnrolmentPrerequisiteTable( enrolmentId,filepath);
         }
     }
 }
