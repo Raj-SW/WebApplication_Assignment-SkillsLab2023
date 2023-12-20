@@ -67,10 +67,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             INSERT INTO Enrolment (UserId, TrainingId)
             VALUES (@UserId, @TrainingId);
             SET @EnrolmentId = SCOPE_IDENTITY();
-
             INSERT INTO EnrolmentPrerequisite (EnrolmentId, FilePath)
             VALUES ";
-
             DBCommand command = new DBCommand();
             List<SqlParameter> parameters = new List<SqlParameter>
             {

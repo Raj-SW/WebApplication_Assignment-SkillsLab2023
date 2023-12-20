@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.Models;
@@ -13,6 +16,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         }
         public DataModelResult<UserModel> LoginUser(CredentialModel model)
         {
+            //get the salt by email
+            //hash salt and password
+            //if true then retrieve user model
+            //model.HashedPassword=HashPassword(model.Password);
             DataModelResult<CredentialModel> CredentialModelResult = GetCredentialModelByEmailAndPassword(model);
             DataModelResult<UserModel> UserDataModelResult = new DataModelResult<UserModel>();
             if (CredentialModelResult.ResultTask.isSuccess)
@@ -24,17 +31,20 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
                     {
                         UserDataModelResult.ResultTask.isSuccess = true;
                         UserDataModelResult.ResultTask.AddResultMessage("Login Successful");
+                        return UserDataModelResult;
                     }
                     else
                     {
                         UserDataModelResult.ResultTask.isSuccess = false;
                         UserDataModelResult.ResultTask.AddResultMessage("Internal Server Error");
+                        return UserDataModelResult;
                     }
                 }
                 else
                 {
                     UserDataModelResult.ResultTask.isSuccess=false;
                     UserDataModelResult.ResultTask.AddResultMessage("Your account has not yet been activated. Please contact the Admin");
+                    return UserDataModelResult;
                 }
             }
             else
@@ -52,7 +62,9 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             TaskResult result = IsUserModelUnique(dto);
             if (result.isSuccess)
-            {
+            {   
+                dto.credentialModel.Salt = GenerateTimestampSalt();
+                dto.credentialModel.HashedPassword= HashPassword(dto.credentialModel.Password, dto.credentialModel.Salt);
                 result.isSuccess = _authenticationDAL.InsertUserModelCredentialModel(dto.userModel, dto.credentialModel);
                 if (result.isSuccess)
                 {
@@ -141,6 +153,26 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
                 result.ResultTask.isSuccess=true;
             }
            return result;
+        }
+        public byte[] HashPassword(string password, byte[] salt)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(password + salt);
+                byte[] hashedBytes = sha256.ComputeHash(passwordBytes);
+                return hashedBytes;
+            }
+        }
+        public byte[] GenerateTimestampSalt()
+        {
+            long ticks = DateTime.UtcNow.Ticks;
+            byte[] saltBytes = BitConverter.GetBytes(ticks);
+            return saltBytes;
+        }
+
+        public List<string> GetUserRolesByUserId(int UserId) 
+        {
+            return _authenticationDAL.GetUserRolesByUserId(UserId);
         }
 
     }

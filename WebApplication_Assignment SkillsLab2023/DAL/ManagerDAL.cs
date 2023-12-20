@@ -8,31 +8,16 @@ using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace ConsoleApp5.DAL
 {
-    public class ManagerDAL /*: IGenericDAL<UserModel>*/
+    public class ManagerDAL 
     {
-        public bool DeleteByID(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<UserModel> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public UserModel GetByID(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Insert(UserModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Update(UserModel model)
-        {
-            throw new NotImplementedException();
-        }
+        //TODO:
+        //DATA REQUIRED; TRAINING DETAILS, TRAINING PREREQUISITES, ENROLMENT, ENROLMENT-PREREQUISITE, EMPLOYEE DETAILS
+        //SEE TRAININGS
+        //SEE HIS EMPLOYEES HIERARCHY
+        //REVIEW HIS EMLOYEES ENROLMENT AND PERFORM ACTIONS
+        //VIEW HIGH LEVEL DETAILS OF EMPLOYEE ENROLMENT
+        //ON VIEW DETAILS EXPAND ENROLMENT DETAILS 
+        //A WAY TO VIEW OR OPEN THE ATTACHMENTS
+        //ENROL OR REJECT OR KEEP PENDING OR GIVE A FEEDBACK ON DOCUMENT ETC..
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using System.Web.UI.WebControls;
+﻿using System.Collections.Generic;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
@@ -24,5 +18,8 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         bool isNicUnique(RegistrationDTO dto);
         bool isMobileNumUnique(RegistrationDTO dto);
         DataModelResult<CredentialModel> GetCredentialModelByEmailAndPassword(CredentialModel model);
+        List<string> GetUserRolesByUserId(int UserId);
+        byte[] HashPassword(string password, byte[] salt);
+        byte[] GenerateTimestampSalt();
     }
 }

@@ -1,0 +1,19 @@
+﻿@model WebApplication_Assignment_SkillsLab2023.Models.UserRolesModel
+@{
+    ViewBag.Title = "RoleSelectionView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>RoleSelectionView</h2>
+
+{
+@foreach (var role in Model.Roles)
+{
+
+    <p>
+        @role
+    </p>
+}
+
+<input type="submit" value="Submit" />
+}

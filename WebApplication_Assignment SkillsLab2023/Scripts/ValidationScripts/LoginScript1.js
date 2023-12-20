@@ -10,7 +10,7 @@ function login() {
         return false;
     }
 
-    var email = $("#email").val().toString();
+    var email = $("#email").val().toString().toLowerCase();
     var Password = $("#password").val().toString();
 
     var loginObject = {

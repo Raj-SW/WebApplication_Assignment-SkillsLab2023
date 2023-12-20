@@ -16,7 +16,7 @@ function Register()
     var nic = document.getElementById("nic").value;
     var mobileNum = document.getElementById("MobileNum").value;
 
-    var email = document.getElementById("email").value;
+    var email = document.getElementById("email").value.toLowerCase();
     var password = document.getElementById("password").value;
 
     var UserModel = {

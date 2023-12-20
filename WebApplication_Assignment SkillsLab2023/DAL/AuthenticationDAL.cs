@@ -27,7 +27,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             const string RETRIEVE_USER_CREDENTIALS_QUERY = @"SELECT * FROM [Credential] WHERE @Password = Password AND @Email=Email";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@Password", model.Password));
-            parameters.Add(new SqlParameter("@Email", model.Email));
+            parameters.Add(new SqlParameter("@Email", model.Email.ToLower()));
             var dt = _command.GetDataWithConditions(RETRIEVE_USER_CREDENTIALS_QUERY, parameters);
             return dt.Rows.Count > 0;
         }
@@ -42,7 +42,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 userModel.UserId = (int)row["UserId"];
                 userModel.UserFirstName = (string)row["UserFirstName"];
                 userModel.UserLastName = (string)row["UserLastName"];
-                userModel.Role = (string)row["Role"];
             }
             return userModel;
         }
@@ -65,8 +64,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                     DECLARE @UserId INT;
                     SET @UserId = SCOPE_IDENTITY();
 
-                    INSERT INTO [Credential] (UserId, Email, [Password])
-                    SELECT @UserId, @Email, @Password;";
+                    INSERT INTO [Credential] (UserId, Email, [Password],Salt)
+                    SELECT @UserId, @Email, @Password, @Salt;";
             try
             {
             List<SqlParameter> parameters = new List<SqlParameter>();
@@ -74,9 +73,10 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             parameters.Add(new SqlParameter("@UserFirstName", userModel.UserFirstName));
             parameters.Add(new SqlParameter("@UserLastName", userModel.UserLastName));
             parameters.Add(new SqlParameter("@MobileNum", userModel.MobileNum));
-            parameters.Add(new SqlParameter("@Email", credentialModel.Email));
-            parameters.Add(new SqlParameter("@Password", credentialModel.Password));
-            _command.InsertUpdateData(INSERT_USER_MODEL_CREDENTIAL_MODEL_QUERY, parameters);
+            parameters.Add(new SqlParameter("@Email", credentialModel.Email.ToLower()));
+            parameters.Add(new SqlParameter("@Password", credentialModel.HashedPassword));
+            parameters.Add(new SqlParameter("@Salt", credentialModel.Salt));
+                _command.InsertUpdateData(INSERT_USER_MODEL_CREDENTIAL_MODEL_QUERY, parameters);
             return true;
             }
             catch (Exception ex)
@@ -90,7 +90,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             {
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@UserId", model.UserId));
-                parameters.Add(new SqlParameter("@Email", model.Email));
+                parameters.Add(new SqlParameter("@Email", model.Email.ToLower()));
                 parameters.Add(new SqlParameter("@Password", model.Password));
                 _command.InsertUpdateData(INSERT_USER_CREDENTIAL_MODEL_QUERY, parameters);
                 return true;
@@ -143,7 +143,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             const string GET_USER_ID_BY_CREDENTIAL = @"SELECT UserId FROM [Credential] WHERE Email=@Email AND Password=@Password";
             List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@Email", model.Email));
+            parameters.Add(new SqlParameter("@Email", model.Email.ToLower()));
             parameters.Add(new SqlParameter("@Password", model.Password));
             var dt = _command.GetDataWithConditions(GET_USER_ID_BY_CREDENTIAL, parameters);
             return (int)dt.Rows[0]["UserId"];
@@ -157,7 +157,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                     WHERE c.Email=@Email AND c.Password=@Password;";
             UserModel userModel = new UserModel();
             List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@Email", model.Email));
+            parameters.Add(new SqlParameter("@Email", model.Email.ToLower()));
             parameters.Add(new SqlParameter("@Password", model.Password));
             var dt = _command.GetDataWithConditions(RETRIEVE_USER_MODEL_BY_CREDENTIALS_QUERY, parameters);
             foreach (DataRow row in dt.Rows)
@@ -175,22 +175,35 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         }
         public DataModelResult<CredentialModel> GetCredentialModelByEmailAndPassword(CredentialModel model)
         {
-            const string RETRIEVE_USER_CREDENTIALS_BY_EMAIL_AND_PASSWORD_QUERY = @"SELECT * FROM [Credential] WHERE Email = @Email AND Password = @Password";
+            const string RETRIEVE_USER_CREDENTIALS_BY_EMAIL_AND_PASSWORD_QUERY = @"SELECT * FROM [Credential] WHERE Email = @Email AND Password = CONVERT(BINARY(64), @Password)";
             DataModelResult<CredentialModel> result = new DataModelResult<CredentialModel>();
             List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@Email", model.Email));
+            parameters.Add(new SqlParameter("@Email", model.Email.ToLower()));
             parameters.Add(new SqlParameter("@Password", model.Password));
             var dt = _command.GetDataWithConditions(RETRIEVE_USER_CREDENTIALS_BY_EMAIL_AND_PASSWORD_QUERY, parameters);
             if (dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];
-                result.ResultObject.AccessId = (int)row["AccessId"];
-                result.ResultObject.UserId = (int)row["UserId"];
-                result.ResultObject.Email = (string)row["Email"];
-                result.ResultObject.Password = (string)row["Password"];
+                result.ResultObject.AccessId = Convert.ToInt32(row["AccessId"]);
+                result.ResultObject.UserId = Convert.ToInt32(row["UserId"]);
+                result.ResultObject.Email = row["Email"].ToString();
+                result.ResultObject.Password = row["Password"].ToString();
                 result.ResultObject.Activated = Convert.ToBoolean(row["Activated"]);
             }
             return result;
+        }
+        public List<string> GetUserRolesByUserId(int UserId)
+        {
+            const string RETRIEVE_USER_ROLES_BY_USER_ID_QUERY = @"SELECT r.RoleName FROM Roles r INNER JOIN User_Roles ur ON ur.RoleId=r.RoleId WHERE ur.UserId=@UserId";
+            List<String> UserRolesList = new List<string>();
+            List<SqlParameter> parameters= new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@UserId",UserId));
+            var dt = _command.GetDataWithConditions(RETRIEVE_USER_ROLES_BY_USER_ID_QUERY,parameters);
+            foreach (DataRow row in dt.Rows)
+            {
+                UserRolesList.Add((string)row["RoleName"]);
+            }
+            return UserRolesList;
         }
     }
 }

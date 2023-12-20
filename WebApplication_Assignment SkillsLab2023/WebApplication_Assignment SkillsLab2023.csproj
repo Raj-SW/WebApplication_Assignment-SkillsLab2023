@@ -206,6 +206,7 @@
     <Compile Include="Models\TrainingModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserPrerequisiteModel.cs" />
+    <Compile Include="Models\UserRolesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IFileHandlerService.cs" />
     <Compile Include="Services\LocalFileHandlerService.cs" />
@@ -280,11 +281,13 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Authentication\LoginPage.cshtml" />
     <Content Include="Views\Authentication\RegistrationPage.cshtml" />
-    <Content Include="Views\Manager\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Common\AccessDenied.cshtml" />
     <Content Include="Views\Common\Index.cshtml" />
+    <Content Include="Views\Manager\ManagerView.cshtml" />
+    <Content Include="Views\Authentication\RoleSelectionPage.cshtml" />
+    <Content Include="Views\Authentication\RoleSelection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -21,6 +21,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         int GetUserIdByCredentials(CredentialModel model);
         UserModel GetUserModelByCredentials(CredentialModel model);
         DataModelResult<CredentialModel> GetCredentialModelByEmailAndPassword(CredentialModel model);
-
+        List<string> GetUserRolesByUserId(int UserId);
     }
 }

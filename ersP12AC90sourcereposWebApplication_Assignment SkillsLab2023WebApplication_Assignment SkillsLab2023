@@ -1,0 +1,123 @@
+[33mcommit 612f3a37606ea9771fb18deef698a12920c201f2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Sun Dec 17 22:49:16 2023 +0400
+
+    Enrolment process done by a single query achieved.
+    TODO:
+    -Admin side of things.
+    -Manager side of things
+
+[33mcommit 7cf7e12811e891c19c00f57aa25096b016ea50a7[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Fri Dec 15 20:47:24 2023 +0400
+
+    Upload file functionality with db persistance done.
+    Lacking;
+    -validation check
+    -if one inert into attachment table failed, insert into enrolment still works..must review on that
+    #
+
+[33mcommit 6039624da63fe04f5bfae174c554d9cd94b6fcb9[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Thu Dec 14 20:00:25 2023 +0400
+
+    file upload to local storage directory specific achieved. ned to refine and complete user story
+
+[33mcommit 38221b799362d2af9df6276fa181939e608ef49c[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Thu Dec 14 16:30:10 2023 +0400
+
+    Very immature way of localfilestorage achieved. refactoring ongoing
+
+[33mcommit f7d347bbb44ad92c85e24a6008ffd7495f604f01[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Thu Dec 14 14:10:45 2023 +0400
+
+    File transfer from frontend js (using formdata which is best suitable way to transfer files rather than JSON) to backend reived successfully and can manipulate.
+    
+    TODO:
+    Enrolment logic to implement
+
+[33mcommit ef6751933873bce4e58883d3433da93821d50929[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Wed Dec 13 23:01:58 2023 +0400
+
+    Login & Registration working with TaskResult and DataModelresult with error handling
+
+[33mcommit d9e984bcaa13a8b555fb583d701c203f576c6df0[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Sun Dec 10 21:30:49 2023 +0400
+
+    hadling enrolemnt atempt
+
+[33mcommit 732d3bec9521c9fd3b04f4e898950f04b4fb8c55[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Sun Dec 10 02:35:44 2023 +0400
+
+    modal working perfectly. Enrolmen logic not yet implemented tho
+
+[33mcommit f269b396337d228d451977daade328f80e7bc396[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Sat Dec 9 22:38:23 2023 +0400
+
+    pre-refactoring
+
+[33mcommit ddb0316047ad8e4dd190cb43efc265731e01a2fc[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Fri Dec 8 13:01:12 2023 +0400
+
+    modal for each training item is working...now working on getting prerequisites for every traning and enrolling
+
+[33mcommit 4c00bf093cd276da4cd04f9d81c12a9888058adc[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Thu Dec 7 10:24:37 2023 +0400
+
+    all validations done
+
+[33mcommit 6e03bc70876f0988471802d1138e567f49daf5a9[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Wed Dec 6 22:59:31 2023 +0400
+
+    validations not working - form is stuck at firts elemet of array input and refreshes
+
+[33mcommit 8791be87701c23b58858521e824aa78d305ffd56[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Wed Dec 6 20:39:35 2023 +0400
+
+    mobile num validation 1
+
+[33mcommit 709d78e3bd53a2d0dd9ea52593003d0334978e24[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Wed Dec 6 10:26:51 2023 +0400
+
+    qwe
+
+[33mcommit a61e20702b396cfb2a747d07b8d96da46f5d1150[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Tue Dec 5 23:23:28 2023 +0400
+
+    preliminary validatiosn working
+
+[33mcommit 1a358df7ec7d23ba1c4716b04f205494bf4ead79[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Tue Dec 5 14:30:11 2023 +0400
+
+    asd
+
+[33mcommit 10b6667210fdd91fe80ffeeca09c4f66243f9ff9[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Fri Dec 1 17:21:29 2023 +0400
+
+    qwerty
+
+[33mcommit 3e8b874b115f182dcbae60da6774843663dc7df3[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Fri Dec 1 13:21:19 2023 +0400
+
+    Add project files.
+
+[33mcommit 5537ef7050d720c1ed93979e79de9b9e5c8106ae[m
+Author: Raj-SW <nsseetohul@gmail.com>
+Date:   Fri Dec 1 13:21:13 2023 +0400
+
+    Add .gitattributes and .gitignore.
