@@ -3,11 +3,8 @@ using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 {
-    public class AdminBL
+    public interface IUserBL
     {
-        public static List<UserModel> GetAll()
-        {
-            return  null;
-        }
+        List<UserRolesModel> GetAllUserRolesModelByUserId(int UserId);
     }
 }

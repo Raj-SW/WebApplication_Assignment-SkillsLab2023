@@ -11,12 +11,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
 {
     public class DBCommand: IDBCommand
     {
-        //private readonly IDataAccessLayer _dal;
-        //public DBCommand(IDataAccessLayer dal) { 
-        //    _dal = dal;
-        //}
-        //todos..
-
         public DataTable GetData(string query)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
@@ -16,49 +17,42 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         }
         public DataModelResult<UserModel> LoginUser(CredentialModel model)
         {
-            //get the salt by email
-            //hash salt and password
-            //if true then retrieve user model
-            //model.HashedPassword=HashPassword(model.Password);
-            DataModelResult<CredentialModel> CredentialModelResult = GetCredentialModelByEmailAndPassword(model);
             DataModelResult<UserModel> UserDataModelResult = new DataModelResult<UserModel>();
-            if (CredentialModelResult.ResultTask.isSuccess)
+            var retrieveCredentialModelByEmailResult = GetCredentialModelByEmail(model);
+            if (!retrieveCredentialModelByEmailResult.ResultTask.isSuccess)
             {
-                if (CredentialModelResult.ResultObject.Activated)
-                {
-                    UserDataModelResult.ResultObject = GetUserModelByCredentials(model);
-                    if (UserDataModelResult.ResultObject != null)
-                    {
-                        UserDataModelResult.ResultTask.isSuccess = true;
-                        UserDataModelResult.ResultTask.AddResultMessage("Login Successful");
-                        return UserDataModelResult;
-                    }
-                    else
-                    {
-                        UserDataModelResult.ResultTask.isSuccess = false;
-                        UserDataModelResult.ResultTask.AddResultMessage("Internal Server Error");
-                        return UserDataModelResult;
-                    }
-                }
-                else
-                {
-                    UserDataModelResult.ResultTask.isSuccess=false;
-                    UserDataModelResult.ResultTask.AddResultMessage("Your account has not yet been activated. Please contact the Admin");
-                    return UserDataModelResult;
-                }
+                UserDataModelResult.ResultTask.AddResultMessage("User not Found!");
+                UserDataModelResult.ResultTask.isSuccess = false;
+                return UserDataModelResult;
+            }
+            else if (!retrieveCredentialModelByEmailResult.ResultObject.Activated) 
+            {
+                UserDataModelResult.ResultTask.AddResultMessage("User not Activated Yet! Please contact Admin.");
+                UserDataModelResult.ResultTask.isSuccess = false;
+                return UserDataModelResult;
             }
             else
             {
-                UserDataModelResult.ResultTask.isSuccess = false;
-                UserDataModelResult.ResultTask.AddResultMessage("Sorry, Wrong Credentials!");
+                model.HashedPassword = HashPassword(model.Password, retrieveCredentialModelByEmailResult.ResultObject.Salt);
+                if (model.HashedPassword.SequenceEqual(retrieveCredentialModelByEmailResult.ResultObject.HashedPassword))
+                {
+                    UserDataModelResult.ResultObject = GetUserModelByID(retrieveCredentialModelByEmailResult.ResultObject.UserId);
+                    UserDataModelResult.ResultTask.AddResultMessage("Logged In Successfully");
+                    UserDataModelResult.ResultTask.isSuccess = true;
+                }
+                else
+                {
+                    UserDataModelResult.ResultTask.AddResultMessage("Wrong Credentials");
+                    UserDataModelResult.ResultTask.isSuccess = false;
+                }
             }
-          return UserDataModelResult;
+            return UserDataModelResult;
         }
         public void Logout()
         {
             throw new NotImplementedException();
         }
-        public TaskResult RegisterUser(RegistrationDTO dto)
+        public TaskResult RegisterUser(UserAndCredentialDTO dto)
         {
             TaskResult result = IsUserModelUnique(dto);
             if (result.isSuccess)
@@ -77,7 +71,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             }
             return result;
         }
-        public TaskResult IsUserModelUnique(RegistrationDTO dto)
+        public TaskResult IsUserModelUnique(UserAndCredentialDTO dto)
         {
             TaskResult taskResult = new TaskResult();
             taskResult.isSuccess = true;
@@ -119,16 +113,16 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _authenticationDAL.GetUserModelIDbyNIC(model);
         }
-        public bool isEmailUnique(RegistrationDTO dto)
+        public bool isEmailUnique(UserAndCredentialDTO dto)
         {
 
            return _authenticationDAL.isEmailUnique(dto);
         }
-        public bool isNicUnique(RegistrationDTO dto)
+        public bool isNicUnique(UserAndCredentialDTO dto)
         {
             return _authenticationDAL.isNicUnique(dto);
         }
-        public bool isMobileNumUnique(RegistrationDTO dto)
+        public bool isMobileNumUnique(UserAndCredentialDTO dto)
         {
             return _authenticationDAL.isMobileNumUnique(dto);
         }
@@ -140,18 +134,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _authenticationDAL.GetUserModelByID(id);
         }
-        public UserModel GetUserModelByCredentials(CredentialModel model)
+
+        public DataModelResult<CredentialModel> GetCredentialModelByEmail(CredentialModel model) 
         {
-            DataModelResult<UserModel> result= new DataModelResult<UserModel>();
-            return _authenticationDAL.GetUserModelByCredentials(model);
-        }
-        public DataModelResult<CredentialModel> GetCredentialModelByEmailAndPassword(CredentialModel model) 
-        {
-            DataModelResult<CredentialModel> result= _authenticationDAL.GetCredentialModelByEmailAndPassword(model);
-            if (result.ResultObject!=null)
-            {
-                result.ResultTask.isSuccess=true;
-            }
+            DataModelResult<CredentialModel> result= _authenticationDAL.GetCredentialModelByEmail(model);
            return result;
         }
         public byte[] HashPassword(string password, byte[] salt)
@@ -170,11 +156,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             return saltBytes;
         }
 
-        public List<string> GetUserRolesByUserId(int UserId) 
+        public List<RoleModel> GetAllRoles()
         {
-            return _authenticationDAL.GetUserRolesByUserId(UserId);
+            return _authenticationDAL.GetAllRoles();
         }
-
     }
 }
 

@@ -9,8 +9,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
     [Table("TrainingPrerequisite")]
     public class TrainingPrerequisiteModel
     {
-        public int PrerequisiteId { get; set; }
-        public int TrainingId { get; set; }
+        public byte PrerequisiteId { get; set; }
+        public byte TrainingId { get; set; }
         public string PrerequisiteDescription { get; set; }
     }
 }

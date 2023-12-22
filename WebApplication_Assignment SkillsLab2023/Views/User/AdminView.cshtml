@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "AdminView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+<h2>AdminView</h2>
+
+<div class="pending-user-accounts-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>NIC</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Mobile Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in ViewBag.ListOfPendingUserAccounts)
+            {
+                <tr>
+                    <td>@user.UserId</td>
+                    <td>@user.NIC</td>
+                    <td>@user.UserFirstName</td>
+                    <td>@user.UserLastName</td>
+                    <td>@user.MobileNum</td>
+                    <td>
+                        <!-- Add buttons or links for actions like activating, assigning, etc. -->
+                        <button onclick="">Activate</button>
+                        <!-- Add other action buttons as needed -->
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // You can add JavaScript functions for handling activation, assignment, etc.
+    function activateUser(userId) {
+        // Add logic for activating the user
+        console.log("Activating user with ID: " + userId);
+    }
+
+    function assignDepartment(userId) {
+        // Add logic for assigning department to the user
+        console.log("Assigning department to user with ID: " + userId);
+    }
+
+    // Add other JavaScript functions as needed
+</script>

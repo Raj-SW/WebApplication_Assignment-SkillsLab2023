@@ -15,12 +15,13 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         bool InsertCredentialModel(CredentialModel model);
         int GetUserModelIDbyNIC(UserModel model);
         bool InsertUserModel(UserModel model);
-        bool isEmailUnique(RegistrationDTO dto);
-        bool isNicUnique(RegistrationDTO dto);
-        bool isMobileNumUnique(RegistrationDTO dto);
+        bool isEmailUnique(UserAndCredentialDTO dto);
+        bool isNicUnique(UserAndCredentialDTO dto);
+        bool isMobileNumUnique(UserAndCredentialDTO dto);
         int GetUserIdByCredentials(CredentialModel model);
         UserModel GetUserModelByCredentials(CredentialModel model);
-        DataModelResult<CredentialModel> GetCredentialModelByEmailAndPassword(CredentialModel model);
-        List<string> GetUserRolesByUserId(int UserId);
+        DataModelResult<CredentialModel> GetCredentialModelByEmail(CredentialModel model);
+        List<UserRolesModel> GetUserRolesByUserId(int UserId);
+        List<RoleModel> GetAllRoles();
     }
 }

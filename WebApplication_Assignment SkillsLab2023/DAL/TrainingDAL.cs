@@ -13,12 +13,9 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
 {
     public class TrainingDAL : ITrainingDAL
     {
-        //private readonly IDBCommand _idBCommand;
-
         public TrainingDAL()
         {
         }
-
         //public TrainingDAL(IDBCommand dBCommand) { this.idBCommand = dBCommand; }
         public List<TrainingModel> GetAllTrainingModels()
         {
@@ -30,10 +27,9 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             foreach (DataRow row in DataTable.Rows)
             {
                 trainingModel = new TrainingModel();
-                trainingModel.TrainingId = (int)row["TrainingId"];
+                trainingModel.TrainingId = (byte)row["TrainingId"];
                 trainingModel.TrainingName = (string)row["TrainingName"];
                 trainingModel.TrainingDescription = (string)row["TrainingDescription"];
-                trainingModel.SeatsAvailable = (int)row["Seatsavailable"];
                 trainingModel.TrainingRegistrationDeadline = (DateTime)row["TrainingRegistrationDeadline"];
                 trainingModel.TrainingStatus = (string)row["TrainingStatus"];
                 ListOfTrainingModels.Add(trainingModel);
@@ -52,8 +48,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             foreach (DataRow row in DataTable.Rows)
             { 
                 trainingPrerequisiteModel = new TrainingPrerequisiteModel();
-                trainingPrerequisiteModel.PrerequisiteId = (int)row["PrerequisiteId"];
-                trainingPrerequisiteModel.TrainingId = (int)row["TrainingId"];
+                trainingPrerequisiteModel.PrerequisiteId = (byte)row["PrerequisiteId"];
+                trainingPrerequisiteModel.TrainingId = (byte)row["TrainingId"];
                 trainingPrerequisiteModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
                 ListOfTrainingPrerequisiteModelsByTrainingId.Add(trainingPrerequisiteModel);
             }

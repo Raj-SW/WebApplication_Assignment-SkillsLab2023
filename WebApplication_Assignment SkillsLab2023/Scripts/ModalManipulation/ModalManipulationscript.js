@@ -24,5 +24,5 @@
     }
     modalBody.appendChild(detailsContainer);
     modalBody.appendChild(preRequisiteContainer);
-    modalBody.innerHTML += "<button type='button' class='btn btn-primary' onclick='EnrolEmployee(" + userId + ", " + JSON.stringify(training) + ")' >Submit</button>";
+    modalBody.innerHTML += "<button type='button' class='btn btn-primary' data-dismiss='modal' onclick='EnrolEmployee(" + userId + ", " + JSON.stringify(training) + ")' >Submit</button>";
 }

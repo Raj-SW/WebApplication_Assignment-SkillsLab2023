@@ -42,36 +42,12 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         {
             var userId = int.Parse(HttpContext.Request.Form["userId"]);
             var trainingId = int.Parse(HttpContext.Request.Form["trainingId"]);
-
-            //this also works
-            // Handle the files
-            // var files = HttpContext.Request.Files;
-
-            //foreach (string fileName in files.AllKeys)
-            //{
-            //    var file = files[fileName];
-            //    System.Diagnostics.Debug.WriteLine($"File Name from HttpContext: {file.FileName}");
-            //}
-
-            //////////////////////////////////
-            // Your logic here..
-
-            //foreach (string fileName in Request.Files)
-            //{
-            //    HttpPostedFileBase file = Request.Files[fileName];
-
-            //    if (file != null && file.ContentLength > 0)
-            //    {
-            //        // Handle each file as needed
-            //        var uploadedFileName = Path.GetFileName(file.FileName);
-            //        System.Diagnostics.Debug.WriteLine($"File Name: {uploadedFileName}");
-            //    }
-            //}
-
             var result = _trainingBl.EnrolEmployeeIntoTraining(userId,trainingId,Request.Files);
-
-
-            return Json(new { result = true });
+            if (result)
+            {
+                return Json(new {result=true, message="Enrolment successful." });
+            }
+            return Json(new { result = false,message="Enrolment failed" });
         }
     }
 

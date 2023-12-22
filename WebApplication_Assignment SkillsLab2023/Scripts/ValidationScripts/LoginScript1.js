@@ -33,9 +33,11 @@ function login() {
                 window.location = response.url;
             }
         },
-        failure: function (response) {
+        failure: function (response)
+        {
         },
-        error: function (response) {
+        error: function (response)
+        {
         }
     });
 

@@ -38,7 +38,9 @@
     })
         .then(response => response.json())
         .then(result => {
-            console.log(result);
+            console.log("data received here", result);
+            console.log(result.message);
+            alert(result.message);
         })
         .catch(error => {
             console.error('Error:', error);

@@ -1,3 +1,4 @@
+using ConsoleApp5.DAL;
 using System.Web.Mvc;
 using Unity;
 using Unity.Mvc5;
@@ -19,7 +20,6 @@ namespace WebApplication_Assignment_SkillsLab2023
 
             // register all your components with the container here
             // it is NOT necessary to register your controllers
-
             // e.g. container.RegisterType<ITestService, TestService>();
             container.RegisterType<IDataAccessLayer, DataAccessLayer>();
             container.RegisterType<IDBCommand, DBCommand>();
@@ -28,8 +28,12 @@ namespace WebApplication_Assignment_SkillsLab2023
             container.RegisterType<ITrainingBL, TrainingBL>();
             container.RegisterType<ITrainingDAL, TrainingDAL>();
             container.RegisterType<IFileHandlerService, LocalFileHandlerService>();
-
-
+            container.RegisterType<IUserDAL, UserDAL>();
+            container.RegisterType<IUserBL, UserBL>();
+            container.RegisterType<IManagerActionsBL, ManagerActionsBL>();
+            container.RegisterType<IManagerActionsDAL, ManagerActionsDAL>();
+            container.RegisterType<IAdminActionsBL, AdminActionsBL>();
+            container.RegisterType<IAdminActionsDAL, AdminActionsDAL>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
