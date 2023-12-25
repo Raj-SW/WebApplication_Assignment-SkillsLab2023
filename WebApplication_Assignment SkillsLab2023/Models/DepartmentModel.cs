@@ -9,9 +9,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
     [Table("Department")]
     public class DepartmentModel
     {
-        public int DepartmentId { get; set; }
+        public byte DepartmentId { get; set; }
         public string DepartmentName { get; set; }
-        public int NoOfEmployees {  get; set; }
-        //public int ManagerId {  get; set; }
+        public byte NoOfEmployees {  get; set; }
     }
 }

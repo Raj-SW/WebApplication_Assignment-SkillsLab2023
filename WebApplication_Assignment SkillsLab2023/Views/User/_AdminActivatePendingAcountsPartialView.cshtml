@@ -2,7 +2,8 @@
     ViewBag.Title = "AdminView";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
- Include Bootstrap CSS
+
+<!-- Include Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="~/Content/Styling/AdminViewStyling.css">
 
@@ -40,7 +41,7 @@
                 <tr>
                     <td colspan="6">
                         <div id="collapseUser_@user.UserId" class="collapse collapse-row-styling" data-parent="#accordionUser_@user.UserId">
-                            Use Bootstrap grid system for layout
+                            <!-- Use Bootstrap grid system for layout -->
                             <label for="departmentDropdown_@user.UserId">Department:</label>
                             <select class="form-control" id="departmentDropdown_@user.UserId" onchange="getManagersByDepartment(this.value, @user.UserId)">
                                 @foreach (var department in ViewBag.ListOfDepartments)
@@ -50,7 +51,7 @@
                             </select>
                             <label for="managerDropdown_@user.UserId">Manager:</label>
                             <select class="form-control" id="managerDropdown_@user.UserId">
-                                Managers will be dynamically populated using JavaScript
+                                <!-- Managers will be dynamically populated using JavaScript -->
                             </select>
                             <label for="roleDropdown_@user.UserId">Role:</label>
                             <select class="form-control" id="roleDropdown_@user.UserId">
@@ -67,7 +68,6 @@
         </tbody>
     </table>
 </div>
-@Html.ActionLink("Go to Create Training Page", "CreateTraining", "Admin")
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -162,3 +162,4 @@
             });
     }
 </script>
+

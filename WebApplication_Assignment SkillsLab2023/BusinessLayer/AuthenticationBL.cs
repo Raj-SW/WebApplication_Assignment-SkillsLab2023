@@ -134,7 +134,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _authenticationDAL.GetUserModelByID(id);
         }
-
         public DataModelResult<CredentialModel> GetCredentialModelByEmail(CredentialModel model) 
         {
             DataModelResult<CredentialModel> result= _authenticationDAL.GetCredentialModelByEmail(model);
