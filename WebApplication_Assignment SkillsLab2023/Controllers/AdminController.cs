@@ -33,7 +33,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         }
         public ActionResult CreateTrainingView() 
         {
-            return View();
+            return null;
         }
     }
 }

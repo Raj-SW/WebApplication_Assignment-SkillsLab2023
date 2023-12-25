@@ -1,164 +1,18 @@
 ﻿@{
     ViewBag.Title = "AdminView";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
- Include Bootstrap CSS
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="~/Content/Styling/AdminViewStyling.css">
 
-<h2>AdminView</h2>
+<h2>Admin View</h2>
 
-<h3>Unactivated Users</h3>
-<div class="pending-user-accounts-container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>NIC</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Mobile Number</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in ViewBag.ListOfPendingUserAccounts)
-            {
-                <tr>
-                    <td>@user.UserId</td>
-                    <td>@user.NIC</td>
-                    <td>@user.UserFirstName</td>
-                    <td>@user.UserLastName</td>
-                    <td>@user.MobileNum</td>
-                    <td>
-                        <div class="accordion" id="accordionUser_@user.UserId">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseUser_@user.UserId" aria-expanded="false" aria-controls="collapseUser_@user.UserId">
-                                Activate
-                            </button>
-                        </div>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <div id="collapseUser_@user.UserId" class="collapse collapse-row-styling" data-parent="#accordionUser_@user.UserId">
-                            Use Bootstrap grid system for layout
-                            <label for="departmentDropdown_@user.UserId">Department:</label>
-                            <select class="form-control" id="departmentDropdown_@user.UserId" onchange="getManagersByDepartment(this.value, @user.UserId)">
-                                @foreach (var department in ViewBag.ListOfDepartments)
-                                {
-                                    <option value="@department.DepartmentId">@department.DepartmentName</option>
-                                }
-                            </select>
-                            <label for="managerDropdown_@user.UserId">Manager:</label>
-                            <select class="form-control" id="managerDropdown_@user.UserId">
-                                Managers will be dynamically populated using JavaScript
-                            </select>
-                            <label for="roleDropdown_@user.UserId">Role:</label>
-                            <select class="form-control" id="roleDropdown_@user.UserId">
-                                @foreach (var role in ViewBag.ListOfUserRoles)
-                                {
-                                    <option value="@role.RoleId">@role.RoleName</option>
-                                }
-                            </select>
-                            <button class="btn btn-primary" onclick="ActivatePendingAccount('@user.UserId')">Assign</button>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-@Html.ActionLink("Go to Create Training Page", "CreateTraining", "Admin")
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-    function getManagersByDepartment(departmentId, userId) {
-        console.log("department id ", departmentId);
-        fetch('/Admin/GetManagerByDepartment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ DepartmentId: departmentId })
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(data => {
-                if (data.result) {
-                    console.log("managers ", data.managers);
-                    populateManagerDropdown(data.managers, userId);
-                } else {
-                    console.log("Error in data");
-                }
-            })
-            .catch(error => {
-                console.error("Fetch error: ", error);
-            });
-    }
-    function populateManagerDropdown(managersList, userId) {
-        var managerDropdown = document.getElementById("managerDropdown_" + userId);
-        managerDropdown.innerHTML = "";
-        var defaultOption = document.createElement("option");
-        defaultOption.text = "Select Manager";
-        defaultOption.value = null;
-        managerDropdown.add(defaultOption);
-        managersList.forEach(manager => {
-            var option = document.createElement("option");
-            option.text = manager.UserFirstName + " " + manager.UserLastName;
-            option.value = manager.UserId;
-            managerDropdown.add(option);
-        });
-    }
-    function ActivatePendingAccount(userId) {
-        console.log("user id ", userId);
-        var departmentId = document.getElementById("departmentDropdown_" + userId).value;
-        var managerId = document.getElementById("managerDropdown_" + userId).value;
-        var roleId = document.getElementById("roleDropdown_" + userId).value;
-
-        if (!departmentId || !managerId || !roleId) {
-            console.log("Please select all required values");
-            return;
-        }
-
-        // Prepare data to send to the server
-        var ActivationDTO = {
-            UserId: userId,
-            DepartmentId: departmentId,
-            ManagerId: managerId,
-            RoleId: roleId
-        };
-
-        console.log("ActivationDTO", ActivationDTO);
-
-        fetch('/Admin/ActivatePendingAccount', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ActivationDTO)
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                }
-            })
-            .then(data => {
-                if (data.result) {
-                    console.log("response data ", data.message);
-                    location.reload();
-                } else {
-                    console.log("Error in data ", data.message);
-                }
-            })
-            .catch(error => {
-                console.error("Fetch error: ", error);
-            });
-    }
-</script>
+<!-- Render the partial view and pass necessary data -->
+@*<div>*@
+    @Html.Partial("_AdminActivatePendingAcountsPartialView", new ViewDataDictionary { { "ListOfPendingUserAccounts", ViewBag.ListOfPendingUserAccounts }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfUserRoles", ViewBag.ListOfUserRoles } })
+@*</div>*@
+@*<div>*@
+    @Html.Partial("_AdminCreateTrainingPartvialView")
+@*</div>*@

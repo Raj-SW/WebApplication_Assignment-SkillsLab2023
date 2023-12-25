@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "CreateTraining";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/Content/Styling/AdminCreateTrainingStyling.css">
+
+<div class="create-training-container">
+    <h2>Create Training</h2>
+    <form id="createTrainingForm" class="createTrainingForm">
+
+        <div class="row">
+            <div class="training-name-inputs col-md-6">
+                <label for="trainingName">Training Name:</label>
+                <input type="text" id="trainingName" required>
+            </div>
+            <div class="training-description-inputs col-md-6">
+                <label for="trainingDescription">Training Description:</label>
+                <textarea id="trainingDescription" required></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="training-status-inputs col-md-6">
+                <label for="trainingStatus">Training Status:</label>
+                <input type="text" id="trainingStatus" required>
+            </div>
+            <div class="department-priority-inputs col-md-6">
+                <label for="departmentPriority">Department Priority:</label>
+                <input type="text" id="departmentPriority" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="seats-total-inputs col-md-6">
+                <label for="seatsTotal">Seats Total:</label>
+                <input type="number" id="seatsTotal" required>
+            </div>
+            <div class="registration-deadline-inputs col-md-6">
+                <label for="registrationDeadline">Registration Deadline:</label>
+                <input type="date" id="registrationDeadline" required>
+            </div>
+        </div>
+        <div class="col-md-6 button-container">
+            <div class="row">
+                <button class="btn btn-primary col-md-6" type="button" id="addPrerequisite">Add Prerequisite</button>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary col-md-6" type="submit">Create Training</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('createTrainingForm');
+        const addPrerequisiteBtn = document.getElementById('addPrerequisite');
+
+        let prerequisiteCount = 0;
+
+        addPrerequisiteBtn.addEventListener('click', function () {
+            prerequisiteCount++;
+
+            // Check if the prerequisite container exists, if not, create it
+            let prerequisiteContainer = document.querySelector('.prerequisite-container');
+            if (!prerequisiteContainer) {
+                prerequisiteContainer = document.createElement('div');
+                prerequisiteContainer.className = 'row add-prerequisite col-md-6';
+                form.insertBefore(prerequisiteContainer, form.lastElementChild);
+
+                // Create the first prerequisite label
+                const label = document.createElement('label');
+                label.for = `prerequisiteDescription${prerequisiteCount}`;
+                label.innerText = `Prerequisite ${prerequisiteCount} Description:`;
+                prerequisiteContainer.appendChild(label);
+
+                // Create the first prerequisite input
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = `prerequisiteDescription${prerequisiteCount}`;
+                input.className = 'prerequisite-input';
+                prerequisiteContainer.appendChild(input);
+
+                // Create the "Remove Prerequisite" button for the first prerequisite
+                const removePrerequisiteBtn = document.createElement('button');
+                removePrerequisiteBtn.innerText = 'Remove Prerequisite';
+                removePrerequisiteBtn.className = 'btn btn-danger ';
+                removePrerequisiteBtn.addEventListener('click', function () {
+                    prerequisiteContainer.removeChild(label);
+                    prerequisiteContainer.removeChild(input);
+                    prerequisiteContainer.removeChild(removePrerequisiteBtn);
+                    prerequisiteCount--;
+                });
+                prerequisiteContainer.appendChild(removePrerequisiteBtn);
+            } else {
+                // If the container exists, add a new prerequisite label and input
+                const label = document.createElement('label');
+                label.for = `prerequisiteDescription${prerequisiteCount}`;
+                label.innerText = `Prerequisite ${prerequisiteCount} Description:`;
+                prerequisiteContainer.appendChild(label);
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = `prerequisiteDescription${prerequisiteCount}`;
+                input.className = 'prerequisite-input';
+                prerequisiteContainer.appendChild(input);
+
+                // Create the "Remove Prerequisite" button for subsequent prerequisites
+                const removePrerequisiteBtn = document.createElement('button');
+                removePrerequisiteBtn.innerText = 'Remove Prerequisite';
+                removePrerequisiteBtn.className = 'btn btn-danger';
+                removePrerequisiteBtn.addEventListener('click', function () {
+                    prerequisiteContainer.removeChild(label);
+                    prerequisiteContainer.removeChild(input);
+                    prerequisiteContainer.removeChild(removePrerequisiteBtn);
+                    prerequisiteCount--;
+                });
+                prerequisiteContainer.appendChild(removePrerequisiteBtn);
+            }
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const trainingData = {
+                trainingName: document.getElementById('trainingName').value,
+                trainingDescription: document.getElementById('trainingDescription').value,
+                trainingStatus: document.getElementById('trainingStatus').value,
+                departmentPriority: document.getElementById('departmentPriority').value,
+                seatsAvailable: document.getElementById('seatsAvailable').value,
+                seatsTotal: document.getElementById('seatsTotal').value,
+                registrationDeadline: document.getElementById('registrationDeadline').value,
+                prerequisites: Array.from(document.querySelectorAll('.prerequisite-input')).map(input => input.value),
+            };
+
+            // Use 'trainingData' to send data to your server or perform other actions
+            console.log(trainingData);
+        });
+    });
+</script>
