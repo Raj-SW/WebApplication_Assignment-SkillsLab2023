@@ -13,7 +13,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
     {
         private readonly ITrainingDAL _itrainingDAL;
         private readonly IFileHandlerService _iFileHandlerService;
-
         public TrainingBL(ITrainingDAL trainingDAL, IFileHandlerService fileHandlerService)
         {
             _itrainingDAL = trainingDAL;
@@ -28,7 +27,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _itrainingDAL.GetTrainingPrerequisitesById(trainingId);
         }
-
         public bool EnrolEmployeeIntoTraining(int userId, int trainingId, HttpFileCollectionBase FileCollection)
         {
             TaskResult uploadTaskResult= new TaskResult();
@@ -40,6 +38,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
                 var result = _itrainingDAL.EnrolEmployeeIntoTraining(userId,trainingId,uploadTaskResult.ResultMessageList);
             }
             return true;
+        }
+        public List<PrerequisitesModel> GetAllPrerequisites()
+        {
+            return _itrainingDAL.GetAllPrerequisites();
         }
     }
 }

@@ -20,5 +20,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         List<ManagerDTO> GetAllManagers();
         List<ManagerDTO> GetAllManagersByDepartmentId(byte DepartmentId);
         List<DepartmentModel> GetAllDepartments();
+        bool CreateTraining(CreateTrainingDTO createTraining);
     }
 }

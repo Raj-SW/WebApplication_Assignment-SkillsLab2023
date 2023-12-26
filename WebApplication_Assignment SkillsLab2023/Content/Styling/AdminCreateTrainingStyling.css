@@ -24,10 +24,20 @@
     flex-direction:column;
     gap:20px;
     padding:20px;
+
     
 }
 .prerequisite-container{
     display:flex;
     flex-direction:column;
     gap: 20px;
+}
+.add-prerequisite {
+    gap: 20px;
+    padding:0px;
+}
+.inner-button-container {
+    width:100%;
+    display: flex;
+    justify-content: space-between;
 }

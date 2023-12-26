@@ -20,6 +20,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         bool ActivatePendingUser(ActivationDTO activationDTO);
         void DeactivatePendingUser(byte UserID);
         void PromoteUser(byte UserID);
+        bool CreateTraining(CreateTrainingDTO createTrainingDTO);
         void AssignTrainingToEmployee(byte EmployeeId,byte TrainingId);
         void DeleteEmployeeEnrolment(byte Employee, byte TrainingId);
         List<RoleModel> GetAllUserRoles();

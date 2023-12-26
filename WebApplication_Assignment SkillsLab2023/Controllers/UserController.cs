@@ -7,6 +7,7 @@ using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
+using WebApplication_Assignment_SkillsLab2023.Models.Others;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
@@ -31,21 +32,18 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         }
         public ActionResult AdminView()
         {
-            //TODO
-            //Activate Pending User Account
-                //Assign the User to a Department and a Manager
-                    //Get All Pending User - Done
             List<UserModel> ListOfPendingUserAccounts = _adminactionsbl.GetAllPendingUserModels();
             ViewBag.ListOfPendingUserAccounts = ListOfPendingUserAccounts;
-                    //Get All Roles - done
             List<RoleModel> ListOfUserRoles = _adminactionsbl.GetAllUserRoles();
             ViewBag.ListOfUserRoles = ListOfUserRoles;
-            //Get All Managers - done
             List<ManagerDTO> ListOfManagers =_adminactionsbl.GetAllManagers();
             ViewBag.ListOfManagers = ListOfManagers;
-            //Get All Department - done
             var ListOfDepartments = _adminactionsbl.GetAllDepartments();
             ViewBag.ListOfDepartments = ListOfDepartments;
+            TrainingStatusList trainingStatusList = new TrainingStatusList();
+            ViewBag.ListOFTrainingStatus=trainingStatusList.ListOfTrainingStatus;
+            var ListOfPrerequisiteModel = _itrainingbl.GetAllPrerequisites();
+            ViewBag.ListOfPrerequisiteModel=ListOfPrerequisiteModel;
             //Create Training
             //Delete Training
             //Update Training

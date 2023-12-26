@@ -13,6 +13,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         List<TrainingModel> GetAllTrainingModels();
         List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
         bool EnrolEmployeeIntoTraining(int userId, int trainingId, List<string> filepath);
+        List<PrerequisitesModel> GetAllPrerequisites();
 
         //int InsertIntoEnrolmentTable(int userId,int trainingId);
         //bool InsertIntoEnrolmentPrerequisiteTable(int enrolmentId, List<string> filepath);

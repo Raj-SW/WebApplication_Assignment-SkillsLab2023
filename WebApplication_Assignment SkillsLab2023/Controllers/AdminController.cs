@@ -31,9 +31,15 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "User Activation Failed" });
         }
-        public ActionResult CreateTrainingView() 
+        [HttpPost]
+        public ActionResult CreateTraining(CreateTrainingDTO createTrainingDTO) 
         {
-            return null;
+            var isSuccess=_adminActionsBL.CreateTraining(createTrainingDTO);
+            if (isSuccess)
+            {
+                return Json(new { result = true, message = "Training Created"});
+            }
+            return Json(new { result = true, message = "Training Failed to create"});
         }
     }
 }

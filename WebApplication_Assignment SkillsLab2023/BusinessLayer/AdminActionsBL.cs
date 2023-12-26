@@ -23,6 +23,12 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             throw new System.NotImplementedException();
         }
+        public bool CreateTraining(CreateTrainingDTO createTrainingDTO)
+        {
+
+            return _adminActionsDAL.CreateTraining(createTrainingDTO);
+        }
+
         public void DeactivatePendingUser(byte UserID)
         {
             throw new System.NotImplementedException();

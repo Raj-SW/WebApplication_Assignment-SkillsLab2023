@@ -199,6 +199,7 @@
     <Compile Include="DAL\TestDAL.cs" />
     <Compile Include="DAL\TrainingDAL.cs" />
     <Compile Include="DataTransferObjects\ActivationDTO.cs" />
+    <Compile Include="DataTransferObjects\CreateTrainingDTO.cs" />
     <Compile Include="DataTransferObjects\EnrolmentDTO.cs" />
     <Compile Include="DataTransferObjects\ManagerDTO.cs" />
     <Compile Include="Global.asax.cs">
@@ -210,6 +211,8 @@
     <Compile Include="Models\DepartmentModel.cs" />
     <Compile Include="Models\Others\RolesEnum.cs" />
     <Compile Include="DataTransferObjects\UserAndCredentialDTO.cs" />
+    <Compile Include="Models\Others\TrainingStatusList.cs" />
+    <Compile Include="Models\PrerequisitesModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\TaskResult.cs" />
     <Compile Include="Models\TrainingPrerequisiteModel.cs" />

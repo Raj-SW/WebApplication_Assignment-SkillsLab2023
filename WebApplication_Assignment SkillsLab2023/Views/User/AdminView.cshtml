@@ -11,8 +11,8 @@
 
 <!-- Render the partial view and pass necessary data -->
 @*<div>*@
-    @Html.Partial("_AdminActivatePendingAcountsPartialView", new ViewDataDictionary { { "ListOfPendingUserAccounts", ViewBag.ListOfPendingUserAccounts }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfUserRoles", ViewBag.ListOfUserRoles } })
+    @Html.Partial("_AdminActivatePendingAcountsPartialView", new ViewDataDictionary { { "ListOfPendingUserAccounts", ViewBag.ListOfPendingUserAccounts }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfUserRoles", ViewBag.ListOfUserRoles },{ "ListOfManagers",ViewBag.ListOfManagers }})
 @*</div>*@
 @*<div>*@
-    @Html.Partial("_AdminCreateTrainingPartvialView")
+    @Html.Partial("_AdminCreateTrainingPartvialView",new ViewDataDictionary { { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfTrainingStatus", ViewBag.ListOFTrainingStatus } , {"ListOfPrerequisites", ViewBag.ListOfPrerequisiteModel } })
 @*</div>*@

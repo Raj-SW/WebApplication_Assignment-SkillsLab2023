@@ -13,8 +13,10 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
 {
     public class TrainingDAL : ITrainingDAL
     {
-        public TrainingDAL()
+        private readonly IDBCommand _command;
+        public TrainingDAL(IDBCommand command)
         {
+            _command = command;
         }
         //public TrainingDAL(IDBCommand dBCommand) { this.idBCommand = dBCommand; }
         public List<TrainingModel> GetAllTrainingModels()
@@ -32,6 +34,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 trainingModel.TrainingDescription = (string)row["TrainingDescription"];
                 trainingModel.TrainingRegistrationDeadline = (DateTime)row["TrainingRegistrationDeadline"];
                 trainingModel.TrainingStatus = (string)row["TrainingStatus"];
+                trainingModel.SeatsTotal = (byte)row["SeatsTotal"];
                 ListOfTrainingModels.Add(trainingModel);
             }
             return ListOfTrainingModels;
@@ -50,7 +53,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 trainingPrerequisiteModel = new TrainingPrerequisiteModel();
                 trainingPrerequisiteModel.PrerequisiteId = (byte)row["PrerequisiteId"];
                 trainingPrerequisiteModel.TrainingId = (byte)row["TrainingId"];
-                trainingPrerequisiteModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
                 ListOfTrainingPrerequisiteModelsByTrainingId.Add(trainingPrerequisiteModel);
             }
                 return ListOfTrainingPrerequisiteModelsByTrainingId;
@@ -80,6 +82,21 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             INSERT_ENROLMENT_QUERY = INSERT_ENROLMENT_QUERY.TrimEnd(',') + ";";
             command.InsertUpdateData(INSERT_ENROLMENT_QUERY , parameters);
             return true;
+        }
+        public List<PrerequisitesModel> GetAllPrerequisites()
+        {
+            const string GET_ALL_PREREQUISITES_QUERY = "SELECT * FROM  [Prerequisites]";
+            List<PrerequisitesModel> prerequisitesModelsList = new List<PrerequisitesModel>();
+            PrerequisitesModel prerequisitesModel;
+            var dt = _command.GetData(GET_ALL_PREREQUISITES_QUERY);
+            foreach (DataRow row in dt.Rows)
+            {
+                prerequisitesModel = new PrerequisitesModel();
+                prerequisitesModel.PrerequisiteId = (byte)row["PrerequisiteId"];
+                prerequisitesModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
+                prerequisitesModelsList.Add(prerequisitesModel);
+            }
+            return prerequisitesModelsList;
         }
     }
 }

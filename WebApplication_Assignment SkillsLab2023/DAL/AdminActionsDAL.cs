@@ -37,6 +37,33 @@ namespace ConsoleApp5.DAL
         {
             throw new NotImplementedException();
         }
+        public bool CreateTraining(CreateTrainingDTO createTrainingDTO)
+        {
+            string CREATE_TRAINING_QUERY = @"INSERT INTO [Training] (TrainingName,TrainingStatus,DepartmentPriority,TrainingDescription,TrainingRegistrationDeadline,SeatsTotal,CoachId)
+                                            VALUES (@TrainingName,@TrainingStatus,@DepartmentPriority,@TrainingDescription,CONVERT(DATE, @TrainingRegistrationDeadline),@TotalSeats,@CoachId);";
+            var index = 0;
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@TrainingName",createTrainingDTO.TrainingName));
+            parameters.Add(new SqlParameter("@TrainingStatus",createTrainingDTO.TrainingStatus));
+            parameters.Add(new SqlParameter("@DepartmentPriority",createTrainingDTO.DepartmentPriority));
+            parameters.Add(new SqlParameter("@TrainingDescription",createTrainingDTO.TrainingDescription));
+            parameters.Add(new SqlParameter("@TrainingRegistrationDeadline", createTrainingDTO.RegistrationDeadline));
+            parameters.Add(new SqlParameter("@TotalSeats", createTrainingDTO.TotalSeats));
+            parameters.Add(new SqlParameter("@CoachId", createTrainingDTO.Coach));
+            if (createTrainingDTO.Prerequisites.Count > 0)
+            {
+                CREATE_TRAINING_QUERY +=
+                    "DECLARE @generateTrainingId INT; SET @generateTrainingId = SCOPE_IDENTITY();";
+                    foreach (var prerequisite in createTrainingDTO.Prerequisites)
+                    {
+                        CREATE_TRAINING_QUERY += $"INSERT INTO [TrainingPrerequisite](PrerequisiteId, TrainingId) VALUES(@PrerequisiteId{index},@generateTrainingId);";
+                        parameters.Add(new SqlParameter($"@PrerequisiteID{index}",prerequisite));
+                        index++;
+                    }
+            }
+            _command.InsertUpdateData(CREATE_TRAINING_QUERY,parameters);
+            return true;
+        }
         public void DeactivatePendingUser(byte UserID)
         {
             throw new NotImplementedException();

@@ -10,6 +10,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         List<TrainingModel> GetAllTraining();
         List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
         bool EnrolEmployeeIntoTraining(int userId, int trainingId, HttpFileCollectionBase files);
-
+        List<PrerequisitesModel> GetAllPrerequisites();
     }
 }
