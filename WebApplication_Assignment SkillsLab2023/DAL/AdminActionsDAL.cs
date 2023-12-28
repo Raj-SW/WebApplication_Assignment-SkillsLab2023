@@ -33,6 +33,10 @@ namespace ConsoleApp5.DAL
             _command.InsertUpdateData(ACTIVATE_PENDING_ACCOUNT_QUERY,parameters);
             return true;
         }
+        public bool AddTrainingPrerequisite(TrainingPrerequisiteModel trainingPrerequisiteModel)
+        {
+            throw new NotImplementedException();
+        }
         public void AssignTrainingToEmployee(byte EmployeeId, byte TrainingId)
         {
             throw new NotImplementedException();
@@ -163,6 +167,36 @@ namespace ConsoleApp5.DAL
             return listOfUserRoles;
         }
         public void PromoteUser(byte UserID)
+        {
+            throw new NotImplementedException();
+        }
+        public bool UpdateTraining(TrainingModel trainingmodel)
+        {
+            const string UPDATE_TRAINING_QUERY = @"
+                UPDATE Training
+                SET
+                    TrainingName = @UpdatedTrainingName,
+                    TrainingStatus = @UpdatedStatus,
+                    DepartmentPriority = @UpdatedPriority,
+                    TrainingDescription = @UpdatedDescription,
+                    SeatsTotal = @UpdatedSeatsTotal,
+                    CoachId = @UpdatedCoachId,
+                    TrainingRegistrationDeadline = @UpdatedDeadline
+                WHERE
+                    TrainingId = @TrainingId; ";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@UpdatedTrainingName",trainingmodel.TrainingName));
+            parameters.Add(new SqlParameter("@UpdatedTrainingName",trainingmodel.TrainingStatus));
+            parameters.Add(new SqlParameter("@UpdatedTrainingName",trainingmodel.DepartmentPriority));
+            parameters.Add(new SqlParameter("@UpdatedTrainingName",trainingmodel.SeatsTotal));
+            parameters.Add(new SqlParameter("@UpdatedTrainingName",trainingmodel.CoachId));
+            parameters.Add(new SqlParameter("@UpdatedTrainingName",trainingmodel.TrainingRegistrationDeadline));
+            parameters.Add(new SqlParameter("@UpdatedTrainingName",trainingmodel.TrainingDescription));
+            parameters.Add(new SqlParameter("@TrainingId", trainingmodel.TrainingId));
+            _command.InsertUpdateData(UPDATE_TRAINING_QUERY,parameters);
+            return true; 
+        }
+        public bool UpdateTrainingPrerequisite(TrainingPrerequisiteModel trainingPrerequisiteModel)
         {
             throw new NotImplementedException();
         }

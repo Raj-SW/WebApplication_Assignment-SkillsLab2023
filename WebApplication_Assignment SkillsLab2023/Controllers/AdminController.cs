@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
+using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
@@ -31,15 +32,12 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "User Activation Failed" });
         }
+       
         [HttpPost]
-        public ActionResult CreateTraining(CreateTrainingDTO createTrainingDTO) 
+        public ActionResult UpdateTraining(TrainingModel trainingModel) 
         {
-            var isSuccess=_adminActionsBL.CreateTraining(createTrainingDTO);
-            if (isSuccess)
-            {
-                return Json(new { result = true, message = "Training Created"});
-            }
-            return Json(new { result = true, message = "Training Failed to create"});
+
+            return Json(new {result = true, message="Training Updated Successfully"});
         }
     }
 }

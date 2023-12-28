@@ -11,9 +11,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
     public interface IAdminActionsBL
     {
         //TODO
-        //Activate Pending User Account
-        //Assign the User to a Department and a Manager
-        //Create Training
         //Delete Training
         //Update Training
         List<UserModel> GetAllPendingUserModels();
@@ -27,5 +24,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         List<ManagerDTO> GetAllManagers();
         List<ManagerDTO> GetAllManagersByDepartmentId(byte DepartmentId);
         List<DepartmentModel> GetAllDepartments();
+
     }
 }

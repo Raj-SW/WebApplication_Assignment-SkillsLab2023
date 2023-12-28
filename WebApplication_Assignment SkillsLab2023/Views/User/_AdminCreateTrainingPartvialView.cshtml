@@ -65,7 +65,6 @@
         <div class="col-md-6 button-container">
             <div class=" inner-button-container">
                 <button class="btn btn-primary col-md-5" type="button" id="addPrerequisite">Add Prerequisite</button>
-                <button class="btn btn-primary col-md-5" type="button" id="createPrerequisite">Create Prerequisite</button>
             </div>
             <div class="">
                 <button class="btn btn-primary col-md-5" type="submit">Create Training</button>
@@ -143,7 +142,7 @@
         };
 
         console.log(trainingData);
-        fetch('/Admin/CreateTraining', {
+        fetch('/Training/CreateTraining', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

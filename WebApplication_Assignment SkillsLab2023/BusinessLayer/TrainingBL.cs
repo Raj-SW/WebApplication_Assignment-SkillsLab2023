@@ -1,9 +1,11 @@
-﻿using System;
+﻿using ConsoleApp5.DAL;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using WebApplication_Assignment_SkillsLab2023.DAL;
+using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
 using WebApplication_Assignment_SkillsLab2023.Services.Interfaces;
 
@@ -42,6 +44,27 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public List<PrerequisitesModel> GetAllPrerequisites()
         {
             return _itrainingDAL.GetAllPrerequisites();
+        }
+        public bool CreateTraining(CreateTrainingDTO createTrainingDTO)
+        {
+
+            return _itrainingDAL.CreateTraining(createTrainingDTO);
+        }
+        public bool UpdateTraining(TrainingModel trainingmodel)
+        {
+           return _itrainingDAL.UpdateTraining(trainingmodel);
+        }
+        public bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel)
+        {
+            return _itrainingDAL.AddPrerequisiteToTraining(trainingPrerequisiteModel);
+        }
+        public bool UpdateTrainingPrerequisite(TrainingPrerequisiteModel trainingPrerequisiteModel)
+        {
+            return _itrainingDAL.UpdateTrainingPrerequisite(trainingPrerequisiteModel);
+        }
+        public bool DeleteTraining(byte TrainingId)
+        {
+            return _itrainingDAL.DeleteTraining(TrainingId);
         }
     }
 }

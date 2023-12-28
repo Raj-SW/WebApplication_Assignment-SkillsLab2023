@@ -1,0 +1,54 @@
+﻿<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/Styling/AdminUpdateDeletePartialViewStyling.css" />
+</head>
+<h3>Update Training</h3>
+<div class="update-delete-training-container">
+    <div class="row">
+        <div class="col-md">
+            <table cellspacing="10" cellpadding="10">
+                <tr>
+                    <th>Training Id</th>
+                    <th>Training Name</th>
+                    <th>Training Description</th>
+                    <th>Training Status</th>
+                    <th>Registration Dealine</th>
+                    <th>Seats Total</th>
+                    <th>Actions</th>
+                </tr>
+                @{
+                    foreach (var training in ViewBag.ListOfTraining)
+                    {
+                        <tr>
+                            <td>@training.TrainingId</td>
+                            <td>@training.TrainingName</td>
+                            <td>@training.TrainingDescription</td>
+                            <td>@training.TrainingStatus</td>
+                            <td>@training.TrainingRegistrationDeadline</td>
+                            <td>@training.SeatsTotal</td>
+                            <td>
+                                <div class="accordion" id="accordionTraining_@training.TrainingId">
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse"data-toggle="collapse" data-target="#collapseTraining_@training.TrainingId" aria-expanded="false"  aria-controls="collapseTraining_@training.TrainingId">
+                                        Edit
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <div id="collapseTraining_@training.TrainingId" class="collapse collapse-row-styling" data-parent="#accordionTraining_@training.TrainingId">
+                                    <div class="training-update-form">
+                                        Training Upadet Form
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

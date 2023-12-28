@@ -245,6 +245,7 @@
     <Content Include="Content\styles.css" />
     <Content Include="Content\Styling\AdminCreateTrainingStyling.css" />
     <Content Include="Content\Styling\AdminPendingAccountPartialViewStyling.css" />
+    <Content Include="Content\Styling\AdminUpdateDeletePartialViewStyling.css" />
     <Content Include="Content\Styling\AdminViewStyling.css" />
     <Content Include="Content\Styling\BaseDashboardStyling.css" />
     <Content Include="Content\Styling\LoginPageStyling.css" />
@@ -314,6 +315,7 @@
     <Content Include="Views\Admin\CreateTraining.cshtml" />
     <Content Include="Views\User\_AdminActivatePendingAcountsPartialView.cshtml" />
     <Content Include="Views\User\_AdminCreateTrainingPartvialView.cshtml" />
+    <Content Include="Views\User\_AdminUpdateDeleteTrainingPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

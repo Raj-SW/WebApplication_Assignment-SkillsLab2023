@@ -44,9 +44,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             ViewBag.ListOFTrainingStatus=trainingStatusList.ListOfTrainingStatus;
             var ListOfPrerequisiteModel = _itrainingbl.GetAllPrerequisites();
             ViewBag.ListOfPrerequisiteModel=ListOfPrerequisiteModel;
-            //Create Training
-            //Delete Training
-            //Update Training
+            ViewBag.ListOfTraining=_itrainingbl.GetAllTraining();
+            //Delete Training - use of soft delete and rename all affiliated functions and alter queries
+            //Update Training 
             return View();
         }
         public ActionResult ManagerView()
