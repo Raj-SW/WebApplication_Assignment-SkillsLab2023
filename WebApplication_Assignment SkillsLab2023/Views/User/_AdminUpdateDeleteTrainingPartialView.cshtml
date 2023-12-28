@@ -28,17 +28,100 @@
                             <td>@training.SeatsTotal</td>
                             <td>
                                 <div class="accordion" id="accordionTraining_@training.TrainingId">
-                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse"data-toggle="collapse" data-target="#collapseTraining_@training.TrainingId" aria-expanded="false"  aria-controls="collapseTraining_@training.TrainingId">
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@training.TrainingId" aria-expanded="false" aria-controls="collapse_@training.TrainingId">
                                         Edit
                                     </button>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="6">
-                                <div id="collapseTraining_@training.TrainingId" class="collapse collapse-row-styling" data-parent="#accordionTraining_@training.TrainingId">
-                                    <div class="training-update-form">
-                                        Training Upadet Form
+                            <td colspan="7">
+                                <div id="collapse_@training.TrainingId" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <form class="training-update-form">
+                                                <div class="row">
+                                                    <div class="training-name-inputs col-md-6">
+                                                        <label for="TrainingNameInput_@training.TrainingId">Training Name:</label>
+                                                        <input type="text" id="TrainingNameInput_@training.TrainingId" required>
+                                                    </div>
+                                                    <div class="training-description-inputs col-md-6">
+                                                        <label for="TrainingDescription_@training.TrainingId">Training Description:</label>
+                                                        <textarea id="TrainingDescription_@training.TrainingId" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="training-status-inputs  col-md-6">
+                                                        <label for="input-training-status">Training Status: </label>
+                                                        <select id="TrainingStatus_@training.TrainingId">
+                                                            <option value=""> Value 1  </option>
+                                                            <option value=""> Value 2  </option>
+                                                            <option value=""> Value 3  </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="registration-deadline-inputs  col-md-6">
+                                                        <label for="input-training-registration-deadline_@training.TrainingId">Training Registration Deadline: </label>
+                                                        <input type="date" id="input-training-registration-deadline_@training.TrainingId" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="training-seats-inputs  col-md-6">
+                                                        <label for="input-training-seats">Training Seats: </label>
+                                                        <select id="input-training-seats_@training.TrainingId" required>
+                                                            <option value="">Value 1</option>
+                                                            <option value="">Value 2</option>
+                                                            <option value="">Value 3</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="department-priority-inputs  col-md-6">
+                                                        <label for="departmentpriority_@training.TrainingId">Training Priority: </label>
+                                                        <select id="departmentpriority_@training.TrainingId" required>
+                                                            <option value="">Value 1</option>
+                                                            <option value="">Value 2</option>
+                                                            <option value="">Value 3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="coach-inputs  col-md-6">
+                                                        <label for="coach-input_@training.TrainingId">Training Coach: </label>
+                                                        <select id="coach-input_@training.TrainingId" required>
+                                                            <option value="">Value 1</option>
+                                                            <option value="">Value 2</option>
+                                                            <option value="">Value 3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="btn-container">
+                                                    <button class="btn btn-primary " type="button" onclick="">
+                                                        Save Changes
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="training-prerequisite-update-container col-md-4">
+                                            <div class="prerequisite-wrapper" id="">
+                                                <div class="prerequisite-inputs">
+                                                    <label>Prerequisite 1:</label>
+                                                    <select id="coach-input_@training.TrainingId" required>
+                                                        <option value="">Value 1</option>
+                                                        <option value="">Value 2</option>
+                                                        <option value="">Value 3</option>
+                                                    </select>
+                                                </div>
+                                                <div class="prerequisite-btn-container">
+                                                    <button class="btn btn-primary " type="button" onclick="">
+                                                        Save
+                                                    </button>
+                                                    <button class="btn btn-danger " type="button" onclick="">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary " type="button" onclick="addPrerequisite()">
+                                                Add Prerequisite
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </td>
@@ -52,3 +135,51 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    let prerequisiteCount = 1;
+
+    function addPrerequisite() {
+        prerequisiteCount++;
+
+        const container = document.querySelector('.training-prerequisite-update-container');
+
+        const newPrerequisite = document.createElement('div');
+        newPrerequisite.className = 'prerequisite-wrapper';
+        newPrerequisite.id = 'prerequisite_' + prerequisiteCount;
+
+        newPrerequisite.innerHTML = `
+            <div class="prerequisite-inputs">
+                <label>Prerequisite ${prerequisiteCount}:</label>
+                <select id="coach-input_${prerequisiteCount}" required>
+                    <option value="">Value 1</option>
+                    <option value="">Value 2</option>
+                    <option value="">Value 3</option>
+                </select>
+            </div>
+            <div class="prerequisite-btn-container">
+                <button class="btn btn-primary" type="button" onclick="savePrerequisite(${prerequisiteCount})">
+                    Save
+                </button>
+                <button class="btn btn-danger" type="button" onclick="deletePrerequisite(${prerequisiteCount})">
+                    Delete
+                </button>
+            </div>
+        `;
+
+        container.insertBefore(newPrerequisite, container.lastElementChild);
+    }
+
+    function savePrerequisite(prerequisiteId) {
+        // Add your save logic here
+        alert(`Save Prerequisite ${prerequisiteId}`);
+    }
+
+    function deletePrerequisite(prerequisiteId) {
+        // Add your delete logic here
+        const prerequisiteElement = document.getElementById('prerequisite_' + prerequisiteId);
+        prerequisiteElement.parentNode.removeChild(prerequisiteElement);
+        alert(`Delete Prerequisite ${prerequisiteId}`);
+    }
+</script>
+

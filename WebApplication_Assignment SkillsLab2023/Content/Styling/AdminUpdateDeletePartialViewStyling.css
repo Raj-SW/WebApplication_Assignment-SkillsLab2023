@@ -5,4 +5,46 @@
     width: 100%;
     box-sizing: border-box;
     display: flex;
+    justify-content: space-around;
+}
+.training-update-form {
+    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1); 
+    padding: 20px;
+
+}
+.training-prerequisite-update-container {
+    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    flex-direction: column;
+    gap:10px;
+}
+.training-update-form input,
+.training-update-form textarea,
+.training-update-form select {
+    width: 100%;
+    max-width: none !important; /* Override max-width from site.css */
+}
+.btn-container {
+    margin-top: 1rem;
+}
+.prerequisite-inputs {
+    display:flex;
+    flex-direction:column;
+}
+prerequisite-inputs select {
+    width:100%;
+}
+.prerequisite-btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.prerequisite-wrapper {
+    flex-direction: column;
+    display: flex;
+    gap: 10px;
 }
