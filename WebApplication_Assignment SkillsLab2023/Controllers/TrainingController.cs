@@ -28,7 +28,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         }
         public ActionResult GetAllTraining()
         {
-            var ListOftraining = _trainingBl.GetAllTraining();
+            var ListOftraining = _trainingBl.GetAllTrainingModels();
             ViewBag.ListOfTraining=ListOftraining;
             return Json(new { result = true, listOfTraining = ListOftraining}) ;
         }
@@ -85,9 +85,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = false, message = "Training Prerequisite not being added" });
         }
         [HttpPost]
-        public ActionResult UpdatePrerequisiteInTraining(TrainingPrerequisiteModel trainingPrerequisiteModel) 
+        public ActionResult UpdatePrerequisiteInTraining(byte TrainingId,List<byte> Prerequisites) 
         {
-            var isSuccess = _trainingBl.UpdateTrainingPrerequisite(trainingPrerequisiteModel);
+            var isSuccess = _trainingBl.UpdateTrainingPrerequisite(TrainingId,Prerequisites);
             if (isSuccess)
             {
                 return Json(new { result = true, message = "Training Prerequisite successfully updated" }); ;

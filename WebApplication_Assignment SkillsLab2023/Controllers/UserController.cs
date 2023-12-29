@@ -25,8 +25,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
 
         public ActionResult EmployeeView()
         {
-
-            List<TrainingModel> ListOfTrainings = _itrainingbl.GetAllTraining();
+            var ListOfTrainings = _itrainingbl.GetAllTrainingModels();
             ViewBag.ListOfTrainings = ListOfTrainings;
             return View();
         }
@@ -44,7 +43,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             ViewBag.ListOFTrainingStatus=trainingStatusList.ListOfTrainingStatus;
             var ListOfPrerequisiteModel = _itrainingbl.GetAllPrerequisites();
             ViewBag.ListOfPrerequisiteModel=ListOfPrerequisiteModel;
-            ViewBag.ListOfTraining=_itrainingbl.GetAllTraining();
+            ViewBag.ListOfTrainingWithPrerequisites=_itrainingbl.GetAllTrainingModelsWithPrerequisites();
             //Delete Training - use of soft delete and rename all affiliated functions and alter queries
             //Update Training 
             return View();

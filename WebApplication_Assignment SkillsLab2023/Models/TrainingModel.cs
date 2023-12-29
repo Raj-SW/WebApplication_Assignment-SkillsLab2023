@@ -13,7 +13,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
         public string TrainingName { get; set; }
         public string TrainingDescription { get; set;}
         public string TrainingStatus { get; set; }
-        public string DepartmentPriority {  get; set; }
+        public byte DepartmentPriority {  get; set; }
         public byte SeatsAvailable {  get; set; }
         public byte SeatsTotal { get; set; }
         public byte CoachId { get; set; }

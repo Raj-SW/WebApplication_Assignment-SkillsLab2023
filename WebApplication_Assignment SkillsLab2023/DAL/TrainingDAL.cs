@@ -19,22 +19,23 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             _command = command;
         }
-        public List<TrainingModel> GetAllTrainingModels()
+        public List<TrainingWithPrerequisitesModel> GetAllTrainingModels()
         {
             const string GET_ALL_TRAINING_QUERY = "SELECT * FROM [TrainingAssignment].[dbo].[Training]";
             DBCommand command = new DBCommand();
             var DataTable = command.GetData(GET_ALL_TRAINING_QUERY);
-            List<TrainingModel>ListOfTrainingModels= new List<TrainingModel>();
-            TrainingModel trainingModel;
+            List<TrainingWithPrerequisitesModel> ListOfTrainingModels= new List<TrainingWithPrerequisitesModel>();
+            TrainingWithPrerequisitesModel trainingModel;
             foreach (DataRow row in DataTable.Rows)
             {
-                trainingModel = new TrainingModel();
+                trainingModel = new TrainingWithPrerequisitesModel();
                 trainingModel.TrainingId = (byte)row["TrainingId"];
                 trainingModel.TrainingName = (string)row["TrainingName"];
                 trainingModel.TrainingDescription = (string)row["TrainingDescription"];
                 trainingModel.TrainingRegistrationDeadline = (DateTime)row["TrainingRegistrationDeadline"];
                 trainingModel.TrainingStatus = (string)row["TrainingStatus"];
                 trainingModel.SeatsTotal = (byte)row["SeatsTotal"];
+                trainingModel.CoachId = (byte)row["CoachId"];
                 ListOfTrainingModels.Add(trainingModel);
             }
             return ListOfTrainingModels;
@@ -98,6 +99,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return prerequisitesModelsList;
         }
+
         public bool CreateTraining(CreateTrainingDTO createTrainingDTO)
         {
             string CREATE_TRAINING_QUERY = @"INSERT INTO [Training] (TrainingName,TrainingStatus,DepartmentPriority,TrainingDescription,TrainingRegistrationDeadline,SeatsTotal,CoachId)
@@ -141,18 +143,19 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                     TrainingId = @TrainingId; ";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@UpdatedTrainingName", trainingmodel.TrainingName));
-            parameters.Add(new SqlParameter("@UpdatedTrainingName", trainingmodel.TrainingStatus));
-            parameters.Add(new SqlParameter("@UpdatedTrainingName", trainingmodel.DepartmentPriority));
-            parameters.Add(new SqlParameter("@UpdatedTrainingName", trainingmodel.SeatsTotal));
-            parameters.Add(new SqlParameter("@UpdatedTrainingName", trainingmodel.CoachId));
-            parameters.Add(new SqlParameter("@UpdatedTrainingName", trainingmodel.TrainingRegistrationDeadline));
-            parameters.Add(new SqlParameter("@UpdatedTrainingName", trainingmodel.TrainingDescription));
+            parameters.Add(new SqlParameter("@UpdatedStatus", trainingmodel.TrainingStatus));
+            parameters.Add(new SqlParameter("@UpdatedPriority", trainingmodel.DepartmentPriority));
+            parameters.Add(new SqlParameter("@UpdatedSeatsTotal", trainingmodel.SeatsTotal));
+            parameters.Add(new SqlParameter("@UpdatedCoachId", trainingmodel.CoachId));
+            parameters.Add(new SqlParameter("@UpdatedDeadline", trainingmodel.TrainingRegistrationDeadline));
+            parameters.Add(new SqlParameter("@UpdatedDescription", trainingmodel.TrainingDescription));
             parameters.Add(new SqlParameter("@TrainingId", trainingmodel.TrainingId));
             _command.InsertUpdateData(UPDATE_TRAINING_QUERY, parameters);
             return true;
         }
         public bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel)
         {
+            //TODO: CHECK IF ROW EXIST
             const string ADD_PREREQUISITE_TO_TRAINING_QUERY = @"
                 INSERT INTO [TrainingPrerequisite]
                 VALUES(@PrerequisiteId,@TrainingId);";
@@ -160,21 +163,22 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             parameters.Add(new SqlParameter("@PrerequisiteId",trainingPrerequisiteModel.PrerequisiteId));
             parameters.Add(new SqlParameter("@TrainingId",trainingPrerequisiteModel.TrainingId));
             _command.InsertUpdateData(ADD_PREREQUISITE_TO_TRAINING_QUERY, parameters);
-            throw new NotImplementedException();
+            return true;
         }
-        public bool UpdateTrainingPrerequisite(TrainingPrerequisiteModel trainingPrerequisiteModel)
+        public bool UpdateTrainingPrerequisite(byte TrainingId, List<byte> Prerequisites)
         {
-            const string UPDATE_TRAINING_PREQUISITE_QUERY = @"
-                UPDATE [TrainingPrerequisite]
-                SET
-                    PrerequisiteId = @PrerequisiteId,
-                    TrainingId = @TrainingId
-                WHERE
-                    TrainingPrerequisiteId = @TrainingPrerequisiteId; ";
+            string UPDATE_TRAINING_PREQUISITE_QUERY = @"
+                DELETE FROM TrainingPrerequisite WHERE TrainingId=@TrainingId;";
+
             List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@PrerequisiteId", trainingPrerequisiteModel.PrerequisiteId));
-            parameters.Add(new SqlParameter("@TrainingId", trainingPrerequisiteModel.TrainingId));
-            parameters.Add(new SqlParameter("@TrainingPrerequisiteId", trainingPrerequisiteModel.TrainingPrerequisiteId));
+            parameters.Add(new SqlParameter("@TrainingId", TrainingId));
+            var index = 0;
+            foreach (var prerequisite in Prerequisites)
+            {
+                UPDATE_TRAINING_PREQUISITE_QUERY += $"INSERT INTO TrainingPrerequisite (TrainingId,PrerequisiteId) VALUES (@TrainingId,@PrerequisiteId{index});";
+                parameters.Add(new SqlParameter($"@PrerequisiteId{index}", prerequisite));
+                index++;
+            }
             _command.InsertUpdateData(UPDATE_TRAINING_PREQUISITE_QUERY, parameters);
             return true;
         }
@@ -185,6 +189,23 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             parameters.Add(new SqlParameter("@TrainingId", trainingId));
             _command.InsertUpdateData(DELETE_TRAINING_QUERY, parameters);
             return true;
+        }
+        public List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte trainingId)
+        {
+            const string GET_ALL_PREREQUISITES_OF_A_TRAINING = @"SELECT p.* FROM Prerequisites p INNER JOIN TrainingPrerequisite tp ON p.PrerequisiteId= tp.PrerequisiteId WHERE tp.TrainingId = @TrainingId; ";
+            List<PrerequisitesModel> listOfPrerequisite = new List<PrerequisitesModel>();
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            PrerequisitesModel prerequisitesModel;
+            parameters.Add(new SqlParameter("@TrainingId",trainingId));
+            var dt = _command.GetDataWithConditions(GET_ALL_PREREQUISITES_OF_A_TRAINING,parameters);
+            foreach (DataRow row in dt.Rows) 
+            {
+                prerequisitesModel = new PrerequisitesModel();
+                prerequisitesModel.PrerequisiteId = (byte)row["PrerequisiteId"];    
+                prerequisitesModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
+                listOfPrerequisite.Add(prerequisitesModel);
+            }
+            return listOfPrerequisite;
         }
     }
 }

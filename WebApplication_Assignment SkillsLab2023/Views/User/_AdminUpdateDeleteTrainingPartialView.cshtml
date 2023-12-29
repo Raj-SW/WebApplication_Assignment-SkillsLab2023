@@ -1,4 +1,6 @@
-﻿<head>
+﻿@{ 
+}
+<head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/Content/Styling/AdminUpdateDeletePartialViewStyling.css" />
 </head>
@@ -17,7 +19,7 @@
                     <th>Actions</th>
                 </tr>
                 @{
-                    foreach (var training in ViewBag.ListOfTraining)
+                    foreach (var training in ViewBag.ListOfTrainingWithPrerequisites)
                     {
                         <tr>
                             <td>@training.TrainingId</td>
@@ -28,7 +30,7 @@
                             <td>@training.SeatsTotal</td>
                             <td>
                                 <div class="accordion" id="accordionTraining_@training.TrainingId">
-                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@training.TrainingId" aria-expanded="false" aria-controls="collapse_@training.TrainingId">
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@training.TrainingId" aria-expanded="false" aria-controls="collapse_@training.TrainingId" onclick="toggleButtonText(this)">
                                         Edit
                                     </button>
                                 </div>
@@ -43,42 +45,55 @@
                                                 <div class="row">
                                                     <div class="training-name-inputs col-md-6">
                                                         <label for="TrainingNameInput_@training.TrainingId">Training Name:</label>
-                                                        <input type="text" id="TrainingNameInput_@training.TrainingId" required>
+                                                        <input type="text" id="TrainingNameInput_@training.TrainingId" value="@training.TrainingName" required>
                                                     </div>
                                                     <div class="training-description-inputs col-md-6">
                                                         <label for="TrainingDescription_@training.TrainingId">Training Description:</label>
-                                                        <textarea id="TrainingDescription_@training.TrainingId" required></textarea>
+                                                        <textarea id="TrainingDescription_@training.TrainingId" required>@training.TrainingDescription</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="training-status-inputs  col-md-6">
                                                         <label for="input-training-status">Training Status: </label>
                                                         <select id="TrainingStatus_@training.TrainingId">
-                                                            <option value=""> Value 1  </option>
-                                                            <option value=""> Value 2  </option>
-                                                            <option value=""> Value 3  </option>
+                                                            <option value="@training.TrainingStatus">@training.TrainingStatus</option>
+                                                            @foreach (var status in ViewBag.ListOfTrainingStatus)
+                                                            {
+                                                                if (status == training.TrainingStatus)
+                                                                {
+                                                                    <option value="@status">@status</option>
+                                                                }
+                                                            }
+                                                            @foreach (var status in ViewBag.ListOfTrainingStatus)
+                                                            {
+                                                                <option value="@status">@status</option>
+                                                            }
                                                         </select>
                                                     </div>
                                                     <div class="registration-deadline-inputs  col-md-6">
                                                         <label for="input-training-registration-deadline_@training.TrainingId">Training Registration Deadline: </label>
-                                                        <input type="date" id="input-training-registration-deadline_@training.TrainingId" required>
+                                                        <input type="date" id="input-training-registration-deadline_@training.TrainingId" value="@training.TrainingRegistrationDeadline.ToString("yyyy-MM-dd")" required>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="training-seats-inputs  col-md-6">
                                                         <label for="input-training-seats">Training Seats: </label>
-                                                        <select id="input-training-seats_@training.TrainingId" required>
-                                                            <option value="">Value 1</option>
-                                                            <option value="">Value 2</option>
-                                                            <option value="">Value 3</option>
-                                                        </select>
+                                                        <input type="number" id="input-training-seats_@training.TrainingId" value="@training.SeatsTotal" required>
                                                     </div>
                                                     <div class="department-priority-inputs  col-md-6">
                                                         <label for="departmentpriority_@training.TrainingId">Training Priority: </label>
                                                         <select id="departmentpriority_@training.TrainingId" required>
-                                                            <option value="">Value 1</option>
-                                                            <option value="">Value 2</option>
-                                                            <option value="">Value 3</option>
+                                                            @foreach (var department in ViewBag.ListOfDepartments)
+                                                            {
+                                                                if (department.DepartmentId == training.DepartmentPriority)
+                                                                {
+                                                                    <option value="@department.DepartmentId">@department.DepartmentName </option>
+                                                                }
+                                                            }
+                                                            @foreach (var department in ViewBag.ListOfDepartments)
+                                                            {
+                                                                <option value="@department.DepartmentId">@department.DepartmentName</option>
+                                                            }
                                                         </select>
                                                     </div>
                                                 </div>
@@ -86,40 +101,52 @@
                                                     <div class="coach-inputs  col-md-6">
                                                         <label for="coach-input_@training.TrainingId">Training Coach: </label>
                                                         <select id="coach-input_@training.TrainingId" required>
-                                                            <option value="">Value 1</option>
-                                                            <option value="">Value 2</option>
-                                                            <option value="">Value 3</option>
+                                                            @foreach (var manager in ViewBag.ListOfManagers)
+                                                            {
+                                                                if (manager.UserId == training.CoachId)
+                                                                {
+                                                                    <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
+                                                                }
+                                                            }
+                                                            @foreach (var manager in ViewBag.ListOfManagers)
+                                                            {
+                                                                <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
+                                                            }
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="btn-container">
-                                                    <button class="btn btn-primary " type="button" onclick="">
+                                                    <button class="btn btn-primary" type="button" onclick="saveTrainingChanges(@training.TrainingId)">
                                                         Save Changes
                                                     </button>
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="training-prerequisite-update-container col-md-4">
-                                            <div class="prerequisite-wrapper" id="">
-                                                <div class="prerequisite-inputs">
-                                                    <label>Prerequisite 1:</label>
-                                                    <select id="coach-input_@training.TrainingId" required>
-                                                        <option value="">Value 1</option>
-                                                        <option value="">Value 2</option>
-                                                        <option value="">Value 3</option>
-                                                    </select>
-                                                </div>
-                                                <div class="prerequisite-btn-container">
-                                                    <button class="btn btn-primary " type="button" onclick="">
-                                                        Save
-                                                    </button>
-                                                    <button class="btn btn-danger " type="button" onclick="">
-                                                        Delete
-                                                    </button>
-                                                </div>
+                                        <div class="training-prerequisite-update-container col-md-4" id="training-prerequisite-update-container_@training.TrainingId">
+                                            <div class="scrollable-prerequisites">
+                                                @foreach (var prerequisite in ViewBag.ListOfPrerequisites)
+                                                {
+                                                    var isPrerequisiteSelected = false;
+                                                    foreach (var selectedPrerequisite in training.PrerequisitesList)
+                                                    {
+                                                        if (selectedPrerequisite.PrerequisiteId == prerequisite.PrerequisiteId)
+                                                        {
+                                                            isPrerequisiteSelected = true;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="prerequisite-checkbox_@(training.TrainingId)_@(prerequisite.PrerequisiteId)"
+                                                               value="@prerequisite.PrerequisiteId" @(isPrerequisiteSelected ? "checked" : "")>
+                                                        <label class="form-check-label" for="prerequisite-checkbox_@(training.TrainingId)_@(prerequisite.PrerequisiteId)">
+                                                            @prerequisite.PrerequisiteDescription
+                                                        </label>
+                                                    </div>
+                                                }
                                             </div>
-                                            <button class="btn btn-primary " type="button" onclick="addPrerequisite()">
-                                                Add Prerequisite
+                                            <button class="btn btn-primary" type="button" onclick='savePrerequisites(@training.TrainingId)'>
+                                                Save Prerequisites
                                             </button>
                                         </div>
                                     </div>
@@ -135,51 +162,79 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
 <script>
-    let prerequisiteCount = 1;
 
-    function addPrerequisite() {
-        prerequisiteCount++;
 
-        const container = document.querySelector('.training-prerequisite-update-container');
+    function savePrerequisites(trainingId) {
+        // Collect the checked checkboxes' values
+        const selectedPrerequisites = [];
+        $(`#training-prerequisite-update-container_${trainingId} input[type="checkbox"]:checked`).each(function () {
+            selectedPrerequisites.push($(this).val());
+        });
 
-        const newPrerequisite = document.createElement('div');
-        newPrerequisite.className = 'prerequisite-wrapper';
-        newPrerequisite.id = 'prerequisite_' + prerequisiteCount;
-
-        newPrerequisite.innerHTML = `
-            <div class="prerequisite-inputs">
-                <label>Prerequisite ${prerequisiteCount}:</label>
-                <select id="coach-input_${prerequisiteCount}" required>
-                    <option value="">Value 1</option>
-                    <option value="">Value 2</option>
-                    <option value="">Value 3</option>
-                </select>
-            </div>
-            <div class="prerequisite-btn-container">
-                <button class="btn btn-primary" type="button" onclick="savePrerequisite(${prerequisiteCount})">
-                    Save
-                </button>
-                <button class="btn btn-danger" type="button" onclick="deletePrerequisite(${prerequisiteCount})">
-                    Delete
-                </button>
-            </div>
-        `;
-
-        container.insertBefore(newPrerequisite, container.lastElementChild);
+        // Make a fetch call to your action method
+        fetch('/Training/UpdatePrerequisiteInTraining', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ trainingId: trainingId, prerequisites: selectedPrerequisites }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle success response
+                alert('Prerequisites saved successfully');
+            })
+            .catch(error => {
+                // Handle error response
+                alert('Error saving prerequisites');
+                console.error('Error during fetch:', error);
+            });
     }
 
-    function savePrerequisite(prerequisiteId) {
-        // Add your save logic here
-        alert(`Save Prerequisite ${prerequisiteId}`);
+
+    function saveTrainingChanges(trainingId) {
+        // Gather data from the form
+        const trainingData = {
+            TrainingId: trainingId,
+            TrainingName: document.getElementById(`TrainingNameInput_${trainingId}`).value,
+            TrainingDescription: document.getElementById(`TrainingDescription_${trainingId}`).value,
+            TrainingStatus: document.getElementById(`TrainingStatus_${trainingId}`).value,
+            DepartmentPriority: document.getElementById(`departmentpriority_${trainingId}`).value,
+            SeatsTotal: document.getElementById(`input-training-seats_${trainingId}`).value,
+            CoachId: document.getElementById(`coach-input_${trainingId}`).value,
+            TrainingRegistrationDeadline: document.getElementById(`input-training-registration-deadline_${trainingId}`).value
+        };
+
+        // Make a fetch request to the server
+        fetch('/Training/UpdateTraining', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(trainingData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result) {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error during fetch:', error);
+            });
     }
 
-    function deletePrerequisite(prerequisiteId) {
-        // Add your delete logic here
-        const prerequisiteElement = document.getElementById('prerequisite_' + prerequisiteId);
-        prerequisiteElement.parentNode.removeChild(prerequisiteElement);
-        alert(`Delete Prerequisite ${prerequisiteId}`);
+    function toggleButtonText(button) {
+        const buttonText = button.innerHTML.trim();
+
+        if (buttonText === 'Edit') {
+            button.innerHTML = 'Close';
+        } else {
+            button.innerHTML = 'Edit';
+        }
     }
 </script>
 

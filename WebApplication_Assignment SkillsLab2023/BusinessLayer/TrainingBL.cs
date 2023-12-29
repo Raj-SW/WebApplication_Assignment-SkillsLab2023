@@ -20,10 +20,16 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             _itrainingDAL = trainingDAL;
             _iFileHandlerService = fileHandlerService;
         }
-        public List<TrainingModel> GetAllTraining()
+        public List<TrainingWithPrerequisitesModel> GetAllTrainingModelsWithPrerequisites()
         {
             
-            return _itrainingDAL.GetAllTrainingModels();
+            var ListOftrainingModelsWithPrerequisites= GetAllTrainingModels();
+            foreach ( var TrainingModelsWithPrerequisites in ListOftrainingModelsWithPrerequisites)
+            {
+                TrainingModelsWithPrerequisites.PrerequisitesList=GetAllPrerequisiteOfATrainingModelByTrainingId(TrainingModelsWithPrerequisites.TrainingId);
+            }
+
+            return ListOftrainingModelsWithPrerequisites;
         }
         public List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId)
         {
@@ -58,13 +64,21 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _itrainingDAL.AddPrerequisiteToTraining(trainingPrerequisiteModel);
         }
-        public bool UpdateTrainingPrerequisite(TrainingPrerequisiteModel trainingPrerequisiteModel)
+        public bool UpdateTrainingPrerequisite(byte TrainingId, List<byte> Prerequisites)
         {
-            return _itrainingDAL.UpdateTrainingPrerequisite(trainingPrerequisiteModel);
+            return _itrainingDAL.UpdateTrainingPrerequisite(TrainingId, Prerequisites);
         }
         public bool DeleteTraining(byte TrainingId)
         {
             return _itrainingDAL.DeleteTraining(TrainingId);
+        }
+        public List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte TrainingId)
+        {
+            return _itrainingDAL.GetAllPrerequisiteOfATrainingModelByTrainingId( TrainingId);
+        }
+        public List<TrainingWithPrerequisitesModel> GetAllTrainingModels()
+        {
+            return _itrainingDAL.GetAllTrainingModels();
         }
     }
 }
