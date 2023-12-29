@@ -99,7 +99,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return prerequisitesModelsList;
         }
-
         public bool CreateTraining(CreateTrainingDTO createTrainingDTO)
         {
             string CREATE_TRAINING_QUERY = @"INSERT INTO [Training] (TrainingName,TrainingStatus,DepartmentPriority,TrainingDescription,TrainingRegistrationDeadline,SeatsTotal,CoachId)
@@ -184,7 +183,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         }
         public bool DeleteTraining(byte trainingId)
         {
-            const string DELETE_TRAINING_QUERY = @"UPDATE Training SET isDeleted = 1 WHERE TrainingId = @TrainingId";
+            const string DELETE_TRAINING_QUERY = @"DELETE From Training WHERE TrainingId = @TrainingId";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@TrainingId", trainingId));
             _command.InsertUpdateData(DELETE_TRAINING_QUERY, parameters);
@@ -206,6 +205,13 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 listOfPrerequisite.Add(prerequisitesModel);
             }
             return listOfPrerequisite;
+        }
+        public bool isTrainingDeletable(byte trainingId)
+        {
+            const string SELECT_ENROLMENTS_QUERY = @"SELECT * FROM Enrolment WHERE TrainingId = @TrainingId;";
+            List<SqlParameter> parameters = new List<SqlParameter>() {new SqlParameter("@TrainingId",trainingId) };
+            var dt =_command.GetDataWithConditions(SELECT_ENROLMENTS_QUERY, parameters);
+            return dt.Rows.Count<=0;
         }
     }
 }

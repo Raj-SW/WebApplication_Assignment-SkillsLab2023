@@ -70,7 +70,11 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         }
         public bool DeleteTraining(byte TrainingId)
         {
-            return _itrainingDAL.DeleteTraining(TrainingId);
+            if (isTrainingDeletable(TrainingId))
+            {
+                return _itrainingDAL.DeleteTraining(TrainingId);
+            }
+            return false;
         }
         public List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte TrainingId)
         {
@@ -79,6 +83,11 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public List<TrainingWithPrerequisitesModel> GetAllTrainingModels()
         {
             return _itrainingDAL.GetAllTrainingModels();
+        }
+        public bool isTrainingDeletable(byte trainingId)
+        {
+
+            return _itrainingDAL.isTrainingDeletable(trainingId);
         }
     }
 }

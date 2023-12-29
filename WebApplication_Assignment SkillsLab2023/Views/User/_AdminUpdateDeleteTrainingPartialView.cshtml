@@ -28,12 +28,17 @@
                             <td>@training.TrainingStatus</td>
                             <td>@training.TrainingRegistrationDeadline</td>
                             <td>@training.SeatsTotal</td>
-                            <td>
+                            <td colspan="2">
                                 <div class="accordion" id="accordionTraining_@training.TrainingId">
                                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@training.TrainingId" aria-expanded="false" aria-controls="collapse_@training.TrainingId" onclick="toggleButtonText(this)">
                                         Edit
                                     </button>
                                 </div>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" type="button" onclick="deleteTraining(@training.TrainingId)">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -135,7 +140,6 @@
                                                             break;
                                                         }
                                                     }
-
                                                     <div class="form-check">
                                                         <input type="checkbox" class="form-check-input" id="prerequisite-checkbox_@(training.TrainingId)_@(prerequisite.PrerequisiteId)"
                                                                value="@prerequisite.PrerequisiteId" @(isPrerequisiteSelected ? "checked" : "")>
@@ -192,7 +196,6 @@
             });
     }
 
-
     function saveTrainingChanges(trainingId) {
         // Gather data from the form
         const trainingData = {
@@ -223,6 +226,33 @@
                 }
             })
             .catch(error => {
+                console.error('Error during fetch:', error);
+            });
+    }
+    function deleteTraining(trainingId) {
+        // Make a fetch call to your delete action method
+        fetch('/Training/DeleteTraining', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ trainingId: trainingId }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result) {
+                    // Handle success response
+                    alert(data.message);
+                    location.reload();
+                    // Optionally, you can perform additional actions after successful deletion
+                } else {
+                    // Handle failure response
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                // Handle error response
+                alert('Error deleting training');
                 console.error('Error during fetch:', error);
             });
     }

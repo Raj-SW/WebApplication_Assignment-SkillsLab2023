@@ -19,6 +19,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel);
         bool UpdateTrainingPrerequisite(byte TrainingId, List<byte> Prerequisites);
         bool DeleteTraining(byte trainingId);
+        bool isTrainingDeletable(byte trainingId);
         List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte trainingId);
+
     }
 }

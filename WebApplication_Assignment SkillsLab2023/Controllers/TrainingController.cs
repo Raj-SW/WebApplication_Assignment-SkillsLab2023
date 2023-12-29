@@ -95,14 +95,14 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = false, message = "Training Prerequisite update unsuccessful" });
         }
         [HttpPost]
-        public ActionResult DeleteTraining(byte id) 
+        public ActionResult DeleteTraining(byte trainingId) 
         {
-            var isSucces = _trainingBl.DeleteTraining(id);
+            var isSucces = _trainingBl.DeleteTraining(trainingId);
             if (isSucces)
             {
                 return Json(new { result = true, message="Training deleted successfully" }); ;
             }
-            return Json(new { result = false, message = "Training deletion unsuccessful" }); ;
+            return Json(new { result = false, message = "Training deletion unsuccessful.There might be enrolments" }); ;
         }
     }
 }
