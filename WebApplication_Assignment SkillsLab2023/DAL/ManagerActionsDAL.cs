@@ -15,7 +15,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
 
         public List<UserModel> GetEmployeesPendingEnrolmentByManagerId(int managerId)
         {
-            const string GET_EMPLOYEES_PENDING_ENROLMENT_BY_MANAGER_ID_QUERY = @"";
+            const string GET_EMPLOYEES_PENDING_ENROLMENT_BY_MANAGER_ID_QUERY = @"SELECT *";
 
             List<UserModel> employeesEnrolment =new List<UserModel>();
             UserModel employee;

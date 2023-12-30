@@ -250,6 +250,7 @@
     <Content Include="Content\Styling\AdminViewStyling.css" />
     <Content Include="Content\Styling\BaseDashboardStyling.css" />
     <Content Include="Content\Styling\LoginPageStyling.css" />
+    <Content Include="Content\Styling\ManagerViewUpdateEnrolmentsPartialViewStyling.css" />
     <Content Include="Content\Styling\RegistrationPageStyling.css" />
     <Content Include="Content\Styling\RoleSelectionPage.css" />
     <Content Include="favicon.ico" />
@@ -317,6 +318,7 @@
     <Content Include="Views\User\_AdminActivatePendingAcountsPartialView.cshtml" />
     <Content Include="Views\User\_AdminCreateTrainingPartvialView.cshtml" />
     <Content Include="Views\User\_AdminUpdateDeleteTrainingPartialView.cshtml" />
+    <Content Include="Views\User\_ManagerViewEmployeeEnrolmentsPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -20,6 +20,5 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         bool UpdateTrainingPrerequisite(byte TrainingId, List<byte> Prerequisites);
         bool DeleteTraining(byte id);
         bool isTrainingDeletable(byte trainingId);
-
     }
 }

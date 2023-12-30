@@ -22,7 +22,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             _imanageractionsbl = imanageractionsbl;
             _adminactionsbl = adminactionsbl;
         }
-
         public ActionResult EmployeeView()
         {
             var ListOfTrainings = _itrainingbl.GetAllTrainingModels();
@@ -60,7 +59,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
              //A WAY TO VIEW OR OPEN THE ATTACHMENTS
              //ENROL OR REJECT OR KEEP PENDING OR GIVE A FEEDBACK ON DOCUMENT ETC..
             byte ManagerId = (byte)Session["CurrentUserRoleId"];
-            var listOfEmployeesEnrolment = _imanageractionsbl.GetEmployeesEnrolmentByManagerId(ManagerId);
+            //var listOfEmployeesEnrolment = _imanageractionsbl.GetEmployeesEnrolmentByManagerId(ManagerId);
             return View();
         }
     }

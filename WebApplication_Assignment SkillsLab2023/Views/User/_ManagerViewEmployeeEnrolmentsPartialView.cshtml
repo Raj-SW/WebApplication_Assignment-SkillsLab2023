@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "ViewPendingEnrolments";
+    Layout = null;
+}
+<head>
+    <link rel="stylesheet" href="~/Content/Styling/ManagerViewUpdateEnrolmentsPartialViewStyling.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<div class="pending-enrolments-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Enrolment Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Training Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>Ashwin</td>
+                    <td>Tandava</td>
+                    <td>C#</td>
+                    <td>
+                        <div class="accordion" id="accordionUser_1">
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUser_1" aria-expanded="false" aria-controls="collapseUser_1">
+                                View Details
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div id="collapseUser_1" class="collapse collapse-row-styling" data-parent="#accordionUser_1">
+                            <div class="view-prerequisites-list-1">
+                                <div class="view-prerequisites_1">
+                                    <label>
+                                        Prerequisite Name
+                                    </label>
+                                    <button class="btn btn-primary">
+                                        View
+                                    </button>
+                                </div>
+                                <div class="view-prerequisites_2">
+                                    <label>
+                                        Prerequisite Name
+                                    </label>
+                                    <button class="btn btn-primary">
+                                        View
+                                    </button>
+                                </div>
+                                <div class="view-prerequisites_3">
+                                    <label>
+                                        Prerequisite Name
+                                    </label>
+                                    <button class="btn btn-primary">
+                                        View
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="decline-enrolement">
+                                <textarea>
+
+                                </textarea> 
+                                <button class="btn btn-danger">
+                                    Reject
+                                </button>
+                            </div>
+                            <div class="approve-enrolment">
+                                <button class="btn btn-success" >
+                                    Approve
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+</div>
