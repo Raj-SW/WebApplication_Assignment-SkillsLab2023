@@ -25,7 +25,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             {
                 customerModel = new CustomerModel();
 
-                customerModel._customerId = (int)row["customer_id"];
+                customerModel._customerId = (byte)row["customer_id"];
                 customerModel._customerFirstName = row["first_name"].ToString();
                 customerModelList.Add(customerModel);
             }

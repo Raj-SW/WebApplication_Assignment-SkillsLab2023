@@ -1,1 +1,30 @@
-﻿
+﻿.view-prerequisites-list {
+    display: flex;
+    align-content: stretch;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    gap:10px;
+
+}
+.view-prerequisites {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+.decline-enrolement {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    width: 100%;
+}
+.approve-enrolment {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: center;
+    flex-direction: row;
+}

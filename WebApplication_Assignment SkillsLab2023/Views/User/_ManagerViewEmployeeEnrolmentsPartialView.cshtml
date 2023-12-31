@@ -9,7 +9,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-
 <div class="pending-enrolments-container">
     <table class="table">
         <thead>
@@ -23,24 +22,27 @@
             </tr>
         </thead>
         <tbody>
+            @foreach (var enrolment in ViewBag.ListOfEmployeeEnrolments)
+            {
                 <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>Ashwin</td>
-                    <td>Tandava</td>
-                    <td>C#</td>
+                    <td>@enrolment.UserId</td>
+                    <td>@enrolment.EnrolmentId</td>
+                    <td>@enrolment.UserFirstName</td>
+                    <td>@enrolment.UserLastName</td>
+                    <td>@enrolment.TrainingName</td>
                     <td>
-                        <div class="accordion" id="accordionUser_1">
-                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUser_1" aria-expanded="false" aria-controls="collapseUser_1">
-                                View Details
+                        <div class="accordion" id="accordionUser_@enrolment.EnrolmentId">
+                            <button class="btn btn-primary" id="view-btn_@enrolment.EnrolmentId" type="button" data-toggle="collapse" data-target="#collapseUser_@enrolment.EnrolmentId" aria-expanded="false" aria-controls="collapseUser_@enrolment.EnrolmentId" onclick="FetchEnrolmentPrerequisites(@enrolment.EnrolmentId)">
+                                View
                             </button>
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr colspan="6">
                     <td colspan="6">
-                        <div id="collapseUser_1" class="collapse collapse-row-styling" data-parent="#accordionUser_1">
-                            <div class="view-prerequisites-list-1">
+                        <div id="collapseUser_@enrolment.EnrolmentId" class="collapse collapse-row-styling row" data-parent="#accordionUser_@enrolment.EnrolmentId">
+                            <div class="view-prerequisites-list col-md-5" id="view-prerequisites-list_i">
+                                <!-- Your prerequisites loop goes here -->
                                 <div class="view-prerequisites_1">
                                     <label>
                                         Prerequisite Name
@@ -65,23 +67,57 @@
                                         View
                                     </button>
                                 </div>
-                            </div>
-                            <div class="decline-enrolement">
-                                <textarea>
 
-                                </textarea> 
+                            </div>
+                            <div class="decline-enrolement col-md-4" id="decline-enrolement_i">
+                                <textarea>
+                                    Remarks if any
+                                </textarea>
                                 <button class="btn btn-danger">
                                     Reject
                                 </button>
                             </div>
-                            <div class="approve-enrolment">
-                                <button class="btn btn-success" >
+                            <div class="approve-enrolment col-md-3" id="approve-enrolment_i">
+                                <button class="btn btn-success">
                                     Approve
                                 </button>
                             </div>
                         </div>
                     </td>
                 </tr>
+            }
         </tbody>
     </table>
 </div>
+
+<script>
+    function FetchEnrolmentPrerequisites(enrolmentId) {
+
+        console.log("Enrolment id is", enrolmentId);
+        var btn = document.getElementById("view-btn_" + enrolmentId);
+        const buttonText = btn.innerHTML.trim();
+
+        if (buttonText === 'View') {
+            btn.innerHTML = 'Close';
+        } else {
+            btn.innerHTML = 'View';
+        }
+
+        fetch('/Training/GetEnrolmentPrerequisitesById', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ enrolmentId: enrolmentId }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Handle the response data as needed
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle errors if any
+            });
+    }
+</script>

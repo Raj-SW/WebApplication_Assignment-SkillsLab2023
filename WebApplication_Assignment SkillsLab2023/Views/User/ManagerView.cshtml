@@ -7,5 +7,5 @@
 <h2>ManagerView</h2>
 
 @*<div>*@
-@Html.Partial("_ManagerViewEmployeeEnrolmentsPartialView")
+@Html.Partial("_ManagerViewEmployeeEnrolmentsPartialView", new ViewDataDictionary { { "ListOfEmployeeEnrolments", ViewBag.ListOfEmployeeEnrolment } } )
 @*</div>*@

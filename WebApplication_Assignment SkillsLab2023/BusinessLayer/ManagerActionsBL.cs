@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DAL;
+using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
@@ -19,7 +21,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             throw new NotImplementedException();
         }
-        public List<UserModel> GetEmployeesEnrolmentByManagerId(int managerId)
+        public List<GetPendingEmployeesEnrolmentOfAMangerDTO> GetEmployeesEnrolmentByManagerId(byte managerId)
         {
 
             return _managerActionsDAL.GetEmployeesPendingEnrolmentByManagerId(managerId);

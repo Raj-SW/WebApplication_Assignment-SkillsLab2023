@@ -40,7 +40,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             var dt = _command.GetDataWithConditions(RETRIEVE_USER_MODEL_QUERY_BY_ID, parameters);
             foreach (DataRow row in dt.Rows)
             {
-                userModel.UserId = (int)row["UserId"];
+                userModel.UserId = (byte)row["UserId"];
                 userModel.UserFirstName = (string)row["UserFirstName"];
                 userModel.UserLastName = (string)row["UserLastName"];
             }
@@ -163,7 +163,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             var dt = _command.GetDataWithConditions(RETRIEVE_USER_MODEL_BY_CREDENTIALS_QUERY, parameters);
             foreach (DataRow row in dt.Rows)
             {
-                userModel.UserId = (int)row["UserId"];
+                userModel.UserId =  (byte)row["UserId"];
                 userModel.UserFirstName = (string)row["UserFirstName"];
                 userModel.UserLastName = (string)row["UserLastName"];
                 userModel.Role = (string)row["Role"];
@@ -179,7 +179,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             var dt = _command.GetDataWithConditions(GET_USER_MODEL_BY_ID_QUERY, parameters);
             foreach (DataRow row in dt.Rows)
             {
-                userModel.UserId = Convert.ToInt32(row["UserId"]);
+                userModel.UserId = (byte)row["UserId"];
                 userModel.UserFirstName = (string)row["UserFirstName"];
                 userModel.UserLastName = (string)row["UserLastName"];
             }
@@ -197,8 +197,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             {
                 result.ResultTask.isSuccess= true;
                 DataRow row = dt.Rows[0];
-                result.ResultObject.AccessId = Convert.ToInt32(row["AccessId"]);
-                result.ResultObject.UserId = Convert.ToInt32(row["UserId"]);
+                result.ResultObject.AccessId = (byte)row["AccessId"];
+                result.ResultObject.UserId = (byte)row["UserId"];
                 result.ResultObject.Email = row["Email"].ToString();
                 result.ResultObject.HashedPassword = (byte[])row["Password"];
                 result.ResultObject.Salt = (byte[])row["Salt"];

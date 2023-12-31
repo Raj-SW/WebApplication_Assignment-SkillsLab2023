@@ -28,7 +28,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             foreach (DataRow row in dt.Rows)
             {
                 userRolesModel = new UserRolesModel();
-                userRolesModel.RoleId = Convert.ToInt32(row["RoleId"]);
+                userRolesModel.RoleId = (byte)row["RoleId"];
                 userRolesModel.RoleName = (string)row["RoleName"];
                 UserRolesList.Add(userRolesModel);
             }

@@ -104,5 +104,12 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "Training deletion unsuccessful.There might be enrolments" }); ;
         }
+        [HttpPost]
+        public ActionResult GetEnrolmentPrerequisitesById(byte enrolmentId)
+        {
+
+            return Json(new { result = true, message = "Successfully retrieved prerequisites" });
+        }
+
     }
 }

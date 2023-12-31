@@ -11,8 +11,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
     public class CredentialModel
     {
         [Key]
-        public int AccessId { get; set; }
-        public int UserId { get; set; }
+        public byte AccessId { get; set; }
+        public byte UserId { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public byte[] Salt { get; set; }
