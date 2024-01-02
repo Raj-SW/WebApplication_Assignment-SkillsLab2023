@@ -24,6 +24,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId);
         bool ApproveEnrolment(byte enrolmentId);
         bool RejectEnrolment(byte enrolmentId, string remarks);
-
+        bool CreatePrerequisite(string description);
     }
 }

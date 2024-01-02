@@ -52,7 +52,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             DataModelResult<UserModel> UserDataModelResult= _authenticationBL.LoginUser(model);
             if (UserDataModelResult.ResultTask.isSuccess)
             {
-                Session["CurrentUserName"] = UserDataModelResult.ResultObject.UserFirstName;
                 Session["CurrentUserId"] = UserDataModelResult.ResultObject.UserId;
                 Session["UserRoles"] = _userBL.GetAllUserRolesModelByUserId(UserDataModelResult.ResultObject.UserId);
                 return Json(new { result = true, url = Url.Action("RoleSelectionPage", "Authentication"), user = UserDataModelResult.ResultObject, message = UserDataModelResult.ResultTask.GetAllResultMessageAsString() });

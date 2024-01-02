@@ -102,5 +102,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _itrainingDAL.RejectEnrolment(enrolmentId, remarks);
         }
+
+        public bool CreatePrerequisite(string description)
+        {
+            return _itrainingDAL.CreatePrerequisite(description);
+        }
     }
 }

@@ -243,7 +243,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             _command.InsertUpdateData(APPROVE_ENROLMENT_BY_ID_QUERY, parameters);
             return true;
         }
-
         public bool RejectEnrolment(byte enrolmentId, string remarks)
         {
             const string REJECT_ENROLMENT_BY_ID_QUERY = @"UPDATE Enrolment SET ManagerApproval = 'Rejected', Remarks = @Remarks WHERE EnrolmentId = @EnrolmentId";
@@ -252,6 +251,15 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 new SqlParameter("@Remarks", remarks),
             };
             _command.InsertUpdateData(REJECT_ENROLMENT_BY_ID_QUERY, parameters);
+            return true;
+        }
+        public bool CreatePrerequisite(string description)
+        {
+            const string INSERT_PREREQUISITE_QUERY = @"INSERT INTO Prerequisites (PrerequisiteDescription) VALUES (@PrerequisiteDescription);";
+            List<SqlParameter> parameters = new List<SqlParameter>() {
+                new SqlParameter("@PrerequisiteDescription", description),
+            };
+            _command.InsertUpdateData(INSERT_PREREQUISITE_QUERY, parameters);
             return true;
         }
     }

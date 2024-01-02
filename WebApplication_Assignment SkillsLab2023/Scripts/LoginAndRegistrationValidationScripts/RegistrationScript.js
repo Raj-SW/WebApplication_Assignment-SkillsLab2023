@@ -15,7 +15,6 @@ function Register()
     var lastName = document.getElementById("LastName").value;
     var nic = document.getElementById("nic").value;
     var mobileNum = document.getElementById("MobileNum").value;
-
     var email = document.getElementById("email").value.toLowerCase();
     var password = document.getElementById("password").value;
 
@@ -38,7 +37,6 @@ function Register()
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            //( authorization token)
         },
         body: JSON.stringify(RegistrationModel)
     })

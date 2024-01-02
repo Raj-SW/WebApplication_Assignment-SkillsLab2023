@@ -149,5 +149,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = false, message = "There has been an error " });
 
         }
+        [HttpPost]
+        public ActionResult CreatePrerequisites(string prerequisiteDescription) 
+        {
+            var isSuccess = _trainingBl.CreatePrerequisite(prerequisiteDescription);
+            return Json(new { result = true, message="Prerequisite Added Successfully" });
+        }
     }
 }

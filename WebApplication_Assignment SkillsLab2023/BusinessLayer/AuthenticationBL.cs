@@ -15,6 +15,26 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public AuthenticationBL(IAuthenticationDAL authenticationDAL) {
             _authenticationDAL = authenticationDAL;
         }
+        public TaskResult RegisterUser(UserAndCredentialDTO dto)
+        {
+            TaskResult result = IsUserModelUnique(dto);
+            if (result.isSuccess)
+            {
+                dto.credentialModel.Salt = GenerateTimestampSalt();
+                dto.credentialModel.HashedPassword = HashPassword(dto.credentialModel.Password, dto.credentialModel.Salt);
+                result.isSuccess = _authenticationDAL.InsertUserModelCredentialModel(dto.userModel, dto.credentialModel);
+                if (result.isSuccess)
+                {
+                    result.AddResultMessage("Successfull Registration. Wait For Admin to Activate your Account");
+                }
+                else
+                {
+                    result.AddResultMessage("Internal Server Error. We'll get back to you soon");
+                }
+            }
+            return result;
+        }
+
         public DataModelResult<UserModel> LoginUser(CredentialModel model)
         {
             DataModelResult<UserModel> UserDataModelResult = new DataModelResult<UserModel>();
@@ -52,25 +72,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             throw new NotImplementedException();
         }
-        public TaskResult RegisterUser(UserAndCredentialDTO dto)
-        {
-            TaskResult result = IsUserModelUnique(dto);
-            if (result.isSuccess)
-            {   
-                dto.credentialModel.Salt = GenerateTimestampSalt();
-                dto.credentialModel.HashedPassword= HashPassword(dto.credentialModel.Password, dto.credentialModel.Salt);
-                result.isSuccess = _authenticationDAL.InsertUserModelCredentialModel(dto.userModel, dto.credentialModel);
-                if (result.isSuccess)
-                {
-                    result.AddResultMessage("Successfull Registration. Wait For Admin to Activate your Account");
-                }
-                else
-                {
-                    result.AddResultMessage("Internal Server Error. We'll get back to you soon");
-                }
-            }
-            return result;
-        }
+      
         public TaskResult IsUserModelUnique(UserAndCredentialDTO dto)
         {
             TaskResult taskResult = new TaskResult();

@@ -24,5 +24,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId);
         bool ApproveEnrolment(byte enrolmentId);
         bool RejectEnrolment(byte enrolmentId,string remarks);
+        bool CreatePrerequisite(string description);
     }
 }
