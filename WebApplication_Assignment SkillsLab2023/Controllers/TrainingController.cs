@@ -126,5 +126,28 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
                 return HttpNotFound();
             }
         }
+        [HttpPost]
+        public ActionResult ApproveEnrolment(byte enrolmentId)
+        {
+            var isSuccess = _trainingBl.ApproveEnrolment(enrolmentId);
+            if (isSuccess)
+            {
+                return Json(new { result = true, message="Enrolment Approved"});
+            }
+            return Json(new { result = false, message = "There has been an error" });
+
+        }
+        [HttpPost]
+        public ActionResult RejectEnrolment(byte enrolmentId,string remarks)
+        {
+            var isSuccess =_trainingBl.RejectEnrolment(enrolmentId, remarks);
+            if (isSuccess)
+            {
+                return Json(new { result = true, message = "Enrolment Reject successfully" });
+
+            }
+            return Json(new { result = false, message = "There has been an error " });
+
+        }
     }
 }

@@ -46,16 +46,15 @@
                                 <!-- Your prerequisites loop goes here -->
                                 <!-- Prerequisites will be dynamically populated here -->
                             </div>
-                            <div class="decline-enrolement col-md-4" id="decline-enrolement_i">
-                                <textarea>
-                                    Remarks if any
+                            <div class="decline-enrolement col-md-4" id="decline-enrolement_@enrolment.EnrolmentId">
+                                <textarea id="remarks_@enrolment.EnrolmentId" placeholder="Remarks if any">
                                 </textarea>
-                                <button class="btn btn-danger">
+                                <button class="btn btn-danger" onclick="RejectEnrolment(@enrolment.EnrolmentId)">
                                     Reject
                                 </button>
                             </div>
-                            <div class="approve-enrolment col-md-3" id="approve-enrolment_i">
-                                <button class="btn btn-success">
+                            <div class="approve-enrolment col-md-3" id="approve-enrolment_@enrolment.EnrolmentId">
+                                <button class="btn btn-success" onclick="ApproveEnrolment(@enrolment.EnrolmentId)">
                                     Approve
                                 </button>
                             </div>
@@ -126,5 +125,56 @@
     function clearPrerequisites(enrolmentId) {
         var prerequisitesContainer = document.getElementById("view-prerequisites-list_" + enrolmentId);
         prerequisitesContainer.innerHTML = ''; // Clear content when closing
+    }
+
+    function ApproveEnrolment(enrolmentId) {
+        fetch('/Training/ApproveEnrolment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ enrolmentId: enrolmentId }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result) {
+                    alert(data.message); // You can display a success message
+                    // Optionally, you can update the UI to reflect the approval
+                    window.location.reload();
+
+                } else {
+                    alert(data.message); // Display an error message
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle errors if any
+            });
+    }
+
+    function RejectEnrolment(enrolmentId) {
+        var remarks = document.getElementById("remarks_" + enrolmentId).value; // Get remarks from textarea
+
+        fetch('/Training/RejectEnrolment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ enrolmentId: enrolmentId, remarks: remarks }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result) {
+                    alert(data.message); // You can display a success message
+                    // Optionally, you can update the UI to reflect the rejection
+                    window.location.reload();
+                } else {
+                    alert(data.message); // Display an error message
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle errors if any
+            });
     }
 </script>

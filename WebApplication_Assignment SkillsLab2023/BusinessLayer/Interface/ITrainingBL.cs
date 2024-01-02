@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Web;
+using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
@@ -21,6 +22,8 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         bool DeleteTraining(byte id);
         bool isTrainingDeletable(byte trainingId);
         List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId);
+        bool ApproveEnrolment(byte enrolmentId);
+        bool RejectEnrolment(byte enrolmentId, string remarks);
 
     }
 }

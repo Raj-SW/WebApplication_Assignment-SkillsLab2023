@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
@@ -234,6 +235,24 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 userPrerequisiteModelList.Add(userPrerequisiteModel);
             }
             return userPrerequisiteModelList;
+        }
+        public bool ApproveEnrolment(byte enrolmentId)
+        {
+            const string APPROVE_ENROLMENT_BY_ID_QUERY = @"UPDATE Enrolment SET ManagerApproval = 'Approved' WHERE EnrolmentId = @EnrolmentId";
+            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@EnrolmentId", enrolmentId) };
+            _command.InsertUpdateData(APPROVE_ENROLMENT_BY_ID_QUERY, parameters);
+            return true;
+        }
+
+        public bool RejectEnrolment(byte enrolmentId, string remarks)
+        {
+            const string REJECT_ENROLMENT_BY_ID_QUERY = @"UPDATE Enrolment SET ManagerApproval = 'Rejected', Remarks = @Remarks WHERE EnrolmentId = @EnrolmentId";
+            List<SqlParameter> parameters = new List<SqlParameter>() {
+                new SqlParameter("@EnrolmentId", enrolmentId),
+                new SqlParameter("@Remarks", remarks),
+            };
+            _command.InsertUpdateData(REJECT_ENROLMENT_BY_ID_QUERY, parameters);
+            return true;
         }
     }
 }

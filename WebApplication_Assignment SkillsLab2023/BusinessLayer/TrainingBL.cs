@@ -94,6 +94,13 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 
             return _itrainingDAL.GetEnrolmentPrerequisitesOfAUserByEnrolmentId(enrolmentId);
         }
-
+        public bool ApproveEnrolment(byte enrolmentId)
+        {
+            return _itrainingDAL.ApproveEnrolment(enrolmentId);
+        }
+        public bool RejectEnrolment(byte enrolmentId, string remarks)
+        {
+            return _itrainingDAL.RejectEnrolment(enrolmentId, remarks);
+        }
     }
 }
