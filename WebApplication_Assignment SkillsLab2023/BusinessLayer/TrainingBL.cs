@@ -89,5 +89,11 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 
             return _itrainingDAL.isTrainingDeletable(trainingId);
         }
+        public List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId)
+        {
+
+            return _itrainingDAL.GetEnrolmentPrerequisitesOfAUserByEnrolmentId(enrolmentId);
+        }
+
     }
 }

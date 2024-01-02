@@ -18,10 +18,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         {
             _trainingBl = trainingBl;
         }
-        public ActionResult Index()
-        {
-            return View();
-        }
         public  ActionResult GetTraining() 
         {
             return null;
@@ -107,9 +103,28 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public ActionResult GetEnrolmentPrerequisitesById(byte enrolmentId)
         {
-
-            return Json(new { result = true, message = "Successfully retrieved prerequisites" });
+            var enrolmentPrerequisites = _trainingBl.GetEnrolmentPrerequisitesOfAUserByEnrolmentId(enrolmentId);
+            return Json(new { result = true, message = "Successfully retrieved prerequisites", EnrolmentPrerequisites= enrolmentPrerequisites });
         }
+        public ActionResult GetFile(string filePath)
+        {
+            var fullPath = Path.Combine(Server.MapPath("~/"), filePath);
 
+            if (System.IO.File.Exists(fullPath))
+            {
+                var fileContents = System.IO.File.ReadAllBytes(fullPath);
+                var mimeType = MimeMapping.GetMimeMapping(filePath);
+
+                // Set the Content-Disposition header to "inline" for the file to be displayed in the browser
+                Response.AppendHeader("Content-Disposition", "inline; filename=" + Path.GetFileName(filePath));
+
+                return File(fileContents, mimeType);
+            }
+            else
+            {
+                // Handle file not found appropriately
+                return HttpNotFound();
+            }
+        }
     }
 }

@@ -41,33 +41,10 @@
                 <tr colspan="6">
                     <td colspan="6">
                         <div id="collapseUser_@enrolment.EnrolmentId" class="collapse collapse-row-styling row" data-parent="#accordionUser_@enrolment.EnrolmentId">
-                            <div class="view-prerequisites-list col-md-5" id="view-prerequisites-list_i">
+                            <!-- Your HTML markup -->
+                            <div class="view-prerequisites-list col-md-5" id="view-prerequisites-list_@enrolment.EnrolmentId">
                                 <!-- Your prerequisites loop goes here -->
-                                <div class="view-prerequisites_1">
-                                    <label>
-                                        Prerequisite Name
-                                    </label>
-                                    <button class="btn btn-primary">
-                                        View
-                                    </button>
-                                </div>
-                                <div class="view-prerequisites_2">
-                                    <label>
-                                        Prerequisite Name
-                                    </label>
-                                    <button class="btn btn-primary">
-                                        View
-                                    </button>
-                                </div>
-                                <div class="view-prerequisites_3">
-                                    <label>
-                                        Prerequisite Name
-                                    </label>
-                                    <button class="btn btn-primary">
-                                        View
-                                    </button>
-                                </div>
-
+                                <!-- Prerequisites will be dynamically populated here -->
                             </div>
                             <div class="decline-enrolement col-md-4" id="decline-enrolement_i">
                                 <textarea>
@@ -90,34 +67,64 @@
     </table>
 </div>
 
+
 <script>
     function FetchEnrolmentPrerequisites(enrolmentId) {
-
-        console.log("Enrolment id is", enrolmentId);
         var btn = document.getElementById("view-btn_" + enrolmentId);
         const buttonText = btn.innerHTML.trim();
 
         if (buttonText === 'View') {
             btn.innerHTML = 'Close';
+            fetch('/Training/GetEnrolmentPrerequisitesById', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ enrolmentId: enrolmentId }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Handle the response data and populate prerequisites dynamically
+                    populatePrerequisites(data.EnrolmentPrerequisites, enrolmentId);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle errors if any
+                });
         } else {
             btn.innerHTML = 'View';
+            clearPrerequisites(enrolmentId);
         }
+    }
 
-        fetch('/Training/GetEnrolmentPrerequisitesById', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ enrolmentId: enrolmentId }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // Handle the response data as needed
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Handle errors if any
-            });
+    function populatePrerequisites(prerequisites, enrolmentId) {
+        var prerequisitesContainer = document.getElementById("view-prerequisites-list_" + enrolmentId);
+        prerequisitesContainer.innerHTML = ''; // Clear previous content
+
+        prerequisites.forEach((prerequisite, index) => {
+            var div = document.createElement("div");
+            div.className = "view-prerequisites";
+
+            var label = document.createElement("label");
+            label.innerText = "Prerequisite Name: " + (index + 1);
+
+            var button = document.createElement("button");
+            button.className = "btn btn-primary";
+            button.innerText = "View";
+            button.onclick = function () {
+                window.open('/Training/GetFile?filePath=' + encodeURIComponent(prerequisite.FilePath), '_blank');
+            };
+
+            div.appendChild(label);
+            div.appendChild(button);
+
+            prerequisitesContainer.appendChild(div);
+        });
+    }
+
+    function clearPrerequisites(enrolmentId) {
+        var prerequisitesContainer = document.getElementById("view-prerequisites-list_" + enrolmentId);
+        prerequisitesContainer.innerHTML = ''; // Clear content when closing
     }
 </script>

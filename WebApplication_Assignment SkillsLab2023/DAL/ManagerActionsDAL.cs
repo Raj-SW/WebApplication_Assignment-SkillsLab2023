@@ -21,7 +21,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             throw new NotImplementedException();
         }
-
         public List<GetPendingEmployeesEnrolmentOfAMangerDTO> GetEmployeesPendingEnrolmentByManagerId(byte managerId)
         {
             const string GET_EMPLOYEES_PENDING_ENROLMENT_BY_MANAGER_ID_QUERY = @"
@@ -51,7 +50,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return employeesEnrolmentList;
         }
-
         public void RejectEmployeeEnrolment()
         {
             throw new NotImplementedException();

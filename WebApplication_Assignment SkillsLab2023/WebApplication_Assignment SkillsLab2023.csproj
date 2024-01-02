@@ -225,6 +225,7 @@
     <Compile Include="Models\UserRolesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IFileHandlerService.cs" />
+    <Compile Include="Services\Interfaces\INotificationServices.cs" />
     <Compile Include="Services\LocalFileHandlerService.cs" />
   </ItemGroup>
   <ItemGroup>

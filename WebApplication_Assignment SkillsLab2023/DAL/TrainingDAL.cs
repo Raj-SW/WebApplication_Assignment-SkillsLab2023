@@ -74,11 +74,12 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 new SqlParameter("@UserId", userId),
                 new SqlParameter("@TrainingId", trainingId)
             };
+            int index=0;
             foreach (string filePathEntry in filepath)
             {   
-                int index=filepath.IndexOf(filePathEntry);
                 INSERT_ENROLMENT_QUERY += $"(@EnrolmentId, @FilePath{index}),";
                 parameters.Add(new SqlParameter($"@FilePath{index}", filePathEntry));
+                index++;
             }
             INSERT_ENROLMENT_QUERY = INSERT_ENROLMENT_QUERY.TrimEnd(',') + ";";
             command.InsertUpdateData(INSERT_ENROLMENT_QUERY , parameters);
@@ -212,6 +213,27 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             List<SqlParameter> parameters = new List<SqlParameter>() {new SqlParameter("@TrainingId",trainingId) };
             var dt =_command.GetDataWithConditions(SELECT_ENROLMENTS_QUERY, parameters);
             return dt.Rows.Count<=0;
+        }
+        public List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId)
+        {
+            const string GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID = @"
+            SELECT ep.*
+            FROM EnrolmentPrerequisite ep
+            INNER JOIN Enrolment e ON e.EnrolmentId = ep.EnrolmentId
+            WHERE ep.EnrolmentId = @EnrolmentId;";
+            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@EnrolmentId", enrolmentId) };
+            UserPrerequisiteModel userPrerequisiteModel;
+            List<UserPrerequisiteModel> userPrerequisiteModelList = new List<UserPrerequisiteModel >();
+            var dt = _command.GetDataWithConditions(GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID, parameters);
+            foreach ( DataRow item in dt.Rows )
+            {
+                userPrerequisiteModel = new UserPrerequisiteModel();
+                userPrerequisiteModel.EnrolmentPrerequisiteId = (byte)item["EnrolmentPrerequisiteId"];
+                userPrerequisiteModel.EnrolmentId = (byte)item["EnrolmentId"];
+                userPrerequisiteModel.FilePath = (string)item["FilePath"];
+                userPrerequisiteModelList.Add(userPrerequisiteModel);
+            }
+            return userPrerequisiteModelList;
         }
     }
 }

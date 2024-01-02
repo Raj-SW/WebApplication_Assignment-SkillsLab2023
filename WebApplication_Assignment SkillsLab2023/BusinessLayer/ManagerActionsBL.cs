@@ -23,7 +23,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         }
         public List<GetPendingEmployeesEnrolmentOfAMangerDTO> GetEmployeesEnrolmentByManagerId(byte managerId)
         {
-
             return _managerActionsDAL.GetEmployeesPendingEnrolmentByManagerId(managerId);
         }
         public void RejectEmployeeEnrolment()

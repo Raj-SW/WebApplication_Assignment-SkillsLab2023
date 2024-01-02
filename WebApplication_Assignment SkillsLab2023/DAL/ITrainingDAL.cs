@@ -21,6 +21,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         bool DeleteTraining(byte trainingId);
         bool isTrainingDeletable(byte trainingId);
         List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte trainingId);
+        List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId);
 
     }
 }
