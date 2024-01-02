@@ -49,7 +49,6 @@ function Register()
             }
         })
         .then(data => {
-            //authtoken logic happens here
             if (data.result) {
                 window.location = data.url;
                 alert(data.message);
@@ -58,6 +57,5 @@ function Register()
         })
         .catch(error => {
             alert("Sorry we're having some trouble with you're registration, We'll get back to you", error)
-
         });
 }

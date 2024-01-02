@@ -14,7 +14,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         bool InsertUserModelCredentialModel(UserModel userModel,CredentialModel credentialModel);
         bool InsertCredentialModel(CredentialModel model);
         int GetUserModelIDbyNIC(UserModel model);
-        bool InsertUserModel(UserModel model);
         bool isEmailUnique(UserAndCredentialDTO dto);
         bool isNicUnique(UserAndCredentialDTO dto);
         bool isMobileNumUnique(UserAndCredentialDTO dto);

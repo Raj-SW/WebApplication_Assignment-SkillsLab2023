@@ -40,12 +40,14 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             TaskResult uploadTaskResult= new TaskResult();
             //TODO:
             //Security protocols here
+            //Notify user of successfull enrolment
             uploadTaskResult = _iFileHandlerService.FileUpload(userId,trainingId,FileCollection);
             if (uploadTaskResult.isSuccess)
             {
-                var result = _itrainingDAL.EnrolEmployeeIntoTraining(userId,trainingId,uploadTaskResult.ResultMessageList);
+                uploadTaskResult.isSuccess = _itrainingDAL.EnrolEmployeeIntoTraining(userId,trainingId,uploadTaskResult.ResultMessageList);
+                return uploadTaskResult.isSuccess;
             }
-            return true;
+            return false;
         }
         public List<PrerequisitesModel> GetAllPrerequisites()
         {
@@ -102,7 +104,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _itrainingDAL.RejectEnrolment(enrolmentId, remarks);
         }
-
         public bool CreatePrerequisite(string description)
         {
             return _itrainingDAL.CreatePrerequisite(description);

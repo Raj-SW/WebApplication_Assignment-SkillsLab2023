@@ -190,12 +190,10 @@
     <Compile Include="DAL\Common\DBCommand.cs" />
     <Compile Include="DAL\Common\IDataAccessLayer.cs" />
     <Compile Include="DAL\Common\IDBCommand.cs" />
-    <Compile Include="DAL\EmployeeDAL.cs" />
     <Compile Include="DAL\Common\GenericDAL.cs" />
     <Compile Include="DAL\Common\IGenericDAL.cs" />
     <Compile Include="DAL\IAuthenticationDAL.cs" />
     <Compile Include="DAL\ITrainingDAL.cs" />
-    <Compile Include="DAL\ManagerDAL.cs" />
     <Compile Include="DAL\TestDAL.cs" />
     <Compile Include="DAL\TrainingDAL.cs" />
     <Compile Include="DataTransferObjects\ActivationDTO.cs" />

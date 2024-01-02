@@ -19,7 +19,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Services
         public TaskResult FileUpload(int userId, int trainingId, HttpFileCollectionBase FileCollection)
         {
             TaskResult taskModelResult = new TaskResult();
-            
             if (FileCollection.Count > 0)
             {
                 try

@@ -79,33 +79,24 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             taskResult.isSuccess = true;
             if (isEmailUnique(dto))
             {
-                taskResult.AddResultMessage("Email is already taken");
+                taskResult.AddResultMessage("Email is already taken\n");
                 taskResult.isSuccess = false;
             }
             if (isNicUnique(dto))
             {
-                taskResult.AddResultMessage("NIC is already taken");
+                taskResult.AddResultMessage("NIC is already taken\n");
                 taskResult.isSuccess = false;
             }
             if (isMobileNumUnique(dto))
             {
-                taskResult.AddResultMessage("Mobile Number is already taken");
+                taskResult.AddResultMessage("Mobile Number is already taken\n");
                 taskResult.isSuccess = false;
             }
-
             return taskResult;
         }
         public bool IsCredentialsExists(CredentialModel model)
         {
             return _authenticationDAL.IsCredentialsExists(model);
-        }
-        public bool InsertUserModel(UserModel model)
-        {
-            return _authenticationDAL.InsertUserModel(model);
-        }
-        public bool IsUserActivated(CredentialModel model)
-        {
-            throw new NotImplementedException();
         }
         public bool InsertCredentialModel(CredentialModel model)
         {
@@ -117,7 +108,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         }
         public bool isEmailUnique(UserAndCredentialDTO dto)
         {
-
            return _authenticationDAL.isEmailUnique(dto);
         }
         public bool isNicUnique(UserAndCredentialDTO dto)
@@ -127,10 +117,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public bool isMobileNumUnique(UserAndCredentialDTO dto)
         {
             return _authenticationDAL.isMobileNumUnique(dto);
-        }
-        public int GetUserIdByCredentials(CredentialModel model) 
-        {
-            return _authenticationDAL.GetUserIdByCredentials(model);    
         }
         public UserModel GetUserModelByID(int id)
         {
@@ -156,7 +142,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             byte[] saltBytes = BitConverter.GetBytes(ticks);
             return saltBytes;
         }
-
         public List<RoleModel> GetAllRoles()
         {
             return _authenticationDAL.GetAllRoles();

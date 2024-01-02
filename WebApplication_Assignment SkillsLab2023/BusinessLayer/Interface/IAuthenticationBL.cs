@@ -10,9 +10,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         void Logout();
         TaskResult IsUserModelUnique(UserAndCredentialDTO dto);
         bool IsCredentialsExists(CredentialModel model);
-        bool InsertUserModel(UserModel model);
         bool InsertCredentialModel(CredentialModel model);
-        bool IsUserActivated(CredentialModel model);
         int GetUserModelIDbyNIC(UserModel model);
         bool isEmailUnique(UserAndCredentialDTO dto);
         bool isNicUnique(UserAndCredentialDTO dto);
