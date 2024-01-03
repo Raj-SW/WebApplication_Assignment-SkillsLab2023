@@ -74,7 +74,7 @@
 
         if (buttonText === 'View') {
             btn.innerHTML = 'Close';
-            fetch('/Training/GetEnrolmentPrerequisitesById', {
+            fetch('/Enrolment/GetEnrolmentPrerequisitesById', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -128,7 +128,7 @@
     }
 
     function ApproveEnrolment(enrolmentId) {
-        fetch('/Training/ApproveEnrolment', {
+        fetch('/Enrolment/ApproveEnrolment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -155,7 +155,7 @@
     function RejectEnrolment(enrolmentId) {
         var remarks = document.getElementById("remarks_" + enrolmentId).value; // Get remarks from textarea
 
-        fetch('/Training/RejectEnrolment', {
+        fetch('/Enrolment/RejectEnrolment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

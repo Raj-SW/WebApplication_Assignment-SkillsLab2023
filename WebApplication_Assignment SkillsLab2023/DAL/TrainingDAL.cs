@@ -20,6 +20,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             _command = command;
         }
+
+        #region Get Model
         public List<TrainingWithPrerequisitesModel> GetAllTrainingModels()
         {
             const string GET_ALL_TRAINING_QUERY = "SELECT * FROM [TrainingAssignment].[dbo].[Training]";
@@ -59,33 +61,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
                 return ListOfTrainingPrerequisiteModelsByTrainingId;
         }
-        public bool EnrolEmployeeIntoTraining(int userId, int trainingId, List<string> filepath)
-        {
-            string INSERT_ENROLMENT_QUERY =
-            @"
-            DECLARE @EnrolmentId INT;
-            INSERT INTO Enrolment (UserId, TrainingId)
-            VALUES (@UserId, @TrainingId);
-            SET @EnrolmentId = SCOPE_IDENTITY();
-            INSERT INTO EnrolmentPrerequisite (EnrolmentId, FilePath)
-            VALUES ";
-            DBCommand command = new DBCommand();
-            List<SqlParameter> parameters = new List<SqlParameter>
-            {
-                new SqlParameter("@UserId", userId),
-                new SqlParameter("@TrainingId", trainingId)
-            };
-            int index=0;
-            foreach (string filePathEntry in filepath)
-            {   
-                INSERT_ENROLMENT_QUERY += $"(@EnrolmentId, @FilePath{index}),";
-                parameters.Add(new SqlParameter($"@FilePath{index}", filePathEntry));
-                index++;
-            }
-            INSERT_ENROLMENT_QUERY = INSERT_ENROLMENT_QUERY.TrimEnd(',') + ";";
-            command.InsertUpdateData(INSERT_ENROLMENT_QUERY , parameters);
-            return true;
-        }
         public List<PrerequisitesModel> GetAllPrerequisites()
         {
             const string GET_ALL_PREREQUISITES_QUERY = "SELECT * FROM  [Prerequisites]";
@@ -101,6 +76,26 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return prerequisitesModelsList;
         }
+        public List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte trainingId)
+        {
+            const string GET_ALL_PREREQUISITES_OF_A_TRAINING = @"SELECT p.* FROM Prerequisites p INNER JOIN TrainingPrerequisite tp ON p.PrerequisiteId= tp.PrerequisiteId WHERE tp.TrainingId = @TrainingId; ";
+            List<PrerequisitesModel> listOfPrerequisite = new List<PrerequisitesModel>();
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            PrerequisitesModel prerequisitesModel;
+            parameters.Add(new SqlParameter("@TrainingId",trainingId));
+            var dt = _command.GetDataWithConditions(GET_ALL_PREREQUISITES_OF_A_TRAINING,parameters);
+            foreach (DataRow row in dt.Rows) 
+            {
+                prerequisitesModel = new PrerequisitesModel();
+                prerequisitesModel.PrerequisiteId = (byte)row["PrerequisiteId"];    
+                prerequisitesModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
+                listOfPrerequisite.Add(prerequisitesModel);
+            }
+            return listOfPrerequisite;
+        }
+        #endregion
+
+        #region Insert
         public bool CreateTraining(CreateTrainingDTO createTrainingDTO)
         {
             string CREATE_TRAINING_QUERY = @"INSERT INTO [Training] (TrainingName,TrainingStatus,DepartmentPriority,TrainingDescription,TrainingRegistrationDeadline,SeatsTotal,CoachId)
@@ -128,6 +123,31 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             _command.InsertUpdateData(CREATE_TRAINING_QUERY, parameters);
             return true;
         }
+        public bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel)
+        {
+            //TODO: CHECK IF ROW EXIST
+            const string ADD_PREREQUISITE_TO_TRAINING_QUERY = @"
+                INSERT INTO [TrainingPrerequisite]
+                VALUES(@PrerequisiteId,@TrainingId);";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@PrerequisiteId",trainingPrerequisiteModel.PrerequisiteId));
+            parameters.Add(new SqlParameter("@TrainingId",trainingPrerequisiteModel.TrainingId));
+            _command.InsertUpdateData(ADD_PREREQUISITE_TO_TRAINING_QUERY, parameters);
+            return true;
+        }
+        public bool CreatePrerequisite(string description)
+        {
+            const string INSERT_PREREQUISITE_QUERY = @"INSERT INTO Prerequisites (PrerequisiteDescription) VALUES (@PrerequisiteDescription);";
+            List<SqlParameter> parameters = new List<SqlParameter>() {
+                new SqlParameter("@PrerequisiteDescription", description),
+            };
+            _command.InsertUpdateData(INSERT_PREREQUISITE_QUERY, parameters);
+            return true;
+        }
+
+        #endregion
+
+        #region Update
         public bool UpdateTraining(TrainingModel trainingmodel)
         {
             const string UPDATE_TRAINING_QUERY = @"
@@ -154,18 +174,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             _command.InsertUpdateData(UPDATE_TRAINING_QUERY, parameters);
             return true;
         }
-        public bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel)
-        {
-            //TODO: CHECK IF ROW EXIST
-            const string ADD_PREREQUISITE_TO_TRAINING_QUERY = @"
-                INSERT INTO [TrainingPrerequisite]
-                VALUES(@PrerequisiteId,@TrainingId);";
-            List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@PrerequisiteId",trainingPrerequisiteModel.PrerequisiteId));
-            parameters.Add(new SqlParameter("@TrainingId",trainingPrerequisiteModel.TrainingId));
-            _command.InsertUpdateData(ADD_PREREQUISITE_TO_TRAINING_QUERY, parameters);
-            return true;
-        }
         public bool UpdateTrainingPrerequisite(byte TrainingId, List<byte> Prerequisites)
         {
             string UPDATE_TRAINING_PREQUISITE_QUERY = @"
@@ -183,6 +191,9 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             _command.InsertUpdateData(UPDATE_TRAINING_PREQUISITE_QUERY, parameters);
             return true;
         }
+        #endregion
+
+        #region Delete
         public bool DeleteTraining(byte trainingId)
         {
             const string DELETE_TRAINING_QUERY = @"DELETE From Training WHERE TrainingId = @TrainingId";
@@ -191,23 +202,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             _command.InsertUpdateData(DELETE_TRAINING_QUERY, parameters);
             return true;
         }
-        public List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte trainingId)
-        {
-            const string GET_ALL_PREREQUISITES_OF_A_TRAINING = @"SELECT p.* FROM Prerequisites p INNER JOIN TrainingPrerequisite tp ON p.PrerequisiteId= tp.PrerequisiteId WHERE tp.TrainingId = @TrainingId; ";
-            List<PrerequisitesModel> listOfPrerequisite = new List<PrerequisitesModel>();
-            List<SqlParameter> parameters = new List<SqlParameter>();
-            PrerequisitesModel prerequisitesModel;
-            parameters.Add(new SqlParameter("@TrainingId",trainingId));
-            var dt = _command.GetDataWithConditions(GET_ALL_PREREQUISITES_OF_A_TRAINING,parameters);
-            foreach (DataRow row in dt.Rows) 
-            {
-                prerequisitesModel = new PrerequisitesModel();
-                prerequisitesModel.PrerequisiteId = (byte)row["PrerequisiteId"];    
-                prerequisitesModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
-                listOfPrerequisite.Add(prerequisitesModel);
-            }
-            return listOfPrerequisite;
-        }
         public bool isTrainingDeletable(byte trainingId)
         {
             const string SELECT_ENROLMENTS_QUERY = @"SELECT * FROM Enrolment WHERE TrainingId = @TrainingId;";
@@ -215,52 +209,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             var dt =_command.GetDataWithConditions(SELECT_ENROLMENTS_QUERY, parameters);
             return dt.Rows.Count<=0;
         }
-        public List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId)
-        {
-            const string GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID = @"
-            SELECT ep.*
-            FROM EnrolmentPrerequisite ep
-            INNER JOIN Enrolment e ON e.EnrolmentId = ep.EnrolmentId
-            WHERE ep.EnrolmentId = @EnrolmentId;";
-            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@EnrolmentId", enrolmentId) };
-            UserPrerequisiteModel userPrerequisiteModel;
-            List<UserPrerequisiteModel> userPrerequisiteModelList = new List<UserPrerequisiteModel >();
-            var dt = _command.GetDataWithConditions(GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID, parameters);
-            foreach ( DataRow item in dt.Rows )
-            {
-                userPrerequisiteModel = new UserPrerequisiteModel();
-                userPrerequisiteModel.EnrolmentPrerequisiteId = (byte)item["EnrolmentPrerequisiteId"];
-                userPrerequisiteModel.EnrolmentId = (byte)item["EnrolmentId"];
-                userPrerequisiteModel.FilePath = (string)item["FilePath"];
-                userPrerequisiteModelList.Add(userPrerequisiteModel);
-            }
-            return userPrerequisiteModelList;
-        }
-        public bool ApproveEnrolment(byte enrolmentId)
-        {
-            const string APPROVE_ENROLMENT_BY_ID_QUERY = @"UPDATE Enrolment SET ManagerApproval = 'Approved' WHERE EnrolmentId = @EnrolmentId";
-            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@EnrolmentId", enrolmentId) };
-            _command.InsertUpdateData(APPROVE_ENROLMENT_BY_ID_QUERY, parameters);
-            return true;
-        }
-        public bool RejectEnrolment(byte enrolmentId, string remarks)
-        {
-            const string REJECT_ENROLMENT_BY_ID_QUERY = @"UPDATE Enrolment SET ManagerApproval = 'Rejected', Remarks = @Remarks WHERE EnrolmentId = @EnrolmentId";
-            List<SqlParameter> parameters = new List<SqlParameter>() {
-                new SqlParameter("@EnrolmentId", enrolmentId),
-                new SqlParameter("@Remarks", remarks),
-            };
-            _command.InsertUpdateData(REJECT_ENROLMENT_BY_ID_QUERY, parameters);
-            return true;
-        }
-        public bool CreatePrerequisite(string description)
-        {
-            const string INSERT_PREREQUISITE_QUERY = @"INSERT INTO Prerequisites (PrerequisiteDescription) VALUES (@PrerequisiteDescription);";
-            List<SqlParameter> parameters = new List<SqlParameter>() {
-                new SqlParameter("@PrerequisiteDescription", description),
-            };
-            _command.InsertUpdateData(INSERT_PREREQUISITE_QUERY, parameters);
-            return true;
-        }
+        #endregion
     }
 }

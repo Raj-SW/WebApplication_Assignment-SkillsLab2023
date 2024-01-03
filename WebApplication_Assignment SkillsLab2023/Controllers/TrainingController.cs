@@ -39,18 +39,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = true, preReqList=trainingPrerequisiteModelListById});
         }
         [HttpPost]
-        public JsonResult EnrolEmployeeIntoTraining()
-        {
-            var userId = int.Parse(HttpContext.Request.Form["userId"]);
-            var trainingId = int.Parse(HttpContext.Request.Form["trainingId"]);
-            var result = _trainingBl.EnrolEmployeeIntoTraining(userId,trainingId,Request.Files);
-            if (result)
-            {
-                return Json(new {result=true, message="Enrolment successful." });
-            }
-            return Json(new { result = false,message="Enrolment failed" });
-        }
-        [HttpPost]
         public ActionResult CreateTraining(CreateTrainingDTO createTrainingDTO)
         {
             var isSuccess = _trainingBl.CreateTraining(createTrainingDTO);
@@ -100,12 +88,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "Training deletion unsuccessful.There might be enrolments" }); ;
         }
-        [HttpPost]
-        public ActionResult GetEnrolmentPrerequisitesById(byte enrolmentId)
-        {
-            var enrolmentPrerequisites = _trainingBl.GetEnrolmentPrerequisitesOfAUserByEnrolmentId(enrolmentId);
-            return Json(new { result = true, message = "Successfully retrieved prerequisites", EnrolmentPrerequisites= enrolmentPrerequisites });
-        }
         public ActionResult GetFile(string filePath)
         {
             var fullPath = Path.Combine(Server.MapPath("~/"), filePath);
@@ -125,29 +107,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
                 // Handle file not found appropriately
                 return HttpNotFound();
             }
-        }
-        [HttpPost]
-        public ActionResult ApproveEnrolment(byte enrolmentId)
-        {
-            var isSuccess = _trainingBl.ApproveEnrolment(enrolmentId);
-            if (isSuccess)
-            {
-                return Json(new { result = true, message="Enrolment Approved"});
-            }
-            return Json(new { result = false, message = "There has been an error" });
-
-        }
-        [HttpPost]
-        public ActionResult RejectEnrolment(byte enrolmentId,string remarks)
-        {
-            var isSuccess =_trainingBl.RejectEnrolment(enrolmentId, remarks);
-            if (isSuccess)
-            {
-                return Json(new { result = true, message = "Enrolment Reject successfully" });
-
-            }
-            return Json(new { result = false, message = "There has been an error " });
-
         }
         [HttpPost]
         public ActionResult CreatePrerequisites(string prerequisiteDescription) 

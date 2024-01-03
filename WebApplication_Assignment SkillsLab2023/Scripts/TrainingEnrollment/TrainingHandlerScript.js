@@ -31,7 +31,7 @@
         Files: Array.from(fileInputs)
     }
     console.log("Handling submission");
-    const url = '/Training/EnrolEmployeeIntoTraining';
+    const url = '/Enrolment/EnrolEmployeeIntoTraining';
     fetch(url, {
         method: 'POST',
         body: formData 

@@ -70,7 +70,7 @@
 <script>
     function getManagersByDepartment(departmentId, userId) {
         console.log("department id ", departmentId);
-        fetch('/Admin/GetManagerByDepartment', {
+        fetch('/User/GetManagerByDepartment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -131,7 +131,7 @@
 
         console.log("ActivationDTO", ActivationDTO);
 
-        fetch('/Admin/ActivatePendingAccount', {
+        fetch('/User/ActivatePendingAccount', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

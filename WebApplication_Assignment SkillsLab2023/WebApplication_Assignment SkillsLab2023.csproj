@@ -159,32 +159,32 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="BusinessLayer\AdminActionsBL.cs" />
     <Compile Include="BusinessLayer\AuthenticationBL.cs" />
-    <Compile Include="BusinessLayer\Interface\IAdminActionsBL.cs" />
+    <Compile Include="BusinessLayer\DepartmentBL.cs" />
+    <Compile Include="BusinessLayer\EnrolmentBL.cs" />
     <Compile Include="BusinessLayer\Interface\IAuthenticationBL.cs" />
-    <Compile Include="BusinessLayer\Interface\IManagerActions.cs" />
+    <Compile Include="BusinessLayer\Interface\IDepartmentBL.cs" />
+    <Compile Include="BusinessLayer\Interface\IEnrolmentBL.cs" />
     <Compile Include="BusinessLayer\Interface\ITrainingBL.cs" />
-    <Compile Include="BusinessLayer\IUserBL.cs" />
-    <Compile Include="BusinessLayer\ManagerActionsBL.cs" />
+    <Compile Include="BusinessLayer\Interface\IUserBL.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
+    <Compile Include="Controllers\EnrolmentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="DAL\IAdminActionsDAL.cs" />
-    <Compile Include="DAL\IManagerActionsDAL.cs" />
-    <Compile Include="DAL\IUserDAL.cs" />
-    <Compile Include="BusinessLayer\ManagerBL.cs" />
+    <Compile Include="DAL\DepartmentDAL.cs" />
+    <Compile Include="DAL\EnrolmentDAL.cs" />
+    <Compile Include="DAL\Interface\IDepartmentDAL.cs" />
+    <Compile Include="DAL\Interface\IEnrolmentDAL.cs" />
+    <Compile Include="DAL\Interface\IUserDAL.cs" />
     <Compile Include="BusinessLayer\Others\TestBL.cs" />
     <Compile Include="BusinessLayer\TrainingBL.cs" />
     <Compile Include="BusinessLayer\UserBL.cs" />
-    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TrainingController.cs" />
     <Compile Include="Custom\CustomAuthorizationAttribute.cs" />
     <Compile Include="Custom\UserSessionAttribute.cs" />
-    <Compile Include="DAL\AdminActionsDAL.cs" />
     <Compile Include="DAL\AuthenticationDAL.cs" />
-    <Compile Include="DAL\ManagerActionsDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
     <Compile Include="DAL\Common\DataAccessLayer.cs" />
     <Compile Include="DAL\Common\DBCommand.cs" />
@@ -192,8 +192,8 @@
     <Compile Include="DAL\Common\IDBCommand.cs" />
     <Compile Include="DAL\Common\GenericDAL.cs" />
     <Compile Include="DAL\Common\IGenericDAL.cs" />
-    <Compile Include="DAL\IAuthenticationDAL.cs" />
-    <Compile Include="DAL\ITrainingDAL.cs" />
+    <Compile Include="DAL\Interface\IAuthenticationDAL.cs" />
+    <Compile Include="DAL\Interface\ITrainingDAL.cs" />
     <Compile Include="DAL\TestDAL.cs" />
     <Compile Include="DAL\TrainingDAL.cs" />
     <Compile Include="DataTransferObjects\ActivationDTO.cs" />
@@ -202,6 +202,7 @@
     <Compile Include="DataTransferObjects\CreateTrainingDTO.cs" />
     <Compile Include="DataTransferObjects\EnrolmentDTO.cs" />
     <Compile Include="DataTransferObjects\ManagerDTO.cs" />
+    <Compile Include="DataTransferObjects\UserAndRolesDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -222,6 +223,7 @@
     <Compile Include="Models\UserPrerequisiteModel.cs" />
     <Compile Include="Models\UserRolesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\EmailSender.cs" />
     <Compile Include="Services\Interfaces\IFileHandlerService.cs" />
     <Compile Include="Services\Interfaces\INotificationServices.cs" />
     <Compile Include="Services\LocalFileHandlerService.cs" />
@@ -247,6 +249,7 @@
     <Content Include="Content\Styling\AdminCreateTrainingStyling.css" />
     <Content Include="Content\Styling\AdminPendingAccountPartialViewStyling.css" />
     <Content Include="Content\Styling\AdminUpdateDeletePartialViewStyling.css" />
+    <Content Include="Content\Styling\AdminUpdateEmployeePartialViewStyling.css" />
     <Content Include="Content\Styling\AdminViewStyling.css" />
     <Content Include="Content\Styling\BaseDashboardStyling.css" />
     <Content Include="Content\Styling\LoginPageStyling.css" />
@@ -304,12 +307,10 @@
     <Content Include="Views\Authentication\LoginPage.cshtml" />
     <Content Include="Views\Authentication\RegistrationPage.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Common\AccessDenied.cshtml" />
     <Content Include="Views\Common\Index.cshtml" />
     <Content Include="Views\Manager\ManagerView.cshtml" />
     <Content Include="Views\Authentication\RoleSelectionPage.cshtml" />
-    <Content Include="Views\Authentication\RedirectToUserRole.cshtml" />
     <Content Include="Views\User\EmployeeView.cshtml" />
     <Content Include="Views\User\AdminView.cshtml" />
     <Content Include="Views\User\ManagerView.cshtml" />
@@ -319,10 +320,14 @@
     <Content Include="Views\User\_AdminUpdateDeleteTrainingPartialView.cshtml" />
     <Content Include="Views\User\_ManagerViewEmployeeEnrolmentsPartialView.cshtml" />
     <Content Include="Views\User\_AdminCreatePrerequisitePartialView.cshtml" />
+    <Content Include="Views\User\_EmployeeViewTrainingPartialView.cshtml" />
+    <Content Include="Views\User\_AdminUpdateEmployee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Storage\" />
+    <Folder Include="Views\Department\" />
+    <Folder Include="Views\Enrolment\" />
     <Folder Include="Views\Training\" />
   </ItemGroup>
   <ItemGroup>

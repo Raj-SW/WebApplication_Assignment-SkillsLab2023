@@ -10,20 +10,28 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
 {
     public interface ITrainingDAL
     {
+        #region Get Model
         List<TrainingWithPrerequisitesModel> GetAllTrainingModels();
         List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
-        bool EnrolEmployeeIntoTraining(int userId, int trainingId, List<string> filepath);
         List<PrerequisitesModel> GetAllPrerequisites();
+        List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte trainingId);
+        #endregion
+
+        #region Insert
         bool CreateTraining(CreateTrainingDTO createTraining);
-        bool UpdateTraining(TrainingModel trainingmodel);
         bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel);
+        bool CreatePrerequisite(string description);
+        #endregion
+
+        #region Update
+        bool UpdateTraining(TrainingModel trainingmodel);
         bool UpdateTrainingPrerequisite(byte TrainingId, List<byte> Prerequisites);
+        #endregion
+
+        #region Delete
         bool DeleteTraining(byte trainingId);
         bool isTrainingDeletable(byte trainingId);
-        List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte trainingId);
-        List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId);
-        bool ApproveEnrolment(byte enrolmentId);
-        bool RejectEnrolment(byte enrolmentId,string remarks);
-        bool CreatePrerequisite(string description);
+        #endregion
+
     }
 }

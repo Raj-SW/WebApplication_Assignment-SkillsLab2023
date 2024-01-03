@@ -9,15 +9,8 @@
 <h2>Admin View</h2>
 
 
-<!-- Render the partial view and pass necessary data -->
-@*<div>*@
 @Html.Partial("_AdminActivatePendingAcountsPartialView", new ViewDataDictionary { { "ListOfPendingUserAccounts", ViewBag.ListOfPendingUserAccounts }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfUserRoles", ViewBag.ListOfUserRoles }, { "ListOfManagers", ViewBag.ListOfManagers } })
-@*</div>*@
-@*<div>*@
 @Html.Partial("_AdminCreateTrainingPartvialView", new ViewDataDictionary { { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfTrainingStatus", ViewBag.ListOFTrainingStatus }, { "ListOfPrerequisites", ViewBag.ListOfPrerequisiteModel } })
-@*</div>*@@*<div>*@
-@Html.Partial("_AdminCreatePrerequisitePartialView");
-@*</div>*@
-@*<div>*@
+@Html.Partial("_AdminCreatePrerequisitePartialView")
 @Html.Partial("_AdminUpdateDeleteTrainingPartialView", new ViewDataDictionary { { "ListOfTrainingWithPrerequisites", ViewBag.ListOfTrainingWithPrerequisites }, { "ListOfTrainingStatus", ViewBag.ListOFTrainingStatus }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfPrerequisites", ViewBag.ListOfPrerequisiteModel } })
-@*</div>*@
+@Html.Partial("_AdminUpdateEmployee", new ViewDataDictionary { { "ListOfUserModelsAndTheirRoles", ViewBag.ListOfUserModelsAndTheirRoles }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfUserRoles", ViewBag.ListOfUserRoles } })

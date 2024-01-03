@@ -1,4 +1,3 @@
-using ConsoleApp5.DAL;
 using System.Web.Mvc;
 using Unity;
 using Unity.Mvc5;
@@ -7,6 +6,7 @@ using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.Common;
 using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
+using WebApplication_Assignment_SkillsLab2023.DAL.Interface;
 using WebApplication_Assignment_SkillsLab2023.Services;
 using WebApplication_Assignment_SkillsLab2023.Services.Interfaces;
 
@@ -30,10 +30,10 @@ namespace WebApplication_Assignment_SkillsLab2023
             container.RegisterType<IFileHandlerService, LocalFileHandlerService>();
             container.RegisterType<IUserDAL, UserDAL>();
             container.RegisterType<IUserBL, UserBL>();
-            container.RegisterType<IManagerActionsBL, ManagerActionsBL>();
-            container.RegisterType<IManagerActionsDAL, ManagerActionsDAL>();
-            container.RegisterType<IAdminActionsBL, AdminActionsBL>();
-            container.RegisterType<IAdminActionsDAL, AdminActionsDAL>();
+            container.RegisterType<IEnrolmentBL, EnrolmentBL>();
+            container.RegisterType<IEnrolmentDAL, EnrolmentDAL>();
+            container.RegisterType<IDepartmentBL, DepartmentBL>();
+            container.RegisterType<IDepartmentDAL, DepartmentDAL>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }

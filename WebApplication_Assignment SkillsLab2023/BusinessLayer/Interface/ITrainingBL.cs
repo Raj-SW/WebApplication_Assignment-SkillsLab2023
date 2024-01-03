@@ -9,21 +9,29 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 {
     public interface ITrainingBL
     {
+        #region Insert Models
+        bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel);
+        bool CreatePrerequisite(string description);
+        bool CreateTraining(CreateTrainingDTO createTrainingDTO);
+        #endregion
+
+        #region Get Models
         List<TrainingWithPrerequisitesModel> GetAllTrainingModels();
         List<TrainingWithPrerequisitesModel> GetAllTrainingModelsWithPrerequisites();
         List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
-        bool EnrolEmployeeIntoTraining(int userId, int trainingId, HttpFileCollectionBase files);
         List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte TrainingId);
         List<PrerequisitesModel> GetAllPrerequisites();
-        bool CreateTraining(CreateTrainingDTO createTrainingDTO);
+        #endregion
+
+        #region Update Models
         bool UpdateTraining(TrainingModel trainingmodel);
-        bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel);
         bool UpdateTrainingPrerequisite(byte TrainingId, List<byte> Prerequisites);
+        #endregion
+
+        #region Delete Models
         bool DeleteTraining(byte id);
         bool isTrainingDeletable(byte trainingId);
-        List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId);
-        bool ApproveEnrolment(byte enrolmentId);
-        bool RejectEnrolment(byte enrolmentId, string remarks);
-        bool CreatePrerequisite(string description);
+        #endregion
+       
     }
 }
