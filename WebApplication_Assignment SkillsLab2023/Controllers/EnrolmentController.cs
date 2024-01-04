@@ -25,13 +25,23 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             {
                 return Json(new { result = true, message = "Enrolment successful." });
             }
-            return Json(new { result = false, message = "Enrolment failed" });
+            return Json(new { result = false, message = "Enrolment failed. Make sure you have submitted all files required" });
         }
         [HttpPost]
         public ActionResult GetEnrolmentPrerequisitesById(byte enrolmentId)
         {
             var enrolmentPrerequisites = _enrolmentBL.GetEnrolmentPrerequisitesOfAUserByEnrolmentId(enrolmentId);
             return Json(new { result = true, message = "Successfully retrieved prerequisites", EnrolmentPrerequisites = enrolmentPrerequisites });
+        }
+        [HttpPost]
+        public ActionResult isUserAlreadyRegisteredForTraining(byte trainingId, byte userId) {
+            var result = _enrolmentBL.isUserAlreadyRegisteredInTraining(trainingId, userId);
+            if (result)
+            {
+                return Json(new { result = true, message = "You have Already Registered" });
+            }
+            return Json(new { result = false, message = "" });
+
         }
         [HttpPost]
         public ActionResult ApproveEnrolment(byte enrolmentId)

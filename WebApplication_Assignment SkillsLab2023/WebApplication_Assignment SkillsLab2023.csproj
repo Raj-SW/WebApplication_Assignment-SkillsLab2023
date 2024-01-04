@@ -276,7 +276,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\ModalManipulation\ModalManipulationscript.js" />
+    <Content Include="Scripts\ModalManipulation\ModalManipulationscript1.js" />
     <Content Include="Scripts\UserRoleManagement\RedirectToUserRoleScript.js" />
     <Content Include="Scripts\TrainingEnrollment\TrainingHandlerScript.js" />
     <Content Include="Scripts\TrainingRegistrationScripts\TrainingDetailsAndEnrolmentByModal.js" />

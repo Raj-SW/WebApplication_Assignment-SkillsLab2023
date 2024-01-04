@@ -34,6 +34,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             throw new NotImplementedException();
         }
+        public bool isUserAlreadyRegisteredInTraining(byte trainingId, byte UserId)
+        {
+            return _enrolmentDAL.isUserAlreadyRegisteredInTraining(trainingId,UserId);
+        }
         #endregion
 
         #region Insert Models
@@ -43,14 +47,14 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             //TODO:
             //Security protocols here
             //Notify user of successfull enrolment
-            uploadTaskResult = _iFileHandlerService.FileUpload(userId, trainingId, FileCollection);
-            if (uploadTaskResult.isSuccess)
+            if (FileCollection != null && FileCollection.Count > 0 )
             {
+                uploadTaskResult = _iFileHandlerService.FileUpload(userId, trainingId, FileCollection);
+            }
                 uploadTaskResult.isSuccess = _enrolmentDAL.EnrolEmployeeIntoTraining(userId, trainingId, uploadTaskResult.ResultMessageList);
                 return uploadTaskResult.isSuccess;
-            }
-            return false;
         }
+        //TODO Enrolemnt without attachment
         #endregion
 
         #region Update Model
@@ -62,8 +66,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _enrolmentDAL.RejectEnrolment(enrolmentId, remarks);
         }
-
-       
         #endregion
     }
 }

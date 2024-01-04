@@ -1,4 +1,4 @@
-﻿function EnrolEmployee(userId, training) {
+﻿function EnrolEmployee(userId, training, prereqCount) {
     let form = document.querySelector('form');
 
     form.addEventListener('submit', (e) => {
@@ -26,7 +26,7 @@
             console.log("No file selected for input " + (index + 1));
         }
     });
-    if (!filesSelected) {
+    if (!filesSelected && prereqCount > 0) {
         // No files selected, throw an error and notify the user
         console.error('Error: No files selected');
         alert('Error: Please upload at least one file.');
@@ -37,7 +37,6 @@
         UserId: userId,
         Files: Array.from(fileInputs)
     }
-    console.log("Handling submission");
     const url = '/Enrolment/EnrolEmployeeIntoTraining';
     fetch(url, {
         method: 'POST',

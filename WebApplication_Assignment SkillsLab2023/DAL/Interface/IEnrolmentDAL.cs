@@ -14,6 +14,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Interface
         List<GetPendingEmployeesEnrolmentOfAMangerDTO> GetEmployeesPendingEnrolmentByManagerId(byte managerId);
         List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId);
         List<UserPrerequisiteModel> GetAllEnrolmentsManagerWise(byte ManagerId);
+        bool isUserAlreadyRegisteredInTraining(byte trainingId, byte UserId);
         #endregion
 
         #region Insert Models

@@ -74,6 +74,16 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             throw new NotImplementedException();
         }
+        public bool isUserAlreadyRegisteredInTraining(byte trainingId, byte UserId)
+        {
+            const string CHECK_IF_USER_ALREADY_REGISTERED = @"SELECT TOP(1) * FROM Enrolment WHERE TrainingId = @TrainingId AND UserId = @UserId AND RegistrationStatus = 'Pending' AND ManagerApproval = 'Pending';";
+            List<SqlParameter> parameters = new List<SqlParameter>() { 
+                new SqlParameter("@TrainingId",trainingId),
+                new SqlParameter("@UserId",UserId)
+            };
+            var dt = _command.GetDataWithConditions(CHECK_IF_USER_ALREADY_REGISTERED, parameters);
+            return dt.Rows.Count>0;
+        }
         #endregion
 
         #region Insert
@@ -84,9 +94,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             DECLARE @EnrolmentId INT;
             INSERT INTO Enrolment (UserId, TrainingId)
             VALUES (@UserId, @TrainingId);
-            SET @EnrolmentId = SCOPE_IDENTITY();
-            INSERT INTO EnrolmentPrerequisite (EnrolmentId, FilePath)
-            VALUES ";
+            
+             ";
             DBCommand command = new DBCommand();
             List<SqlParameter> parameters = new List<SqlParameter>
             {
@@ -94,13 +103,18 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 new SqlParameter("@TrainingId", trainingId)
             };
             int index = 0;
-            foreach (string filePathEntry in filepath)
+            if(filepath != null && filepath.Count > 0)
             {
-                INSERT_ENROLMENT_QUERY += $"(@EnrolmentId, @FilePath{index}),";
-                parameters.Add(new SqlParameter($"@FilePath{index}", filePathEntry));
-                index++;
+                INSERT_ENROLMENT_QUERY += "SET @EnrolmentId = SCOPE_IDENTITY();" +
+                    "INSERT INTO EnrolmentPrerequisite (EnrolmentId, FilePath) VALUES";
+                foreach (string filePathEntry in filepath)
+                {
+                    INSERT_ENROLMENT_QUERY += $"(@EnrolmentId, @FilePath{index}),";
+                    parameters.Add(new SqlParameter($"@FilePath{index}", filePathEntry));
+                    index++;
+                }
+                INSERT_ENROLMENT_QUERY = INSERT_ENROLMENT_QUERY.TrimEnd(',') + ";";
             }
-            INSERT_ENROLMENT_QUERY = INSERT_ENROLMENT_QUERY.TrimEnd(',') + ";";
             command.InsertUpdateData(INSERT_ENROLMENT_QUERY, parameters);
             return true;
         }

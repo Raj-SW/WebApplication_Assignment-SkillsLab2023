@@ -109,7 +109,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             parameters.Add(new SqlParameter("@TrainingRegistrationDeadline", createTrainingDTO.RegistrationDeadline));
             parameters.Add(new SqlParameter("@TotalSeats", createTrainingDTO.TotalSeats));
             parameters.Add(new SqlParameter("@CoachId", createTrainingDTO.Coach));
-            if (createTrainingDTO.Prerequisites.Count > 0)
+            if (createTrainingDTO.Prerequisites != null && createTrainingDTO.Prerequisites.Count > 0)
             {
                 CREATE_TRAINING_QUERY +=
                     "DECLARE @generateTrainingId INT; SET @generateTrainingId = SCOPE_IDENTITY();";
