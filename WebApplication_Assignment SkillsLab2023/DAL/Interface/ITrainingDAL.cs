@@ -12,7 +12,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
     {
         #region Get Model
         List<TrainingWithPrerequisitesModel> GetAllTrainingModels();
-        List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
+        List<PrerequisitesModel> GetTrainingPrerequisitesById(int trainingId);
         List<PrerequisitesModel> GetAllPrerequisites();
         List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte trainingId);
         #endregion

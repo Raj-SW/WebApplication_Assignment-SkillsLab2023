@@ -16,7 +16,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnrolEmployee() 
+        public ActionResult EnrolEmployeeIntoTraining() 
         {
             var userId = int.Parse(HttpContext.Request.Form["userId"]);
             var trainingId = int.Parse(HttpContext.Request.Form["trainingId"]);

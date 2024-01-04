@@ -5,7 +5,7 @@
     var registrationDeadline = new Date(parseInt(training.TrainingRegistrationDeadline.substr(6)));
     var formattedDeadline = registrationDeadline.toLocaleString();
     var detailsContainer = document.createElement("div");
-    detailsContainer.innerHTML = "<h3>Training Details</h3>" +
+    detailsContainer.innerHTML = 
         "<p><strong>Name:</strong> " + training.TrainingName + "</p>" +
         "<p><strong>Description:</strong> " + training.TrainingDescription + "</p>" +
         "<p><strong>Status:</strong> " + training.TrainingStatus + "</p>" +

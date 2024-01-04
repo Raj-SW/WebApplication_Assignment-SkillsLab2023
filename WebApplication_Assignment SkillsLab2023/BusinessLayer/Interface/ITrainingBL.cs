@@ -18,7 +18,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         #region Get Models
         List<TrainingWithPrerequisitesModel> GetAllTrainingModels();
         List<TrainingWithPrerequisitesModel> GetAllTrainingModelsWithPrerequisites();
-        List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId);
+        List<PrerequisitesModel> GetTrainingPrerequisitesById(int trainingId);
         List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte TrainingId);
         List<PrerequisitesModel> GetAllPrerequisites();
         #endregion

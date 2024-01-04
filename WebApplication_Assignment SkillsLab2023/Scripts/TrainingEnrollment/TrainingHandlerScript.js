@@ -6,25 +6,32 @@
         return false;
     });
 
-    console.log("User ID: ", userId, " Training ID: ", training.TrainingId);
-
     var formData = new FormData();
 
-    // Add user ID and training ID to the FormData
     formData.append('userId', userId);
     formData.append('trainingId', training.TrainingId);
 
     // Add files to the FormData
     var fileInputs = document.querySelectorAll('#fileInput');
+    var filesSelected = false;
+
     fileInputs.forEach(function (fileInput, index) {
         var file = fileInput.files[0];
         if (file) {
+            filesSelected = true;
             console.log("File " + (index + 1) + ": " + file.name);
             formData.append('files' + index, file);
         } else {
+            filesSelected = false;
             console.log("No file selected for input " + (index + 1));
         }
     });
+    if (!filesSelected) {
+        // No files selected, throw an error and notify the user
+        console.error('Error: No files selected');
+        alert('Error: Please upload at least one file.');
+        return false; // Prevent further execution
+    }
     var EnrolmentObject = {
         TrainingId: training.TrainingId,
         UserId: userId,

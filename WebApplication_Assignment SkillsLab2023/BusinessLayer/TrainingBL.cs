@@ -53,7 +53,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 
             return ListOftrainingModelsWithPrerequisites;
         }
-        public List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId)
+        public List<PrerequisitesModel> GetTrainingPrerequisitesById(int trainingId)
         {
             return _itrainingDAL.GetTrainingPrerequisitesById(trainingId);
         }

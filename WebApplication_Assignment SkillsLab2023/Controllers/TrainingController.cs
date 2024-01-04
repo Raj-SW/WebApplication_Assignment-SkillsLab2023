@@ -26,9 +26,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = true, listOfTraining = ListOftraining}) ;
         }
         [HttpPost]
-        public JsonResult GetTrainingPrerequisitebyTrainingId(int trainingId)
+        public JsonResult GetTrainingPrerequisitebyID(int trainingId)
         {
-            List<TrainingPrerequisiteModel> trainingPrerequisiteModelListById = _trainingBl.GetTrainingPrerequisitesById(trainingId);
+            List<PrerequisitesModel> trainingPrerequisiteModelListById = _trainingBl.GetTrainingPrerequisitesById(trainingId);
             return Json(new { result = true, preReqList=trainingPrerequisiteModelListById});
         }
         #endregion

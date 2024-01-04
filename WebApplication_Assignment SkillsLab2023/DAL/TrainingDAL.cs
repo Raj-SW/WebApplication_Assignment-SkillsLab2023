@@ -43,20 +43,20 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return ListOfTrainingModels;
         }
-        public List<TrainingPrerequisiteModel> GetTrainingPrerequisitesById(int trainingId) 
+        public List<PrerequisitesModel> GetTrainingPrerequisitesById(int trainingId) 
         {
-            const string GET_PREREQUISITE_BY_TRAINING_ID = "SELECT * FROM  [TrainingPrerequisite] WHERE TrainingId = @TrainingId";
+            const string GET_PREREQUISITE_BY_TRAINING_ID = "SELECT p.* FROM  [Prerequisites] p INNER JOIN [TrainingPrerequisite] tp ON p.PrerequisiteId = tp.PrerequisiteId WHERE tp.TrainingId = @TrainingId";
             DBCommand command = new DBCommand();
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@TrainingId", trainingId));
             var DataTable = command.GetDataWithConditions(GET_PREREQUISITE_BY_TRAINING_ID,parameters);
-            List<TrainingPrerequisiteModel> ListOfTrainingPrerequisiteModelsByTrainingId = new List<TrainingPrerequisiteModel>();
-            TrainingPrerequisiteModel trainingPrerequisiteModel;
+            List<PrerequisitesModel> ListOfTrainingPrerequisiteModelsByTrainingId = new List<PrerequisitesModel>();
+            PrerequisitesModel trainingPrerequisiteModel;
             foreach (DataRow row in DataTable.Rows)
             { 
-                trainingPrerequisiteModel = new TrainingPrerequisiteModel();
+                trainingPrerequisiteModel = new PrerequisitesModel();
                 trainingPrerequisiteModel.PrerequisiteId = (byte)row["PrerequisiteId"];
-                trainingPrerequisiteModel.TrainingId = (byte)row["TrainingId"];
+                trainingPrerequisiteModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
                 ListOfTrainingPrerequisiteModelsByTrainingId.Add(trainingPrerequisiteModel);
             }
                 return ListOfTrainingPrerequisiteModelsByTrainingId;
