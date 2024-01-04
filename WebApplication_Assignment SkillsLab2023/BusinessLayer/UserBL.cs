@@ -16,6 +16,17 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             _userDAL = userDAL;
         }
 
+        #region Get Model 
+        public string GetEmployeeEmailbyUserId(byte UserId)
+        {
+            return _userDAL.GetEmployeeEmailbyUserId(UserId);
+        }
+        public string GetManagerEmailThroughEmployeeUserId(byte UserId)
+        {
+           return _userDAL.GetManagerEmailThroughEmployeeUserId(UserId);
+        }
+        #endregion
+
         #region User Model Manipulations
         public bool ActivatePendingUser(ActivationDTO activationDTO)
         {
@@ -66,8 +77,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             throw new NotImplementedException();
         }
-
-        
         #endregion
 
     }

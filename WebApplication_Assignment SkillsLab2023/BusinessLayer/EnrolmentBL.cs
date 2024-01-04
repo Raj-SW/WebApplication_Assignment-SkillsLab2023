@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DAL.Interface;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
+using WebApplication_Assignment_SkillsLab2023.Services;
 using WebApplication_Assignment_SkillsLab2023.Services.Interfaces;
 
 namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
@@ -14,10 +17,12 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
     {
         private readonly IFileHandlerService _iFileHandlerService;
         private readonly IEnrolmentDAL _enrolmentDAL;
-        public EnrolmentBL(IEnrolmentDAL  enrolmentDAL, IFileHandlerService fileHandlerService) 
+        private readonly IUserBL _userBL;
+        public EnrolmentBL(IEnrolmentDAL  enrolmentDAL, IFileHandlerService fileHandlerService,IUserBL userBL) 
         {
             _enrolmentDAL = enrolmentDAL;
             _iFileHandlerService = fileHandlerService;
+            _userBL= userBL;
         }
 
         #region Get Model
@@ -41,18 +46,25 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         #endregion
 
         #region Insert Models
-        public bool EnrolEmployeeIntoTraining(int userId, int trainingId, HttpFileCollectionBase FileCollection)
+        public async Task<bool> EnrolEmployeeIntoTrainingAsync(byte userId, byte trainingId, HttpFileCollectionBase FileCollection)
         {
             TaskResult uploadTaskResult = new TaskResult();
             //TODO:
             //Security protocols here
-            //Notify user of successfull enrolment
             if (FileCollection != null && FileCollection.Count > 0 )
             {
                 uploadTaskResult = _iFileHandlerService.FileUpload(userId, trainingId, FileCollection);
             }
-                uploadTaskResult.isSuccess = _enrolmentDAL.EnrolEmployeeIntoTraining(userId, trainingId, uploadTaskResult.ResultMessageList);
-                return uploadTaskResult.isSuccess;
+            uploadTaskResult.isSuccess = _enrolmentDAL.EnrolEmployeeIntoTraining(userId, trainingId, uploadTaskResult.ResultMessageList);
+            //Notify user of successfull enrolment
+            //get email of user
+            string userEmail = _userBL.GetEmployeeEmailbyUserId(userId);
+            //get email of manager
+            string managerEmail = _userBL.GetManagerEmailThroughEmployeeUserId(userId);
+            //send mail to all
+            await EmailSender.SendEmailAsync("Subject", "body", userEmail);
+            await EmailSender.SendEmailAsync("Subject", "body", managerEmail);
+            return uploadTaskResult.isSuccess;
         }
         //TODO Enrolemnt without attachment
         #endregion

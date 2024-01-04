@@ -8,15 +8,18 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
     {
         #region Get
         List<UserAndRolesDTO> GetAllUsersAndTheirRoles();
-        #endregion
+        string GetEmployeeEmailbyUserId(byte UserId);
+        string GetManagerEmailThroughEmployeeUserId(byte UserId);
         List<UserRolesModel> GetAllUserRolesModelByUserId(int UserId);
         List<UserModel> GetAllPendingUserModels();
-        bool UpdateUserAndRoles(UserAndRolesDTO userAndRolesDTO);
-        bool ActivatePendingUser(ActivationDTO activationDTO);
-        void DeactivatePendingUser(byte UserID);
         List<RoleModel> GetAllUserRoles();
         List<ManagerDTO> GetAllManagers();
         List<ManagerDTO> GetAllManagersByDepartmentId(byte DepartmentId);
+        #endregion
+
+        bool UpdateUserAndRoles(UserAndRolesDTO userAndRolesDTO);
+        bool ActivatePendingUser(ActivationDTO activationDTO);
+        void DeactivatePendingUser(byte UserID);
         void AssignTrainingToEmployee(byte EmployeeId, byte TrainingId);
 
     }

@@ -87,7 +87,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         #endregion
 
         #region Insert
-        public bool EnrolEmployeeIntoTraining(int userId, int trainingId, List<string> filepath)
+        public bool EnrolEmployeeIntoTraining(byte userId, byte trainingId, List<string> filepath)
         {
             string INSERT_ENROLMENT_QUERY =
            @"

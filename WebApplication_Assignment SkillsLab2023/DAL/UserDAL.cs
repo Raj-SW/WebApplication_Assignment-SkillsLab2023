@@ -18,6 +18,39 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             _command = command;
         }
+        #region Get Model
+        public string GetEmployeeEmailbyUserId(byte UserId)
+        {
+            const string GET_EMPLOYEE_EMAL_BY_USER_ID = @"
+                            SELECT Email
+                            FROM [Credential]
+                            WHERE UserId = @UserId";
+            List<SqlParameter>parameters = new List<SqlParameter>() { new SqlParameter("@UserId",UserId)};
+            var dt = _command.GetDataWithConditions(GET_EMPLOYEE_EMAL_BY_USER_ID, parameters);
+            string email="";
+            foreach (DataRow row in dt.Rows)
+            {
+                email = (string)row["Email"];
+            }
+            return email;
+        }
+        public string GetManagerEmailThroughEmployeeUserId(byte UserId)
+        {
+            const string GET_EMPLOYEE_EMAL_BY_USER_ID = @"
+                            SELECT c.Email FROM [Credential] c 
+                            INNER JOIN [User] u ON c.UserId= u.ManagerId
+                            WHERE u.UserId = @UserId";
+            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@UserId", UserId) };
+            var dt = _command.GetDataWithConditions(GET_EMPLOYEE_EMAL_BY_USER_ID, parameters);
+            string email = "";
+            foreach (DataRow row in dt.Rows)
+            {
+                email = (string)row["Email"];
+            }
+            return email;
+        }
+        #endregion
+
         #region User Model Manipulations
         public List<UserAndRolesDTO> GetAllUsersAndTheirRoles()
         {

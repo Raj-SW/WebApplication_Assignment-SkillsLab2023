@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
@@ -16,11 +17,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnrolEmployeeIntoTraining() 
+        public async Task<ActionResult> EnrolEmployeeIntoTraining() 
         {
-            var userId = int.Parse(HttpContext.Request.Form["userId"]);
-            var trainingId = int.Parse(HttpContext.Request.Form["trainingId"]);
-            var result = _enrolmentBL.EnrolEmployeeIntoTraining(userId, trainingId, Request.Files);
+            var userId = byte.Parse(HttpContext.Request.Form["userId"]);
+            var trainingId = byte.Parse(HttpContext.Request.Form["trainingId"]);
+            var result = await  _enrolmentBL.EnrolEmployeeIntoTrainingAsync(userId, trainingId, Request.Files);
             if (result)
             {
                 return Json(new { result = true, message = "Enrolment successful." });

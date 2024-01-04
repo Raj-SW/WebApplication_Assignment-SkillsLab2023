@@ -9,9 +9,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Services
 {
     public static class EmailSender
     {
-        public static async Task<string> SendEmailAsync(string Subject, string Body, string recipientEmail)
+        public static async Task<string> SendEmailAsync(string Subject, string Body, string Email)
         {
-            string senderEmail = "Raj.Seetohul@ceridian.com";
+            string senderEmail = "UniHub@ceridian.com";
             var smtpClent = new SmtpClient("relay.ceridian.com")
             {
                 Port = 25,
@@ -19,7 +19,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Services
                 UseDefaultCredentials = true,
             };
 
-            var mailMessage = new MailMessage(senderEmail, recipientEmail)
+            var mailMessage = new MailMessage(senderEmail, Email)
             {
                 Subject = Subject,
                 Body = Body,

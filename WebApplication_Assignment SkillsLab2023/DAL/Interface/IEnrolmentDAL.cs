@@ -18,7 +18,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Interface
         #endregion
 
         #region Insert Models
-        bool EnrolEmployeeIntoTraining(int userId, int trainingId, List<string> filepath);
+        bool EnrolEmployeeIntoTraining(byte userId, byte trainingId, List<string> filepath);
         #endregion
 
         #region Update Models
