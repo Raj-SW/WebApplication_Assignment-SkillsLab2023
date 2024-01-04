@@ -1,6 +1,6 @@
 ﻿function getTrainingPrerequisite(training) {
     return new Promise((resolve, reject) => {
-        fetch('/Training/GetTrainingPrerequisitebyID', {
+        fetch('/Training/GetTrainingPrerequisitebyTrainingId', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -2,7 +2,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/Content/Styling/AdminUpdateEmployeePartialViewStyling.css" />
 </head>
-
 <h3>Update Employees</h3>
 <div class="update-employees-container">
     <div class="row">
@@ -21,44 +20,52 @@
                 @{
                     foreach (var User in ViewBag.ListOfUserModelsAndTheirRoles)
                     {
-                                <tr>
-                                    <td>@User.UserId</td>
-                                    <td>@User.NIC</td>
-                                    <td>@User.UserFirstName</td>
-                                    <td>@User.UserLastName</td>
-                                    <td>@User.MobileNum</td>
-                                    <td>@User.DepartmentId</td>
-                                    <td>
-                                        @foreach (var Manager in ViewBag.ListOfManagers)
+                        <tr>
+                            <td>@User.UserId</td>
+                            <td>@User.NIC</td>
+                            <td>@User.UserFirstName</td>
+                            <td>@User.UserLastName</td>
+                            <td>@User.MobileNum</td>
+                            <td>
+                                @foreach (var Department in ViewBag.ListOfDepartments)
+                                {
+                                    if (Department.DepartmentId == User.DepartmentId)
+                                    {
+                                        @Department.DepartmentName
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @foreach (var Manager in ViewBag.ListOfManagers)
+                                {
+                                    if (User.ManagerId == Manager.UserId)
+                                    {
+                                        @Manager.UserFirstName @: @Manager.UserLastName
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <ul>
+                                    @{
+                                        foreach (var role in ViewBag.ListOfUserRoles)
                                         {
-                                            if (User.ManagerId == Manager.UserId)
+                                            if (User.Roles.Contains(role.RoleId))
                                             {
-                                                @Manager.UserFirstName @: @Manager.UserLastName
+                                                <li>@role.RoleName</li>
                                             }
                                         }
-                                    </td>
-                                        <td>
-                                            <ul>
-                                                @{
-                                                    foreach (var role in ViewBag.ListOfUserRoles)
-                                                    {
-                                                        if (User.Roles.Contains(role.RoleId))
-                                                        {
-                                                            <li>@role.RoleName</li>
-                                                        }
-                                                    }
-                                                }
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <div class="accordion" id="accordionEmployeeEdit_@User.UserId">
-                                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#EmployeeEditcollapse_@User.UserId" aria-expanded="false" aria-controls="collapse_@User.UserId" onclick="toggleButtonText(this)">
-                                                    Edit
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <tr>
+                                    }
+                                </ul>
+                            </td>
+                            <td>
+                                <div class="accordion" id="accordionEmployeeEdit_@User.UserId">
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#EmployeeEditcollapse_@User.UserId" aria-expanded="false" aria-controls="collapse_@User.UserId" onclick="toggleButtonText(this)">
+                                        Edit
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <td colspan="9">
                                 <div id="EmployeeEditcollapse_@User.UserId" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
                                     <div class="employee-edit-form-container">
@@ -81,9 +88,9 @@
                                                         }
                                                     </select>
                                                 </div>
-                                                <div class="coach-inputs  col-md-4">
-                                                    <label for="coach-input_@User.UserId">Manager: </label>
-                                                    <select id="coach-input_@User.UserId" required>
+                                                <div class="employee-edit-manager  col-md-4">
+                                                    <label for="employee-edit-manager-input_@User.UserId">Manager: </label>
+                                                    <select id="employee-edit-manager-input_@User.UserId" required>
                                                         @foreach (var manager in ViewBag.ListOfManagers)
                                                         {
                                                             if (manager.UserId == User.ManagerId)
@@ -97,7 +104,7 @@
                                                         }
                                                     </select>
                                                 </div>
-                                                <div class="scrollable-prerequisites col-md-4">
+                                                <div class="scrollable-user-roles col-md-4">
                                                     @foreach (var roles in ViewBag.ListOfUserRoles)
                                                     {
                                                         var isRoleSelected = false;
@@ -110,9 +117,9 @@
                                                             }
                                                         }
                                                         <div class="form-check-role">
-                                                            <input type="checkbox" class="form-check-input" id="prerequisite-checkbox_@User.UserId"
+                                                            <input type="checkbox" class="form-user-roles-check-input" id="user-roles-checkbox_@User.UserId"
                                                                    value="@roles.RoleId" @(isRoleSelected ? "checked" : "")>
-                                                            <label class="form-check-label" for="prerequisite-checkbox_@User.UserId">
+                                                            <label class="form-check-label" for="user-roles-checkbox_@User.UserId">
                                                                 @roles.RoleName
                                                             </label>
                                                         </div>
@@ -138,3 +145,42 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    function saveEmployeeChanges(userId) {
+        // Get the updated values from the form
+        var DepartmentId = $("#Department_" + userId).val();
+        var ManagerId = $("#employee-edit-manager-input_" + userId).val();
+        var SelectedRoles = [];
+        $("#user-roles-checkbox_" + userId + ":checked").each(function () {
+            SelectedRoles.push($(this).val());
+        });
+
+        // Create a data object to send to the server
+        var data = {
+            UserId: userId,
+            DepartmentId: DepartmentId,
+            ManagerId: ManagerId,
+            Roles: SelectedRoles,
+            // Add other properties as needed
+        };
+
+        // Make a fetch call to send the data to the server
+        fetch('/User/UpdateUserAndRoles', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                console.log(data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+

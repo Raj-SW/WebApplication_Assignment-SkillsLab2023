@@ -87,16 +87,16 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         }
         public bool UpdateUserAndRoles(UserAndRolesDTO userAndRolesDTO)
         {
-            string UpdateUserAndRolesQuery = @"UPDATE [User] SET DepartmentId = @DepartmentId, ManagerId = @ManagerId;";
+            string UpdateUserAndRolesQuery = @"UPDATE [User] SET DepartmentId = @DepartmentId, ManagerId = @ManagerId WHERE UserId = @UserId;";
             List<SqlParameter> parameters = new List<SqlParameter>() 
             {
                 new SqlParameter("@DepartmentId",userAndRolesDTO.DepartmentId),
-                new SqlParameter("@ManagerId", userAndRolesDTO.ManagerId) 
+                new SqlParameter("@ManagerId", userAndRolesDTO.ManagerId),
+                new SqlParameter("@UserId", userAndRolesDTO.UserId)
             };
             if (userAndRolesDTO.Roles.Count>0)
             {
-                UpdateUserAndRolesQuery += "DELETE FROM User_Roles WHERE UserId = @UserId";
-                parameters.Add(new SqlParameter("@UserId",userAndRolesDTO.UserId));
+                UpdateUserAndRolesQuery += "DELETE FROM User_Roles WHERE UserId = @UserId;";
                 var index = 0;
                 foreach (var role in userAndRolesDTO.Roles)
                 {

@@ -18,26 +18,21 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         {
             _trainingBl = trainingBl;
         }
-        public  ActionResult GetTraining() 
-        {
-            return null;
-        }
+        #region Get Model
         public ActionResult GetAllTraining()
         {
             var ListOftraining = _trainingBl.GetAllTrainingModels();
             ViewBag.ListOfTraining=ListOftraining;
             return Json(new { result = true, listOfTraining = ListOftraining}) ;
         }
-        public ActionResult GetTrainingPrerequisite()
-        {
-            return null;
-        }
         [HttpPost]
-        public JsonResult GetTrainingPrerequisitebyID(int trainingId)
+        public JsonResult GetTrainingPrerequisitebyTrainingId(int trainingId)
         {
             List<TrainingPrerequisiteModel> trainingPrerequisiteModelListById = _trainingBl.GetTrainingPrerequisitesById(trainingId);
             return Json(new { result = true, preReqList=trainingPrerequisiteModelListById});
         }
+        #endregion
+
         [HttpPost]
         public ActionResult CreateTraining(CreateTrainingDTO createTrainingDTO)
         {

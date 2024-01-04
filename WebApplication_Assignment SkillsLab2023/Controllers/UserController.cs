@@ -105,9 +105,15 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "User Activation Failed" });
         }
+        [HttpPost]
         public ActionResult UpdateUserAndRoles(UserAndRolesDTO dto) 
         {
-            return Json(new { });
+            var result = _userBL.UpdateUserAndRoles(dto);
+            if (result)
+            {
+                return Json(new { result = true, message = "User Updated Successfully" }); ;
+            }
+            return Json(new { result = false, message = "User Failed to Update" }); ;
         }
         #endregion
 

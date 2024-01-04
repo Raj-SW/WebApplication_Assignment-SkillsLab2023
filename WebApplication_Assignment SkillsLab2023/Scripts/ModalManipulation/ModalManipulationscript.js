@@ -9,8 +9,7 @@
         "<p><strong>Name:</strong> " + training.TrainingName + "</p>" +
         "<p><strong>Description:</strong> " + training.TrainingDescription + "</p>" +
         "<p><strong>Status:</strong> " + training.TrainingStatus + "</p>" +
-        "<p><strong>Deadline:</strong> " + formattedDeadline + "</p>" +
-        "<p><strong>Seats Available:</strong> " + training.SeatsAvailable + "</p>";
+        "<p><strong>Deadline:</strong> " + formattedDeadline + "</p>";
     var preRequisiteContainer = document.createElement("div");
     if (preReqList && Array.isArray(preReqList)) {
         preReqList.forEach(preReq => {

@@ -7,23 +7,15 @@
 <script src="~/Scripts/ModalManipulation/ModalManipulationscript.js"></script>
 <script src="~/Scripts/TrainingEnrollment/TrainingHandlerScript.js"></script>
 
-<h2>Employee UserId: @Session["CurrentUserId"]</h2>
-<h2>@Session["CurrentUser"] is logged in</h2>
-<div>
-    @if (ViewBag.UserModel != null)
-    {
-        <p>User First Name: @ViewBag.UserModel.UserFirstName</p>
-        <p>User Role: @ViewBag.UserModel.Role</p>
-    }
-</div>
+<h3>Employee UserId: @Session["CurrentUserId"]</h3>
 <div class="row">
     <div class="col-md">
         <table cellspacing="10" cellpadding="10">
             <tr>
+                <th>Status</th>
                 <th>Training Id</th>
                 <th>Training Name</th>
                 <th>Training Description</th>
-                <th>Training Status</th>
                 <th>Registration Dealine</th>
                 <th>Total Seats</th>
                 <th>Actions</th>
@@ -32,10 +24,10 @@
                 foreach (var training in ViewBag.ListOfTrainings)
                 {
                     <tr>
+                        <td>@training.TrainingStatus</td>
                         <td>@training.TrainingId</td>
                         <td>@training.TrainingName</td>
                         <td>@training.TrainingDescription</td>
-                        <td>@training.TrainingStatus</td>
                         <td>@training.TrainingRegistrationDeadline</td>
                         <td>@training.SeatsTotal</td>
                         <td>
@@ -49,6 +41,7 @@
         </table>
     </div>
 </div>
+
 <div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" aria-labelledby="registrationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -63,7 +56,6 @@
                 </div>
             </form>
             <div class="modal-footer">
-                @*<button type='submit' class='btn btn-primary' data-dismiss="modal" onclick="EnrolEmployee()">Submit</button>*@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
