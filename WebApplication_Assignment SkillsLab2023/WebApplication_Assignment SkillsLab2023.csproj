@@ -169,6 +169,7 @@
     <Compile Include="BusinessLayer\Interface\IUserBL.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EnrolmentController.cs" />
+    <Compile Include="Controllers\ErrorHandlerController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL\DepartmentDAL.cs" />
     <Compile Include="DAL\EnrolmentDAL.cs" />
@@ -203,9 +204,12 @@
     <Compile Include="DataTransferObjects\EnrolmentDTO.cs" />
     <Compile Include="DataTransferObjects\ManagerDTO.cs" />
     <Compile Include="DataTransferObjects\UserAndRolesDTO.cs" />
+    <Compile Include="ExceptionHandling\CustomGlobalExceptionHandling.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logger\FileLogger.cs" />
+    <Compile Include="Logger\Interface\ILogger.cs" />
     <Compile Include="Models\CredentialModel.cs" />
     <Compile Include="Models\DataModelResult.cs" />
     <Compile Include="Models\Others\CustomerModel.cs" />
@@ -259,6 +263,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Logger\Logs\Log.txt" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -322,6 +327,9 @@
     <Content Include="Views\User\_AdminCreatePrerequisitePartialView.cshtml" />
     <Content Include="Views\User\_EmployeeViewTrainingPartialView.cshtml" />
     <Content Include="Views\User\_AdminUpdateEmployee.cshtml" />
+    <Content Include="Views\ErrorHandler\Index.cshtml" />
+    <Content Include="Views\ErrorHandler\InternalServerError.cshtml" />
+    <Content Include="Views\ErrorHandler\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

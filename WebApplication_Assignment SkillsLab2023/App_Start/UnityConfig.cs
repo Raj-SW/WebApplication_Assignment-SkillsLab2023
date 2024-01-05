@@ -7,6 +7,7 @@ using WebApplication_Assignment_SkillsLab2023.Common;
 using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
 using WebApplication_Assignment_SkillsLab2023.DAL.Interface;
+using WebApplication_Assignment_SkillsLab2023.Logger;
 using WebApplication_Assignment_SkillsLab2023.Services;
 using WebApplication_Assignment_SkillsLab2023.Services.Interfaces;
 
@@ -34,6 +35,7 @@ namespace WebApplication_Assignment_SkillsLab2023
             container.RegisterType<IEnrolmentDAL, EnrolmentDAL>();
             container.RegisterType<IDepartmentBL, DepartmentBL>();
             container.RegisterType<IDepartmentDAL, DepartmentDAL>();
+            container.RegisterType<FileLogger, FileLogger>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }

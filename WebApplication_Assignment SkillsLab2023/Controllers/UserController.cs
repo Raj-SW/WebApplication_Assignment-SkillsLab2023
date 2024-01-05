@@ -24,6 +24,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             _departmentBL = departmentBL;
             _enrolmentBL  = enrolmenBL;
         }
+
         #region View
         public ActionResult EmployeeView()
         {
