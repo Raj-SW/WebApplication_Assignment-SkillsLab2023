@@ -121,14 +121,14 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         #endregion
 
         #region Update Enrolment
-        public bool ApproveEnrolment(byte enrolmentId)
+        public bool ManagerApproveEnrolmentAsync(byte enrolmentId)
         {
             const string APPROVE_ENROLMENT_BY_ID_QUERY = @"UPDATE Enrolment SET ManagerApproval = 'Approved' WHERE EnrolmentId = @EnrolmentId";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@EnrolmentId", enrolmentId) };
             _command.InsertUpdateData(APPROVE_ENROLMENT_BY_ID_QUERY, parameters);
             return true;
         }
-        public bool RejectEnrolment(byte enrolmentId, string remarks)
+        public bool ManagerRejectEnrolmentAsync(byte enrolmentId, string remarks)
         {
             const string REJECT_ENROLMENT_BY_ID_QUERY = @"UPDATE Enrolment SET ManagerApproval = 'Rejected', Remarks = @Remarks WHERE EnrolmentId = @EnrolmentId";
             List<SqlParameter> parameters = new List<SqlParameter>() {

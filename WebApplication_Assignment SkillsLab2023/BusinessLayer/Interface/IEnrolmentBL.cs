@@ -23,8 +23,8 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         #endregion
 
         #region Update Model
-        bool ApproveEnrolment(byte enrolmentId);
-        bool RejectEnrolment(byte enrolmentId, string remarks);
+        Task<bool> ManagerApproveEnrolmentAsync(byte enrolmentId,byte userId, byte trainingId);
+        Task<bool> ManagerRejectEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId, string remarks);
         #endregion
     }
 }

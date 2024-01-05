@@ -49,12 +49,12 @@
                             <div class="decline-enrolement col-md-4" id="decline-enrolement_@enrolment.EnrolmentId">
                                 <textarea id="remarks_@enrolment.EnrolmentId" placeholder="Remarks if any">
                                 </textarea>
-                                <button class="btn btn-danger" onclick="RejectEnrolment(@enrolment.EnrolmentId)">
+                                <button class="btn btn-danger" onclick="RejectEnrolment(@enrolment.EnrolmentId,@enrolment.TrainingId,@enrolment.UserId)">
                                     Reject
                                 </button>
                             </div>
                             <div class="approve-enrolment col-md-3" id="approve-enrolment_@enrolment.EnrolmentId">
-                                <button class="btn btn-success" onclick="ApproveEnrolment(@enrolment.EnrolmentId)">
+                                <button class="btn btn-success" onclick="ApproveEnrolment(@enrolment.EnrolmentId, @enrolment.UserId,@enrolment.TrainingId)">
                                     Approve
                                 </button>
                             </div>
@@ -68,7 +68,7 @@
 
 
 <script>
-    function FetchEnrolmentPrerequisites(enrolmentId) {
+    function FetchEnrolmentPrerequisites(enrolmentId,userId,trainingId) {
         var btn = document.getElementById("view-btn_" + enrolmentId);
         const buttonText = btn.innerHTML.trim();
 
@@ -79,7 +79,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ enrolmentId: enrolmentId }),
+                body: JSON.stringify({ enrolmentId: enrolmentId, userId: userId, trainingId: trainingId }),
             })
                 .then(response => response.json())
                 .then(data => {
@@ -127,13 +127,13 @@
         prerequisitesContainer.innerHTML = ''; // Clear content when closing
     }
 
-    function ApproveEnrolment(enrolmentId) {
-        fetch('/Enrolment/ApproveEnrolment', {
+    function ApproveEnrolment(enrolmentId, userId, trainingId) {
+        fetch('/Enrolment/ManagerApproveEnrolmentAsync', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ enrolmentId: enrolmentId }),
+            body: JSON.stringify({ enrolmentId: enrolmentId, userId: userId, trainingId: trainingId }),
         })
             .then(response => response.json())
             .then(data => {
@@ -152,15 +152,15 @@
             });
     }
 
-    function RejectEnrolment(enrolmentId) {
+    function RejectEnrolment(enrolmentId, trainingId, userId) {
         var remarks = document.getElementById("remarks_" + enrolmentId).value; // Get remarks from textarea
 
-        fetch('/Enrolment/RejectEnrolment', {
+        fetch('/Enrolment/ManagerRejectEnrolmentAsync', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ enrolmentId: enrolmentId, remarks: remarks }),
+            body: JSON.stringify({ enrolmentId: enrolmentId, remarks: remarks, trainingId: trainingId, userId: userId }),
         })
             .then(response => response.json())
             .then(data => {

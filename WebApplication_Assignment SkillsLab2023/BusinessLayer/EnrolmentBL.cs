@@ -50,8 +50,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         #region Insert Models
         public async Task<bool> EnrolEmployeeIntoTrainingAsync(byte userId, byte trainingId, HttpFileCollectionBase FileCollection)
         {
-            try
-            {
                 TaskResult uploadTaskResult = new TaskResult();
                 //TODO:
                 //Security protocols here
@@ -67,23 +65,40 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
                 uploadTaskResult.isSuccess = await EmailSender.SendEmailAsync($"Enrolment for {trainingName} - DF Learning Hub", $"Your enrolment for {trainingName} has been successfully received.\r\nPlease wait for your manager's approval.\r\n\r\nThis is an auto-generated email. Please do not reply to this email\r\n\r\nKind regards,\r\nDF Learning Hub", userEmail);
                 uploadTaskResult.isSuccess = await EmailSender.SendEmailAsync($"Employee Enrolment for {trainingName}", $"Your employee {employeeName} has registered for {trainingName} successfully.\r\nPlease review his documents.\r\n\r\nThis is an auto-generated email. Please do not reply to this email\r\n\r\nKind regards,\r\nDF Learning Hub", managerEmail);
                 return uploadTaskResult.isSuccess;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            
 
         }
         #endregion
 
         #region Update Model
-        public bool ApproveEnrolment(byte enrolmentId)
+        public async Task<bool> ManagerApproveEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId)
         {
-            return _enrolmentDAL.ApproveEnrolment(enrolmentId);
+            var isSentEmployee=false;
+            var isSentManager=false;
+            var isSuccess = _enrolmentDAL.ManagerApproveEnrolmentAsync(enrolmentId);
+            if (isSuccess)
+            {
+                string employeeEmail = _userBL.GetEmployeeEmailbyUserId(userId);
+                string employeeName = _userBL.GetUserNamebyUserId(userId);
+                string managerEmail = _userBL.GetManagerEmailThroughEmployeeUserId(userId);
+                string trainingName = _trainingBL.GetTrainingNameByTrainingId(trainingId);
+                isSentEmployee = await EmailSender.SendEmailAsync($"Enrolment for {trainingName} - DF Learning Hub", $"Your enrolment for {trainingName} has been aproved by your manager ", employeeEmail);
+                isSentManager = await EmailSender.SendEmailAsync($"Employee Enrolment for {trainingName}", $"You have approved training for employee: {employeeName}",managerEmail);
+            }
+            return (isSuccess);
         }
-        public bool RejectEnrolment(byte enrolmentId, string remarks)
+        public async Task<bool> ManagerRejectEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId, string remarks)
         {
-            return _enrolmentDAL.RejectEnrolment(enrolmentId, remarks);
+            var isSentEmployee = false;
+            var isSentManager = false;
+            var isSuccess = _enrolmentDAL.ManagerRejectEnrolmentAsync(enrolmentId, remarks);
+            string employeeEmail = _userBL.GetEmployeeEmailbyUserId(userId);
+            string employeeName = _userBL.GetUserNamebyUserId(userId);
+            string managerEmail = _userBL.GetManagerEmailThroughEmployeeUserId(userId);
+            string trainingName = _trainingBL.GetTrainingNameByTrainingId(trainingId);
+            isSentEmployee = await EmailSender.SendEmailAsync($"Enrolment for {trainingName} - DF Learning Hub", $"Unfortunately your enrolment for {trainingName} has been rejected by your manager ", employeeEmail);
+            isSentManager = await EmailSender.SendEmailAsync($"Employee Enrolment for {trainingName}", $"You have rejected training for employee: {employeeName}", managerEmail);
+            return isSuccess;
         }
         #endregion
     }

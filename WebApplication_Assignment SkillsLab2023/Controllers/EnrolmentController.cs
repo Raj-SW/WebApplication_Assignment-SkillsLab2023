@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
@@ -45,9 +46,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
 
         }
         [HttpPost]
-        public ActionResult ApproveEnrolment(byte enrolmentId)
+        public async Task<ActionResult> ManagerApproveEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId)
         {
-            var isSuccess = _enrolmentBL.ApproveEnrolment(enrolmentId);
+            var isSuccess = await _enrolmentBL.ManagerApproveEnrolmentAsync(enrolmentId,userId,trainingId);
             if (isSuccess)
             {
                 return Json(new { result = true, message = "Enrolment Approved" });
@@ -55,16 +56,14 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = false, message = "There has been an error" });
         }
         [HttpPost]
-        public ActionResult RejectEnrolment(byte enrolmentId, string remarks)
+        public async Task<ActionResult> ManagerRejectEnrolmentAsync(byte enrolmentId,string remarks,byte trainingId, byte userId)
         {
-            var isSuccess = _enrolmentBL.RejectEnrolment(enrolmentId, remarks);
+            var isSuccess = await _enrolmentBL.ManagerRejectEnrolmentAsync(enrolmentId, userId, trainingId, remarks);
             if (isSuccess)
             {
                 return Json(new { result = true, message = "Enrolment Reject successfully" });
-
             }
             return Json(new { result = false, message = "There has been an error " });
-
         }
     }
 }

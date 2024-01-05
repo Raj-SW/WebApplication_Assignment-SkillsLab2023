@@ -18,6 +18,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             _command = command;
         }
+
         #region Get Model
         public string GetEmployeeEmailbyUserId(byte UserId)
         {
