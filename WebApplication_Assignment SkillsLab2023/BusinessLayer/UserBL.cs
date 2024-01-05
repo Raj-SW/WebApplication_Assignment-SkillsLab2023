@@ -25,6 +25,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
            return _userDAL.GetManagerEmailThroughEmployeeUserId(UserId);
         }
+        public string GetUserNamebyUserId(byte UserId)
+        {
+            return _userDAL.GetUserNamebyUserId(UserId);
+        }
         #endregion
 
         #region User Model Manipulations

@@ -93,6 +93,14 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return listOfPrerequisite;
         }
+        public string GetTrainingNameByTrainingId(byte trainingId) 
+        {
+            const string GET_TRAINING_NAME_BY_TRAINING_ID_QUERY= @"SELECT TrainingName FROM Training WHERE TrainingId = @TrainingId";
+            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("TrainingId",trainingId)};
+            var dt = _command.GetDataWithConditions(GET_TRAINING_NAME_BY_TRAINING_ID_QUERY,parameters);
+            string TrainingName = (string)dt.Rows[0]["TrainingName"];
+            return TrainingName;
+        }
         #endregion
 
         #region Insert
@@ -144,7 +152,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             _command.InsertUpdateData(INSERT_PREREQUISITE_QUERY, parameters);
             return true;
         }
-
         #endregion
 
         #region Update

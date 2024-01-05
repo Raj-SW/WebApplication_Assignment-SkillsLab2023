@@ -1,4 +1,4 @@
-﻿function EnrolEmployee(userId, training, prereqCount) {
+﻿async function EnrolEmployee(userId, training, prereqCount) {
     let form = document.querySelector('form');
 
     form.addEventListener('submit', (e) => {
@@ -38,7 +38,7 @@
         Files: Array.from(fileInputs)
     }
     const url = '/Enrolment/EnrolEmployeeIntoTraining';
-    fetch(url, {
+    await fetch(url, {
         method: 'POST',
         body: formData 
     })

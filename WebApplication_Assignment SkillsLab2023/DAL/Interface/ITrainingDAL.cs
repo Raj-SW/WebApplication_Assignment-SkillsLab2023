@@ -15,6 +15,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         List<PrerequisitesModel> GetTrainingPrerequisitesById(int trainingId);
         List<PrerequisitesModel> GetAllPrerequisites();
         List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte trainingId);
+        string GetTrainingNameByTrainingId(byte trainingId);
         #endregion
 
         #region Insert

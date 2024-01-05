@@ -65,6 +65,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return _itrainingDAL.GetAllPrerequisites();
         }
+        public string GetTrainingNameByTrainingId(byte trainingId) {
+        
+            return _itrainingDAL.GetTrainingNameByTrainingId(trainingId);
+        }
         #endregion
 
         #region Update Models

@@ -21,6 +21,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         bool ActivatePendingUser(ActivationDTO activationDTO);
         void DeactivatePendingUser(byte UserID);
         void AssignTrainingToEmployee(byte EmployeeId, byte TrainingId);
-
+        string GetUserNamebyUserId(byte userId);
     }
 }

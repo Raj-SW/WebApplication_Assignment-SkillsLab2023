@@ -49,6 +49,13 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return email;
         }
+        public string GetUserNamebyUserId(byte userId) {
+            const string GET_USER_NAME_BY_USER_ID = @"SELECT UserFirstName + ' ' + UserLastName AS UserName FROM [User] WHERE UserId = @UserId";
+            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@UserId",userId) };
+            var dt = _command.GetDataWithConditions(GET_USER_NAME_BY_USER_ID,parameters);
+            string UserName = (string)dt.Rows[0]["UserName"];
+            return UserName;
+        }
         #endregion
 
         #region User Model Manipulations
