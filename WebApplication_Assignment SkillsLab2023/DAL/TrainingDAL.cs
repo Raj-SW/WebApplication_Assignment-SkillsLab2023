@@ -24,7 +24,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         #region Get Model
         public List<TrainingWithPrerequisitesModel> GetAllTrainingModels()
         {
-            const string GET_ALL_TRAINING_QUERY = "SELECT * FROM [TrainingAssignment].[dbo].[Training]";
+            const string GET_ALL_TRAINING_QUERY = "SELECT *  FROM [TrainingAssignment].[dbo].[Training]";
             DBCommand command = new DBCommand();
             var DataTable = command.GetData(GET_ALL_TRAINING_QUERY);
             List<TrainingWithPrerequisitesModel> ListOfTrainingModels= new List<TrainingWithPrerequisitesModel>();

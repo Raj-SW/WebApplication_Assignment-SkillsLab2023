@@ -13,15 +13,13 @@ namespace WebApplication_Assignment_SkillsLab2023
 {
     public class MvcApplication : System.Web.HttpApplication
     { 
-        ILogger logger = new FileLogger();
         protected void Application_Start()
         {
+            UnityConfig.RegisterComponents();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            GlobalFilters.Filters.Add(new CustomGlobalExceptionHandling(logger));
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            UnityConfig.RegisterComponents();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -12,39 +13,43 @@ namespace WebApplication_Assignment_SkillsLab2023.Logger
         private readonly string filePath;
 
         // Constructor to set the file path
-        public FileLogger()
+        public FileLogger(string loggerFilePath = "C:\\Users\\P12AC90\\source\\repos\\WebApplication_Assignment SkillsLab2023\\WebApplication_Assignment SkillsLab2023\\Logger\\Logs\\Log.txt")
         {
-            this.filePath = "C:\\Users\\P12AC90\\Documents\\Log.txt";
-            InitializeLogFile();
+            filePath = loggerFilePath;
         }
 
         // Method to initialize the log file
-        private void InitializeLogFile()
+        public void InitializeLogFile(string message)
         {
-            if (!File.Exists(filePath))
+
+            try
             {
-                using (StreamWriter sw = File.CreateText(filePath))
+                if (!File.Exists(filePath))
                 {
-                    sw.WriteLine("Log File Created: " + DateTime.Now);
+                    File.Create(filePath);
                 }
+                using (StreamWriter sw = File.AppendText(filePath))
+                {
+                    sw.WriteLine(message);
+                }
+            }
+            catch (Exception ex) {
+                Debug.WriteLine(ex.Message);
             }
         }
 
         // LogError method to append error to the log file
-        public void LogError(Exception errorMessage)
+        public void LogError(Exception exception)
         {
-            try
-            {
-                using (StreamWriter sw = File.AppendText(filePath))
-                {
-                    sw.WriteLine($"[Error - {DateTime.Now}] {errorMessage}");
-                }
-            }
-            catch (Exception ex)
-            {
-                // If there's an issue logging the error, write to console or handle accordingly
-                Console.WriteLine($"Error logging: {ex.Message}");
-            }
+            string fullMessage = "---------------------------------------------------------";
+            fullMessage += Environment.NewLine + $"Timestamp: {DateTime.Now}";
+            fullMessage += Environment.NewLine + $"Exception Type: {this.GetType().FullName}";
+            fullMessage += Environment.NewLine + $"Message: {exception.Message}";
+            fullMessage += Environment.NewLine + $"Inner Exception: {exception.InnerException}";
+            fullMessage += Environment.NewLine + $"Stack Trace: {exception.StackTrace}";
+            fullMessage += Environment.NewLine + "\"---------------------------------------------------------\";";
+
+            InitializeLogFile(fullMessage);
         }
     }
 

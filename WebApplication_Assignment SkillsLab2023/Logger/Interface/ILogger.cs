@@ -8,7 +8,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Logger.Interface
 {
     public interface ILogger
     {
-        void LogError(Exception errorMessage);
-
+        void LogError(Exception exception); 
+        void InitializeLogFile(string message);
     }
 }

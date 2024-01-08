@@ -8,6 +8,7 @@ using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
 using WebApplication_Assignment_SkillsLab2023.DAL.Interface;
 using WebApplication_Assignment_SkillsLab2023.Logger;
+using WebApplication_Assignment_SkillsLab2023.Logger.Interface;
 using WebApplication_Assignment_SkillsLab2023.Services;
 using WebApplication_Assignment_SkillsLab2023.Services.Interfaces;
 
@@ -22,6 +23,7 @@ namespace WebApplication_Assignment_SkillsLab2023
             // register all your components with the container here
             // it is NOT necessary to register your controllers
             // e.g. container.RegisterType<ITestService, TestService>();
+            container.RegisterType<ILogger, FileLogger>();
             container.RegisterType<IDataAccessLayer, DataAccessLayer>();
             container.RegisterType<IDBCommand, DBCommand>();
             container.RegisterType<IAuthenticationDAL, AuthenticationDAL>();
@@ -35,7 +37,6 @@ namespace WebApplication_Assignment_SkillsLab2023
             container.RegisterType<IEnrolmentDAL, EnrolmentDAL>();
             container.RegisterType<IDepartmentBL, DepartmentBL>();
             container.RegisterType<IDepartmentDAL, DepartmentDAL>();
-            container.RegisterType<FileLogger, FileLogger>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
