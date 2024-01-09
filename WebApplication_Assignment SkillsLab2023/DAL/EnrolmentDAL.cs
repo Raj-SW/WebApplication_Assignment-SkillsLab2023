@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
 using WebApplication_Assignment_SkillsLab2023.DAL.Interface;
@@ -20,7 +21,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         }
 
         #region Get Model
-        public List<GetPendingEmployeesEnrolmentOfAMangerDTO> GetEmployeesPendingEnrolmentByManagerId(byte managerId)
+        public async Task<List<GetPendingEmployeesEnrolmentOfAMangerDTO>> GetEmployeesPendingEnrolmentByManagerIdAsync(byte managerId)
         {
             const string GET_EMPLOYEES_PENDING_ENROLMENT_BY_MANAGER_ID_QUERY = @"
             SELECT e.EnrolmentId, e.TrainingId, e.UserId, u.UserFirstName, u.UserLastName, e.EnrolmentDateTime, t.TrainingName,t.TrainingRegistrationDeadline
@@ -33,7 +34,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             GetPendingEmployeesEnrolmentOfAMangerDTO employeesEnrolment;
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@ManagerId", managerId));
-            var dt = _command.GetDataWithConditions(GET_EMPLOYEES_PENDING_ENROLMENT_BY_MANAGER_ID_QUERY, parameters);
+            var dt = await _command.GetDataWithConditionsAsync(GET_EMPLOYEES_PENDING_ENROLMENT_BY_MANAGER_ID_QUERY, parameters);
             foreach (DataRow row in dt.Rows)
             {
                 employeesEnrolment = new GetPendingEmployeesEnrolmentOfAMangerDTO();
@@ -49,7 +50,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return employeesEnrolmentList;
         }
-        public List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId)
+        public async Task<List<UserPrerequisiteModel>> GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(byte enrolmentId)
         {
             const string GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID = @"
             SELECT ep.*
@@ -59,7 +60,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@EnrolmentId", enrolmentId) };
             UserPrerequisiteModel userPrerequisiteModel;
             List<UserPrerequisiteModel> userPrerequisiteModelList = new List<UserPrerequisiteModel>();
-            var dt = _command.GetDataWithConditions(GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID, parameters);
+            var dt = await _command.GetDataWithConditionsAsync(GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID, parameters);
             foreach (DataRow item in dt.Rows)
             {
                 userPrerequisiteModel = new UserPrerequisiteModel();
@@ -70,24 +71,24 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return userPrerequisiteModelList;
         }
-        public List<UserPrerequisiteModel> GetAllEnrolmentsManagerWise(byte ManagerId)
+        public Task<List<UserPrerequisiteModel>> GetAllEnrolmentsManagerWiseAsync(byte ManagerId)
         {
             throw new NotImplementedException();
         }
-        public bool isUserAlreadyRegisteredInTraining(byte trainingId, byte UserId)
+        public async Task<bool> isUserAlreadyRegisteredInTrainingAsync(byte trainingId, byte UserId)
         {
             const string CHECK_IF_USER_ALREADY_REGISTERED = @"SELECT TOP(1) * FROM Enrolment WHERE TrainingId = @TrainingId AND UserId = @UserId AND RegistrationStatus = 'Pending' AND ManagerApproval = 'Pending';";
             List<SqlParameter> parameters = new List<SqlParameter>() { 
                 new SqlParameter("@TrainingId",trainingId),
                 new SqlParameter("@UserId",UserId)
             };
-            var dt = _command.GetDataWithConditions(CHECK_IF_USER_ALREADY_REGISTERED, parameters);
+            var dt = await _command.GetDataWithConditionsAsync(CHECK_IF_USER_ALREADY_REGISTERED, parameters);
             return dt.Rows.Count>0;
         }
         #endregion
 
         #region Insert
-        public bool EnrolEmployeeIntoTraining(byte userId, byte trainingId, List<string> filepath)
+        public async Task<bool> EnrolEmployeeIntoTrainingAsync(byte userId, byte trainingId, List<string> filepath)
         {
             string INSERT_ENROLMENT_QUERY =
            @"
@@ -96,7 +97,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             VALUES (@UserId, @TrainingId);
             
              ";
-            DBCommand command = new DBCommand();
+           
             List<SqlParameter> parameters = new List<SqlParameter>
             {
                 new SqlParameter("@UserId", userId),
@@ -115,39 +116,39 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 }
                 INSERT_ENROLMENT_QUERY = INSERT_ENROLMENT_QUERY.TrimEnd(',') + ";";
             }
-            command.InsertUpdateData(INSERT_ENROLMENT_QUERY, parameters);
+            await _command.InsertUpdateDataAsync(INSERT_ENROLMENT_QUERY, parameters);
             return true;
         }
         #endregion
 
         #region Update Enrolment
-        public bool ManagerApproveEnrolmentAsync(byte enrolmentId)
+        public async Task<bool> ManagerApproveEnrolmentAsync(byte enrolmentId)
         {
             const string APPROVE_ENROLMENT_BY_ID_QUERY = @"UPDATE Enrolment SET ManagerApproval = 'Approved' WHERE EnrolmentId = @EnrolmentId";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@EnrolmentId", enrolmentId) };
-            _command.InsertUpdateData(APPROVE_ENROLMENT_BY_ID_QUERY, parameters);
+            await _command.InsertUpdateDataAsync(APPROVE_ENROLMENT_BY_ID_QUERY, parameters);
             return true;
         }
-        public bool ManagerRejectEnrolmentAsync(byte enrolmentId, string remarks)
+        public async Task<bool> ManagerRejectEnrolmentAsync(byte enrolmentId, string remarks)
         {
             const string REJECT_ENROLMENT_BY_ID_QUERY = @"UPDATE Enrolment SET ManagerApproval = 'Rejected', Remarks = @Remarks WHERE EnrolmentId = @EnrolmentId";
             List<SqlParameter> parameters = new List<SqlParameter>() {
                 new SqlParameter("@EnrolmentId", enrolmentId),
                 new SqlParameter("@Remarks", remarks),
             };
-            _command.InsertUpdateData(REJECT_ENROLMENT_BY_ID_QUERY, parameters);
+            await _command.InsertUpdateDataAsync(REJECT_ENROLMENT_BY_ID_QUERY, parameters);
             return true;
         }
-        public void AutomaticEnrolmentProcessingForTrainingByTrainingId(byte trainingId)
+        public Task AutomaticEnrolmentProcessingForTrainingByTrainingIdAsync(byte trainingId)
         {
             throw new NotImplementedException();
         }
-        public List<AutomaticProcessingDTO> AutomaticEnrolmentProcessingForAllTraining()
+        public async Task<List<AutomaticProcessingDTO>> AutomaticEnrolmentProcessingForAllTrainingAsync()
         {
             const string EXECUTE_AUTOMATIC_ENROLMENT_PROCESSING_PROC = "EXEC AutomaticEnrolmentProcessingProcedure;";
             List<AutomaticProcessingDTO> listofDTO = new List<AutomaticProcessingDTO>();
             AutomaticProcessingDTO dto;
-            var dt = _command.GetData(EXECUTE_AUTOMATIC_ENROLMENT_PROCESSING_PROC);
+            var dt = await _command.GetDataAsync(EXECUTE_AUTOMATIC_ENROLMENT_PROCESSING_PROC);
             foreach( DataRow row in dt.Rows )
             {
                 dto = new AutomaticProcessingDTO();
@@ -162,7 +163,6 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return listofDTO;
         }
-
         #endregion
     }
 }

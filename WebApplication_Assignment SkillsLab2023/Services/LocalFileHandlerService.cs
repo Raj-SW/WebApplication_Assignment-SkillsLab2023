@@ -21,8 +21,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Services
             TaskResult taskModelResult = new TaskResult();
             if (FileCollection.Count > 0)
             {
-                try
-                {
                     HttpFileCollectionBase files = FileCollection;
                     foreach (string fileName in files)
                     {
@@ -36,12 +34,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Services
                     }
                     taskModelResult.isSuccess= true;
                     return taskModelResult;
-                }
-                catch (Exception e)
-                {
-                    taskModelResult.isSuccess = false;
-                    throw;
-                }
+              
             }
             taskModelResult.isSuccess = false;
             taskModelResult.AddResultMessage("Internal Server Storage Error.\n No Files were received.\n We will get back to you");

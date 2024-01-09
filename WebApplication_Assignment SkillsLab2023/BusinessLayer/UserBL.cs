@@ -1,8 +1,5 @@
-﻿using Microsoft.Ajax.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
@@ -11,77 +8,85 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
     public class UserBL : IUserBL
     {
         private readonly IUserDAL _userDAL;
+
         public UserBL(IUserDAL userDAL)
         {
             _userDAL = userDAL;
         }
 
         #region Get Model 
-        public string GetEmployeeEmailbyUserId(byte UserId)
+        public async Task<string> GetEmployeeEmailbyUserIdAsync(byte UserId)
         {
-            return _userDAL.GetEmployeeEmailbyUserId(UserId);
+            return await _userDAL.GetEmployeeEmailbyUserIdAsync(UserId);
         }
-        public string GetManagerEmailThroughEmployeeUserId(byte UserId)
+
+        public async Task<string> GetManagerEmailThroughEmployeeUserIdAsync(byte UserId)
         {
-           return _userDAL.GetManagerEmailThroughEmployeeUserId(UserId);
+            return await _userDAL.GetManagerEmailThroughEmployeeUserIdAsync(UserId);
         }
-        public string GetUserNamebyUserId(byte UserId)
+
+        public async Task<string> GetUserNamebyUserIdAsync(byte UserId)
         {
-            return _userDAL.GetUserNamebyUserId(UserId);
+            return await _userDAL.GetUserNamebyUserIdAsync(UserId);
         }
         #endregion
 
         #region User Model Manipulations
-        public bool ActivatePendingUser(ActivationDTO activationDTO)
+        public async Task<bool> ActivatePendingUserAsync(ActivationDTO activationDTO)
         {
-            return _userDAL.ActivatePendingUser(activationDTO);
+            return await _userDAL.ActivatePendingUserAsync(activationDTO);
         }
-        public List<UserModel> GetAllPendingUserModels()
+
+        public async Task<List<UserModel>> GetAllPendingUserModelsAsync()
         {
-            return _userDAL.GetAllPendingUserModels();
+            return await _userDAL.GetAllPendingUserModelsAsync();
         }
-        public void DeactivatePendingUser(byte UserID)
+
+        public async Task DeactivatePendingUserAsync(byte UserID)
         {
-            throw new NotImplementedException();
+            await _userDAL.DeactivatePendingUserAsync(UserID);
         }
-        public bool UpdateUserAndRoles(UserAndRolesDTO userAndRolesDTO)
+
+        public async Task<bool> UpdateUserAndRolesAsync(UserAndRolesDTO userAndRolesDTO)
         {
-            return _userDAL.UpdateUserAndRoles(userAndRolesDTO);
+            return await _userDAL.UpdateUserAndRolesAsync(userAndRolesDTO);
         }
-        public List<UserAndRolesDTO> GetAllUsersAndTheirRoles()
+
+        public async Task<List<UserAndRolesDTO>> GetAllUsersAndTheirRolesAsync()
         {
-            return _userDAL.GetAllUsersAndTheirRoles();
+            return await _userDAL.GetAllUsersAndTheirRolesAsync();
         }
         #endregion
 
         #region Manager Manipulations
-        public List<ManagerDTO> GetAllManagers()
+        public async Task<List<ManagerDTO>> GetAllManagersAsync()
         {
-            return _userDAL.GetAllManagers();
+            return await _userDAL.GetAllManagersAsync();
         }
-        public List<ManagerDTO> GetAllManagersByDepartmentId(byte DepartmentId)
+
+        public async Task<List<ManagerDTO>> GetAllManagersByDepartmentIdAsync(byte DepartmentId)
         {
-            return _userDAL.GetAllManagersByDepartmentId(DepartmentId);
+            return await _userDAL.GetAllManagersByDepartmentIdAsync(DepartmentId);
         }
         #endregion
 
         #region User Roles Manipulations
-        public List<RoleModel> GetAllUserRoles()
+        public async Task<List<RoleModel>> GetAllUserRolesAsync()
         {
-            return _userDAL.GetAllUserRoles();
+            return await _userDAL.GetAllUserRolesAsync();
         }
-        public List<UserRolesModel> GetAllUserRolesModelByUserId(int UserId)
+
+        public async Task<List<UserRolesModel>> GetAllUserRolesModelByUserIdAsync(int UserId)
         {
-            return _userDAL.GetAllUserRolesModelByUserId(UserId);
+            return await _userDAL.GetAllUserRolesModelByUserIdAsync(UserId);
         }
         #endregion
 
         #region EmployeeTraining
-        public void AssignTrainingToEmployee(byte EmployeeId, byte TrainingId)
+        public async Task AssignTrainingToEmployeeAsync(byte EmployeeId, byte TrainingId)
         {
-            throw new NotImplementedException();
+            await _userDAL.AssignTrainingToEmployeeAsync(EmployeeId, TrainingId);
         }
         #endregion
-
     }
 }

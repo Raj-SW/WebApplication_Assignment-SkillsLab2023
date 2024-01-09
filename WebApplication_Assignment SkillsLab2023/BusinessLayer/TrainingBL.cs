@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
@@ -22,79 +23,78 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         }
 
         #region Insert Models
-        public bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel)
+        public async Task<bool> AddPrerequisiteToTrainingAsync(TrainingPrerequisiteModel trainingPrerequisiteModel)
         {
-            return _itrainingDAL.AddPrerequisiteToTraining(trainingPrerequisiteModel);
+            return await _itrainingDAL.AddPrerequisiteToTrainingAsync(trainingPrerequisiteModel);
         }
-        public bool CreatePrerequisite(string description)
+        public async Task<bool> CreatePrerequisiteAsync(string description)
         {
-            return _itrainingDAL.CreatePrerequisite(description);
+            return await _itrainingDAL.CreatePrerequisiteAsync(description);
         }
-        public bool CreateTraining(CreateTrainingDTO createTrainingDTO)
+        public async Task<bool> CreateTrainingAsync(CreateTrainingDTO createTrainingDTO)
         {
-
-            return _itrainingDAL.CreateTraining(createTrainingDTO);
+            return await _itrainingDAL.CreateTrainingAsync(createTrainingDTO);
         }
         #endregion
 
         #region Get Models
-        public List<TrainingWithPrerequisitesModel> GetAllTrainingModels()
+        public async Task<List<TrainingWithPrerequisitesModel>> GetAllTrainingModelsAsync()
         {
-            return _itrainingDAL.GetAllTrainingModels();
+            return await _itrainingDAL.GetAllTrainingModelsAsync();
         }
-        public List<TrainingWithPrerequisitesModel> GetAllTrainingModelsWithPrerequisites()
+        public async Task<List<TrainingWithPrerequisitesModel>> GetAllTrainingModelsWithPrerequisitesAsync()
         {
 
-            var ListOftrainingModelsWithPrerequisites = GetAllTrainingModels();
+            var ListOftrainingModelsWithPrerequisites = await GetAllTrainingModelsAsync();
             foreach (var TrainingModelsWithPrerequisites in ListOftrainingModelsWithPrerequisites)
             {
-                TrainingModelsWithPrerequisites.PrerequisitesList = GetAllPrerequisiteOfATrainingModelByTrainingId(TrainingModelsWithPrerequisites.TrainingId);
+                TrainingModelsWithPrerequisites.PrerequisitesList = await GetAllPrerequisiteOfATrainingModelByTrainingIdAsync(TrainingModelsWithPrerequisites.TrainingId);
             }
 
             return ListOftrainingModelsWithPrerequisites;
         }
-        public List<PrerequisitesModel> GetTrainingPrerequisitesById(int trainingId)
+        public async Task<List<PrerequisitesModel>> GetTrainingPrerequisitesByIdAsync(int trainingId)
         {
-            return _itrainingDAL.GetTrainingPrerequisitesById(trainingId);
+            return await _itrainingDAL.GetTrainingPrerequisitesByIdAsync(trainingId);
         }
-        public List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte TrainingId)
+        public async Task<List<PrerequisitesModel>> GetAllPrerequisiteOfATrainingModelByTrainingIdAsync(byte TrainingId)
         {
-            return _itrainingDAL.GetAllPrerequisiteOfATrainingModelByTrainingId(TrainingId);
+            return await _itrainingDAL.GetAllPrerequisiteOfATrainingModelByTrainingIdAsync(TrainingId);
         }
-        public List<PrerequisitesModel> GetAllPrerequisites()
+        public async Task<List<PrerequisitesModel>> GetAllPrerequisitesAsync()
         {
-            return _itrainingDAL.GetAllPrerequisites();
+            return await _itrainingDAL.GetAllPrerequisitesAsync();
         }
-        public string GetTrainingNameByTrainingId(byte trainingId) {
-        
-            return _itrainingDAL.GetTrainingNameByTrainingId(trainingId);
+        public async Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId) {
+
+            return await _itrainingDAL.GetTrainingNameByTrainingIdAsync(trainingId);
         }
         #endregion
 
         #region Update Models
-        public bool UpdateTraining(TrainingModel trainingmodel)
+        public async Task<bool> UpdateTrainingAsync(TrainingModel trainingmodel)
         {
-            return _itrainingDAL.UpdateTraining(trainingmodel);
+            return await _itrainingDAL.UpdateTrainingAsync(trainingmodel);
         }
-        public bool UpdateTrainingPrerequisite(byte TrainingId, List<byte> Prerequisites)
+        public async Task<bool> UpdateTrainingPrerequisiteAsync(byte TrainingId, List<byte> Prerequisites)
         {
-            return _itrainingDAL.UpdateTrainingPrerequisite(TrainingId, Prerequisites);
+            return await _itrainingDAL.UpdateTrainingPrerequisiteAsync(TrainingId, Prerequisites);
         }
         #endregion
 
         #region Delete Models
-        public bool DeleteTraining(byte TrainingId)
+        public async Task<bool> DeleteTrainingAsync(byte TrainingId)
         {
-            if (isTrainingDeletable(TrainingId))
+            if (await isTrainingDeletableAsync(TrainingId))
             {
-                return _itrainingDAL.DeleteTraining(TrainingId);
+                return await _itrainingDAL.DeleteTrainingAsync(TrainingId);
             }
             return false;
         }
-        public bool isTrainingDeletable(byte trainingId)
+        public async Task<bool> isTrainingDeletableAsync(byte trainingId)
         {
 
-            return _itrainingDAL.isTrainingDeletable(trainingId);
+            return await _itrainingDAL.isTrainingDeletableAsync(trainingId);
         }
         #endregion
 

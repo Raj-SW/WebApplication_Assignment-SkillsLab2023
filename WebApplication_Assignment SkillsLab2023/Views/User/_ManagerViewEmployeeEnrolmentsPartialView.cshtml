@@ -74,7 +74,7 @@
 
         if (buttonText === 'View') {
             btn.innerHTML = 'Close';
-            fetch('/Enrolment/GetEnrolmentPrerequisitesById', {
+            fetch('/Enrolment/GetEnrolmentPrerequisitesByIdAsync', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

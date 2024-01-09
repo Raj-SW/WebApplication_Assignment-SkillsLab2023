@@ -8,6 +8,7 @@ using WebApplication_Assignment_SkillsLab2023.Models;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
+using System.Threading.Tasks;
 
 namespace WebApplication_Assignment_SkillsLab2023.DAL
 {
@@ -20,14 +21,14 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         }
 
         #region Get Model
-        public string GetEmployeeEmailbyUserId(byte UserId)
+        public async Task<string> GetEmployeeEmailbyUserIdAsync(byte UserId)
         {
             const string GET_EMPLOYEE_EMAL_BY_USER_ID = @"
                             SELECT Email
                             FROM [Credential]
                             WHERE UserId = @UserId";
             List<SqlParameter>parameters = new List<SqlParameter>() { new SqlParameter("@UserId",UserId)};
-            var dt = _command.GetDataWithConditions(GET_EMPLOYEE_EMAL_BY_USER_ID, parameters);
+            var dt =await  _command.GetDataWithConditionsAsync(GET_EMPLOYEE_EMAL_BY_USER_ID, parameters);
             string email="";
             foreach (DataRow row in dt.Rows)
             {
@@ -35,14 +36,14 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return email;
         }
-        public string GetManagerEmailThroughEmployeeUserId(byte UserId)
+        public async Task<string> GetManagerEmailThroughEmployeeUserIdAsync(byte UserId)
         {
             const string GET_EMPLOYEE_EMAL_BY_USER_ID = @"
                             SELECT c.Email FROM [Credential] c 
                             INNER JOIN [User] u ON c.UserId= u.ManagerId
                             WHERE u.UserId = @UserId";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@UserId", UserId) };
-            var dt = _command.GetDataWithConditions(GET_EMPLOYEE_EMAL_BY_USER_ID, parameters);
+            var dt = await _command.GetDataWithConditionsAsync(GET_EMPLOYEE_EMAL_BY_USER_ID, parameters);
             string email = "";
             foreach (DataRow row in dt.Rows)
             {
@@ -50,23 +51,23 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return email;
         }
-        public string GetUserNamebyUserId(byte userId) {
+        public async Task<string> GetUserNamebyUserIdAsync(byte userId) {
             const string GET_USER_NAME_BY_USER_ID = @"SELECT UserFirstName + ' ' + UserLastName AS UserName FROM [User] WHERE UserId = @UserId";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@UserId",userId) };
-            var dt = _command.GetDataWithConditions(GET_USER_NAME_BY_USER_ID,parameters);
+            var dt = await _command.GetDataWithConditionsAsync(GET_USER_NAME_BY_USER_ID,parameters);
             string UserName = (string)dt.Rows[0]["UserName"];
             return UserName;
         }
         #endregion
 
         #region User Model Manipulations
-        public List<UserAndRolesDTO> GetAllUsersAndTheirRoles()
+        public async Task<List<UserAndRolesDTO>> GetAllUsersAndTheirRolesAsync()
         {
             const string GET_ALL_USERS_QUERY = @"SELECT * FROM [User] u INNER JOIN [Credential] c ON u.UserId = c.UserId WHERE c.Activated = 1";
             const string GET_ALL_ROLES_OF_A_USER_BY_USER_ID = @"SELECT * FROM User_Roles WHERE UserId = @UserId";
             UserAndRolesDTO dto;
             List<UserAndRolesDTO> dtoList = new List<UserAndRolesDTO>();
-            var dt = _command.GetData(GET_ALL_USERS_QUERY);
+            var dt = await _command.GetDataAsync(GET_ALL_USERS_QUERY);
             foreach(DataRow row in dt.Rows)
             {
                 dto= new UserAndRolesDTO();
@@ -82,7 +83,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             foreach(var User in dtoList)
             {
                 List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@UserId",User.UserId)};
-                var dt2 = _command.GetDataWithConditions(GET_ALL_ROLES_OF_A_USER_BY_USER_ID, parameters);
+                var dt2 = await _command.GetDataWithConditionsAsync(GET_ALL_ROLES_OF_A_USER_BY_USER_ID, parameters);
                 User.Roles = new List<byte>();
                 foreach (DataRow row in dt2.Rows)
                 {
@@ -91,7 +92,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return dtoList;
         }
-        public bool ActivatePendingUser(ActivationDTO activationDTO)
+        public async Task<bool> ActivatePendingUserAsync(ActivationDTO activationDTO)
         {
             const string ACTIVATE_PENDING_ACCOUNT_QUERY = @"UPDATE [User] SET ManagerId = @ManagerId, DepartmentId = @DepartmentId WHERE UserId = @UserId;
                                                             UPDATE [Credential] SET Activated = 1 WHERE UserId = @UserId;
@@ -101,15 +102,15 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             parameters.Add(new SqlParameter("@DepartmentId", activationDTO.DepartmentId));
             parameters.Add(new SqlParameter("@UserId", activationDTO.UserId));
             parameters.Add(new SqlParameter("@RoleId", activationDTO.RoleId));
-            _command.InsertUpdateData(ACTIVATE_PENDING_ACCOUNT_QUERY, parameters);
+            await _command.InsertUpdateDataAsync(ACTIVATE_PENDING_ACCOUNT_QUERY, parameters);
             return true;
         }
-        public List<UserModel> GetAllPendingUserModels()
+        public async Task<List<UserModel>> GetAllPendingUserModelsAsync()
         {
             const string GET_ALL_PENDING_USER_MODELS_QUERY = @"SELECT u.* FROM [User] u INNER JOIN [Credential] c ON u.UserId = c.UserId WHERE c.Activated = 0 ";
             List<UserModel> ListOfPendingUserAccounts = new List<UserModel>();
             UserModel userModel;
-            var dt = _command.GetData(GET_ALL_PENDING_USER_MODELS_QUERY);
+            var dt = await _command.GetDataAsync(GET_ALL_PENDING_USER_MODELS_QUERY);
             foreach (DataRow row in dt.Rows)
             {
                 userModel = new UserModel();
@@ -126,7 +127,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             throw new NotImplementedException();
         }
-        public bool UpdateUserAndRoles(UserAndRolesDTO userAndRolesDTO)
+        public async Task<bool> UpdateUserAndRolesAsync(UserAndRolesDTO userAndRolesDTO)
         {
             string UpdateUserAndRolesQuery = @"UPDATE [User] SET DepartmentId = @DepartmentId, ManagerId = @ManagerId WHERE UserId = @UserId;";
             List<SqlParameter> parameters = new List<SqlParameter>() 
@@ -147,13 +148,13 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                     index++;
                 }
             }
-            _command.InsertUpdateData(UpdateUserAndRolesQuery, parameters); 
+            await _command.InsertUpdateDataAsync(UpdateUserAndRolesQuery, parameters); 
             return true;
         }
         #endregion
 
         #region Manager Manipulations
-        public List<ManagerDTO> GetAllManagers()
+        public async Task<List<ManagerDTO>> GetAllManagersAsync()
         {
             const string GET_ALL_MANAGERS_QUERY = @"SELECT u.UserId, u.UserFirstName,u.UserLastName,u.DepartmentId,r.RoleId,r.RoleName
                                                     FROM [User] u 
@@ -162,7 +163,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                                                     WHERE r.RoleName='Manager';";
             List<ManagerDTO> listOfManagers = new List<ManagerDTO>();
             ManagerDTO managerModel;
-            var dt = _command.GetData(GET_ALL_MANAGERS_QUERY);
+            var dt = await _command.GetDataAsync(GET_ALL_MANAGERS_QUERY);
             foreach (DataRow row in dt.Rows)
             {
                 managerModel = new ManagerDTO();
@@ -176,14 +177,14 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return listOfManagers;
         }
-        public List<ManagerDTO> GetAllManagersByDepartmentId(byte DepartmentId)
+        public async Task<List<ManagerDTO>> GetAllManagersByDepartmentIdAsync(byte DepartmentId)
         {
             const string GET_ALL_MANAGERS_FROM_A_DEPARTMENT = @"SELECT u.* FROM [User] u INNER JOIN [User_Roles] ur ON u.UserId=ur.UserId WHERE ur.RoleId = 2 AND u.DepartmentId = @DepartmentId ";
             List<ManagerDTO> listOfManagers = new List<ManagerDTO>();
             ManagerDTO managerDTO;
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@DepartmentId", DepartmentId));
-            var dt = _command.GetDataWithConditions(GET_ALL_MANAGERS_FROM_A_DEPARTMENT, parameters);
+            var dt = await _command.GetDataWithConditionsAsync(GET_ALL_MANAGERS_FROM_A_DEPARTMENT, parameters);
             foreach (DataRow row in dt.Rows)
             {
                 managerDTO = new ManagerDTO();
@@ -197,12 +198,12 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         #endregion
 
         #region User Roles Manipulations
-        public List<RoleModel> GetAllUserRoles()
+        public async Task<List<RoleModel>> GetAllUserRolesAsync()
         {
             const string GET_ALL_USER_ROLES_QUERY = @"SELECT * FROM [Roles]";
             List<RoleModel> listOfUserRoles = new List<RoleModel>();
             RoleModel roleModel;
-            var dt = _command.GetData(GET_ALL_USER_ROLES_QUERY);
+            var dt = await _command.GetDataAsync(GET_ALL_USER_ROLES_QUERY);
             foreach (DataRow row in dt.Rows)
             {
                 roleModel = new RoleModel();
@@ -212,14 +213,14 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             }
             return listOfUserRoles;
         }
-        public List<UserRolesModel> GetAllUserRolesModelByUserId(int UserId)
+        public async Task<List<UserRolesModel>> GetAllUserRolesModelByUserIdAsync(int UserId)
         {
             const string RETRIEVE_USER_ROLES_BY_USER_ID_QUERY = @"SELECT * FROM Roles r INNER JOIN User_Roles ur ON ur.RoleId=r.RoleId WHERE ur.UserId=@UserId";
             List<UserRolesModel> UserRolesList = new List<UserRolesModel>();
             UserRolesModel userRolesModel;
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@UserId", UserId));
-            var dt = _command.GetDataWithConditions(RETRIEVE_USER_ROLES_BY_USER_ID_QUERY, parameters);
+            var dt = await _command.GetDataWithConditionsAsync(RETRIEVE_USER_ROLES_BY_USER_ID_QUERY, parameters);
             foreach (DataRow row in dt.Rows)
             {
                 userRolesModel = new UserRolesModel();
@@ -233,6 +234,16 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
 
         #region EmployeeTraining
         public void AssignTrainingToEmployee(byte EmployeeId, byte TrainingId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeactivatePendingUserAsync(byte UserID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AssignTrainingToEmployeeAsync(byte EmployeeId, byte TrainingId)
         {
             throw new NotImplementedException();
         }

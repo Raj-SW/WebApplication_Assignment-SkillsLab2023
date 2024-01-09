@@ -176,7 +176,6 @@
     <Compile Include="DAL\Interface\IDepartmentDAL.cs" />
     <Compile Include="DAL\Interface\IEnrolmentDAL.cs" />
     <Compile Include="DAL\Interface\IUserDAL.cs" />
-    <Compile Include="BusinessLayer\Others\TestBL.cs" />
     <Compile Include="BusinessLayer\TrainingBL.cs" />
     <Compile Include="BusinessLayer\UserBL.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
@@ -195,7 +194,6 @@
     <Compile Include="DAL\Common\IGenericDAL.cs" />
     <Compile Include="DAL\Interface\IAuthenticationDAL.cs" />
     <Compile Include="DAL\Interface\ITrainingDAL.cs" />
-    <Compile Include="DAL\TestDAL.cs" />
     <Compile Include="DAL\TrainingDAL.cs" />
     <Compile Include="DataTransferObjects\ActivationDTO.cs" />
     <Compile Include="DataTransferObjects\AutomaticProcessingDTO.cs" />
@@ -312,7 +310,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Authentication\LoginPage.cshtml" />
     <Content Include="Views\Authentication\RegistrationPage.cshtml" />
-    <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Common\AccessDenied.cshtml" />
     <Content Include="Views\Common\Index.cshtml" />
     <Content Include="Views\Manager\ManagerView.cshtml" />
@@ -320,7 +317,6 @@
     <Content Include="Views\User\EmployeeView.cshtml" />
     <Content Include="Views\User\AdminView.cshtml" />
     <Content Include="Views\User\ManagerView.cshtml" />
-    <Content Include="Views\Admin\CreateTraining.cshtml" />
     <Content Include="Views\User\_AdminActivatePendingAcountsPartialView.cshtml" />
     <Content Include="Views\User\_AdminCreateTrainingPartvialView.cshtml" />
     <Content Include="Views\User\_AdminUpdateDeleteTrainingPartialView.cshtml" />
@@ -334,6 +330,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="BusinessLayer\Others\" />
     <Folder Include="Storage\" />
     <Folder Include="Views\Department\" />
     <Folder Include="Views\Enrolment\" />

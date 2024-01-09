@@ -18,7 +18,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> EnrolEmployeeIntoTraining() 
+        public async Task<ActionResult> EnrolEmployeeIntoTrainingAsync() 
         {
             var userId = byte.Parse(HttpContext.Request.Form["userId"]);
             var trainingId = byte.Parse(HttpContext.Request.Form["trainingId"]);
@@ -30,14 +30,14 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = false, message = "Enrolment failed. Make sure you have submitted all files required" });
         }
         [HttpPost]
-        public ActionResult GetEnrolmentPrerequisitesById(byte enrolmentId)
+        public async Task<ActionResult> GetEnrolmentPrerequisitesByIdAsync(byte enrolmentId)
         {
-            var enrolmentPrerequisites = _enrolmentBL.GetEnrolmentPrerequisitesOfAUserByEnrolmentId(enrolmentId);
+            var enrolmentPrerequisites = await  _enrolmentBL.GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(enrolmentId);
             return Json(new { result = true, message = "Successfully retrieved prerequisites", EnrolmentPrerequisites = enrolmentPrerequisites });
         }
         [HttpPost]
-        public ActionResult isUserAlreadyRegisteredForTraining(byte trainingId, byte userId) {
-            var result = _enrolmentBL.isUserAlreadyRegisteredInTraining(trainingId, userId);
+        public async Task<ActionResult> isUserAlreadyRegisteredForTrainingAsync(byte trainingId, byte userId) {
+            var result = await _enrolmentBL.isUserAlreadyRegisteredInTrainingAsync(trainingId, userId);
             if (result)
             {
                 return Json(new { result = true, message = "You have Already Registered" });
@@ -72,10 +72,10 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { });
         }
         [HttpPost]
-        public ActionResult AutomaticEnrolmentProcessingForAllTraining()
+        public async Task<ActionResult> AutomaticEnrolmentProcessingForAllTrainingAsync()
         {
-            _enrolmentBL.AutomaticEnrolmentProcessingForAllTrainingAsync();
-            return Json(new { });
+            await _enrolmentBL.AutomaticEnrolmentProcessingForAllTrainingAsync();
+            return Json(new { result = true,message = "Automatic Processin for All training Triggered..." });
         }
     }
 }

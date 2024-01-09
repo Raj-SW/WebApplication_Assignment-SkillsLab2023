@@ -33,7 +33,7 @@ function Register()
         credentialModel: CredentialModel
     };
 
-    fetch( "/Authentication/RegisterUser", {
+    fetch( "/Authentication/RegisterUserAsync", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

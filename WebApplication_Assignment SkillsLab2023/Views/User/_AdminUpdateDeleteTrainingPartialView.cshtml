@@ -180,7 +180,7 @@
         });
 
         // Make a fetch call to your action method
-        fetch('/Training/UpdatePrerequisiteInTraining', {
+        fetch('/Training/UpdatePrerequisiteInTrainingAsync', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -213,7 +213,7 @@
         };
 
         // Make a fetch request to the server
-        fetch('/Training/UpdateTraining', {
+        fetch('/Training/UpdateTrainingAsync', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -234,7 +234,7 @@
     }
     function deleteTraining(trainingId) {
         // Make a fetch call to your delete action method
-        fetch('/Training/DeleteTraining', {
+        fetch('/Training/DeleteTrainingAsync', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -272,7 +272,7 @@
 
     document.getElementById('launchButton').addEventListener('click', function () {
         // Make a fetch call to the specified URL
-        fetch('/Enrolment/AutomaticEnrolmentProcessingForAllTraining', {
+        fetch('/Enrolment/AutomaticEnrolmentProcessingForAllTrainingAsync', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

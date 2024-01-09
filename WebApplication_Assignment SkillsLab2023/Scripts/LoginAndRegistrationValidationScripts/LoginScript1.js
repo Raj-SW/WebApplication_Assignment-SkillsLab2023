@@ -1,44 +1,45 @@
-function login() {
-
+async function login() {
     let form = document.querySelector('form');
-
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        return false;
-    });
-    if (LoginValidation() === false) {
-        return false;
-    }
 
-    var email = $("#email").val().toString().toLowerCase();
-    var Password = $("#password").val().toString();
+        if (await LoginValidation() === false) {
+            return false;
+        }
 
-    var loginObject = {
-        Email: email,
-        Password: Password,
-    };
-    $.ajax({
-        type: "POST",
-        url: "/Authentication/LoginUser",
-        data: loginObject,
-        dataType: "json",
-        success: function (response) {
-            if (response.result) {
-                alert(response.message);
-                window.location = response.url;
-                console.log(response.user);
+        var email = $("#email").val().toString().toLowerCase();
+        var password = $("#password").val().toString();
+
+        var loginObject = {
+            Email: email,
+            Password: password,
+        };
+
+        try {
+            const response = await fetch("/Authentication/LoginUserAsync", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(loginObject),
+            });
+
+            if (response.ok) {
+                const responseData = await response.json();
+
+                if (responseData.result) {
+                    alert(responseData.message);
+                    window.location = responseData.url;
+                    console.log(responseData.user);
+                } else {
+                    alert(responseData.message);
+                    window.location = responseData.url;
+                }
+            } else {
+                console.error("Failed to fetch:", response);
             }
-            else {
-                alert(response.message);
-                window.location = response.url;
-            }
-        },
-        failure: function (response)
-        {
-        },
-        error: function (response)
-        {
+        } catch (error) {
+            console.error("Fetch error:", error);
         }
     });
-
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
@@ -15,9 +16,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         _departmentBL=departmentBL;
         }
 
-        public ActionResult GetAllDepartments()
+        public async Task<ActionResult> GetAllDepartmentsAsync()
         {
-            var ListOfDepartment=_departmentBL.GetAllDepartments();
+            var ListOfDepartment = await _departmentBL.GetAllDepartmentsAsync();
             return View();
         }
     }

@@ -1,5 +1,5 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
@@ -10,29 +10,28 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
     public interface ITrainingBL
     {
         #region Insert Models
-        bool AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel);
-        bool CreatePrerequisite(string description);
-        bool CreateTraining(CreateTrainingDTO createTrainingDTO);
+        Task<bool> AddPrerequisiteToTrainingAsync(TrainingPrerequisiteModel trainingPrerequisiteModel);
+        Task<bool> CreatePrerequisiteAsync(string description);
+        Task<bool> CreateTrainingAsync(CreateTrainingDTO createTrainingDTO);
         #endregion
 
         #region Get Models
-        List<TrainingWithPrerequisitesModel> GetAllTrainingModels();
-        List<TrainingWithPrerequisitesModel> GetAllTrainingModelsWithPrerequisites();
-        List<PrerequisitesModel> GetTrainingPrerequisitesById(int trainingId);
-        List<PrerequisitesModel> GetAllPrerequisiteOfATrainingModelByTrainingId(byte TrainingId);
-        List<PrerequisitesModel> GetAllPrerequisites();
-        string GetTrainingNameByTrainingId(byte trainingId);
+        Task<List<TrainingWithPrerequisitesModel>> GetAllTrainingModelsAsync();
+        Task<List<TrainingWithPrerequisitesModel>> GetAllTrainingModelsWithPrerequisitesAsync();
+        Task<List<PrerequisitesModel>> GetTrainingPrerequisitesByIdAsync(int trainingId);
+        Task<List<PrerequisitesModel>> GetAllPrerequisiteOfATrainingModelByTrainingIdAsync(byte TrainingId);
+        Task<List<PrerequisitesModel>> GetAllPrerequisitesAsync();
+        Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId);
         #endregion
 
         #region Update Models
-        bool UpdateTraining(TrainingModel trainingmodel);
-        bool UpdateTrainingPrerequisite(byte TrainingId, List<byte> Prerequisites);
+        Task<bool> UpdateTrainingAsync(TrainingModel trainingmodel);
+        Task<bool> UpdateTrainingPrerequisiteAsync(byte TrainingId, List<byte> Prerequisites);
         #endregion
 
         #region Delete Models
-        bool DeleteTraining(byte id);
-        bool isTrainingDeletable(byte trainingId);
+        Task<bool> DeleteTrainingAsync(byte id);
+        Task<bool> isTrainingDeletableAsync(byte trainingId);
         #endregion
-       
     }
 }

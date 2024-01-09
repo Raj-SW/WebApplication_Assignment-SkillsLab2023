@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
 {
     public interface IDBCommand
     {
-        DataTable GetData(string query);
-        void InsertUpdateData(string query, List<SqlParameter> parameters);
-        DataTable GetDataWithConditions(string query, List<SqlParameter> parameters);
-        //void UpdateDataNoConditions(String query);
+        Task<DataTable> GetDataAsync(string query);
+        Task InsertUpdateDataAsync(string query, List<SqlParameter> parameters);
+        Task<DataTable> GetDataWithConditionsAsync(string query, List<SqlParameter> parameters);
+        
     }
 }

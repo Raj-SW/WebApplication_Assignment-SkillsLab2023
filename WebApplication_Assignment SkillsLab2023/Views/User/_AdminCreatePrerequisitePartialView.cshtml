@@ -21,7 +21,7 @@
 
             const prerequisiteDescription = document.getElementById('prerequisiteDescription').value;
 
-            fetch('/Training/CreatePrerequisites', {
+            fetch('/Training/CreatePrerequisitesAsync', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

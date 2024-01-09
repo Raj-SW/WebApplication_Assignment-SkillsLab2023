@@ -1,23 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
 {
     public interface IAuthenticationBL
     {
-        DataModelResult<UserModel> LoginUser(CredentialModel model);
-        TaskResult RegisterUser(UserAndCredentialDTO dto);
+        Task<DataModelResult<UserModel>> LoginUserAsync(CredentialModel model);
+        Task<TaskResult> RegisterUserAsync(UserAndCredentialDTO dto);
         void Logout();
-        TaskResult IsUserModelUnique(UserAndCredentialDTO dto);
-        bool IsCredentialsExists(CredentialModel model);
-        bool InsertCredentialModel(CredentialModel model);
-        int GetUserModelIDbyNIC(UserModel model);
-        bool isEmailUnique(UserAndCredentialDTO dto);
-        bool isNicUnique(UserAndCredentialDTO dto);
-        bool isMobileNumUnique(UserAndCredentialDTO dto);
-        DataModelResult<CredentialModel> GetCredentialModelByEmail(CredentialModel model);
+        Task<TaskResult> IsUserModelUniqueAsync(UserAndCredentialDTO dto);
+        Task<bool> IsCredentialsExistsAsync(CredentialModel model);
+        Task<bool> InsertCredentialModelAsync(CredentialModel model);
+        Task<int> GetUserModelIDbyNICAsync(UserModel model);
+        Task<bool> isEmailUniqueAsync(UserAndCredentialDTO dto);
+        Task<bool> isNicUniqueAsync(UserAndCredentialDTO dto);
+        Task<bool> isMobileNumUniqueAsync(UserAndCredentialDTO dto);
+        Task<DataModelResult<CredentialModel>> GetCredentialModelByEmailAsync(CredentialModel model);
         byte[] HashPassword(string password, byte[] salt);
         byte[] GenerateTimestampSalt();
-        List<RoleModel> GetAllRoles();
+        Task<List<RoleModel>> GetAllRolesAsync();
     }
 }

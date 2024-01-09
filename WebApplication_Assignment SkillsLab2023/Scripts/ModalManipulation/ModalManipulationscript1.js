@@ -38,7 +38,7 @@
 
 async function isUserAlreadyEnrolled(userId, training) {
     try {
-        var result = await fetch('/Enrolment/isUserAlreadyRegisteredForTraining', {
+        var result = await fetch('/Enrolment/isUserAlreadyRegisteredForTrainingAsync', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
@@ -26,31 +27,31 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         }
 
         #region View
-        public ActionResult EmployeeView()
+        public async Task<ActionResult> EmployeeView()
         {
-            var ListOfTrainings = _itrainingbl.GetAllTrainingModels();
+            var ListOfTrainings = await _itrainingbl.GetAllTrainingModelsAsync();
             ViewBag.ListOfTrainings = ListOfTrainings;
             return View();
         }
-        public ActionResult AdminView()
+        public async Task<ActionResult> AdminView()
         {
-            List<UserModel> ListOfPendingUserAccounts = _userBL.GetAllPendingUserModels();
+            List<UserModel> ListOfPendingUserAccounts = await _userBL.GetAllPendingUserModelsAsync();
             ViewBag.ListOfPendingUserAccounts = ListOfPendingUserAccounts;
-            List<RoleModel> ListOfUserRoles = _userBL.GetAllUserRoles();
+            List<RoleModel> ListOfUserRoles =await _userBL.GetAllUserRolesAsync();
             ViewBag.ListOfUserRoles = ListOfUserRoles;
-            List<ManagerDTO> ListOfManagers = _userBL.GetAllManagers();
+            List<ManagerDTO> ListOfManagers =await _userBL.GetAllManagersAsync();
             ViewBag.ListOfManagers = ListOfManagers;
-            var ListOfDepartments = _departmentBL.GetAllDepartments();
+            var ListOfDepartments =await _departmentBL.GetAllDepartmentsAsync();
             ViewBag.ListOfDepartments = ListOfDepartments;
             TrainingStatusList trainingStatusList = new TrainingStatusList();
             ViewBag.ListOFTrainingStatus=trainingStatusList.ListOfTrainingStatus;
-            var ListOfPrerequisiteModel = _itrainingbl.GetAllPrerequisites();
+            var ListOfPrerequisiteModel = await _itrainingbl.GetAllPrerequisitesAsync();
             ViewBag.ListOfPrerequisiteModel=ListOfPrerequisiteModel;
-            ViewBag.ListOfTrainingWithPrerequisites=_itrainingbl.GetAllTrainingModelsWithPrerequisites();
-            ViewBag.ListOfUserModelsAndTheirRoles=_userBL.GetAllUsersAndTheirRoles();
+            ViewBag.ListOfTrainingWithPrerequisites= await _itrainingbl.GetAllTrainingModelsWithPrerequisitesAsync();
+            ViewBag.ListOfUserModelsAndTheirRoles=await _userBL.GetAllUsersAndTheirRolesAsync();
             return View();
         }
-        public ActionResult ManagerView()
+        public async Task<ActionResult> ManagerView()
         {
             //TODO:
             //DATA REQUIRED; TRAINING DETAILS, TRAINING PREREQUISITES, ENROLMENT, ENROLMENT-PREREQUISITE, EMPLOYEE DETAILS
@@ -62,7 +63,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             //A WAY TO VIEW OR OPEN THE ATTACHMENTS
             //ENROL OR REJECT OR KEEP PENDING OR GIVE A FEEDBACK ON DOCUMENT ETC..
             byte ManagerId = (byte) Session["CurrentUserId"];
-            var listOfEmployeesEnrolment = _enrolmentBL.GetEmployeesPendingEnrolmentByManagerId(ManagerId);
+            var listOfEmployeesEnrolment =await _enrolmentBL.GetEmployeesPendingEnrolmentByManagerIdAsync(ManagerId);
             ViewBag.ListOfEmployeeEnrolment = listOfEmployeesEnrolment;
             return View();
         }
@@ -70,24 +71,24 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         #endregion
 
         #region Get Model
-        public ActionResult GetAllManagers()
+        public async Task<ActionResult> GetAllManagersAsync()
         {
-            var ListOfManagers= _userBL.GetAllManagers();
+            var ListOfManagers=await _userBL.GetAllManagersAsync();
             return Json(new {result = true, ListOfManagers=ListOfManagers});
         }
         [HttpPost]
-        public ActionResult GetAllManagersByDepartmentId(byte departmentId) {
-            var ManagersListByDepartments = _userBL.GetAllManagersByDepartmentId(departmentId);
+        public async Task<ActionResult> GetAllManagersByDepartmentIdAsync(byte departmentId) {
+            var ManagersListByDepartments =await _userBL.GetAllManagersByDepartmentIdAsync(departmentId);
             return Json(new { result = true, managers = ManagersListByDepartments });
         }
-        public ActionResult GetAllPendingUserModels()
+        public async Task<ActionResult> GetAllPendingUserModelsAsync()
         {
-            var ListOfPendingUserModels = _userBL.GetAllPendingUserModels();
+            var ListOfPendingUserModels =await _userBL.GetAllPendingUserModelsAsync();
             return Json(new { result = true, ListOfPendingUserModels = ListOfPendingUserModels });
         }
-        public ActionResult GetAllUserRoles()
+        public async Task<ActionResult> GetAllUserRolesAsync()
         {
-            var ListOfAllUserRoles = _userBL.GetAllUserRoles();
+            var ListOfAllUserRoles =await _userBL.GetAllUserRolesAsync();
             return Json(new { result = true, ListOfAllUserRoles = ListOfAllUserRoles });
         }
         #endregion
@@ -98,9 +99,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
 
         #region Update
         [HttpPost]
-        public ActionResult ActivatePendingAccount(ActivationDTO activationDTO)
+        public async Task<ActionResult> ActivatePendingAccountAsync(ActivationDTO activationDTO)
         {
-            var isSuccess = _userBL.ActivatePendingUser(activationDTO);
+            var isSuccess = await _userBL.ActivatePendingUserAsync(activationDTO);
             if (isSuccess)
             {
                 return Json(new { result = true, message = "User Activated successfully" });
@@ -108,9 +109,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = false, message = "User Activation Failed" });
         }
         [HttpPost]
-        public ActionResult UpdateUserAndRoles(UserAndRolesDTO dto) 
+        public async Task<ActionResult> UpdateUserAndRolesAsync(UserAndRolesDTO dto) 
         {
-            var result = _userBL.UpdateUserAndRoles(dto);
+            var result = await _userBL.UpdateUserAndRolesAsync(dto);
             if (result)
             {
                 return Json(new { result = true, message = "User Updated Successfully" }); ;

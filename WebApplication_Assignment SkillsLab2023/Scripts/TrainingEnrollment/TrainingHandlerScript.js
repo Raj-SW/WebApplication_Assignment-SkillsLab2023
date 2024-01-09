@@ -37,7 +37,7 @@
         UserId: userId,
         Files: Array.from(fileInputs)
     }
-    const url = '/Enrolment/EnrolEmployeeIntoTraining';
+    const url = '/Enrolment/EnrolEmployeeIntoTrainingAsync';
     await fetch(url, {
         method: 'POST',
         body: formData 

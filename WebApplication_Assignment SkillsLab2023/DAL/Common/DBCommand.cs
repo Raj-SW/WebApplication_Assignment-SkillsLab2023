@@ -1,40 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
-using WebApplication_Assignment_SkillsLab2023.Common;
 
-namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
+namespace WebApplication_Assignment_SkillsLab2023.Common
 {
     public class DBCommand : IDBCommand
     {
-        public DataTable GetData(string query)
+        public async Task<DataTable> GetDataAsync(string query)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            dataAccessLayer.OpenConnection();
+            //await dataAccessLayer.OpenConnectionAsync();
             DataTable datatable = new DataTable();
+            
             using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
                 command.CommandType = CommandType.Text;
                 using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command))
                 {
-                    sqlDataAdapter.Fill(datatable);
+                    await Task.Run(() => sqlDataAdapter.Fill(datatable));
                 }
             }
-            //list of --generic list T, scan through DT   
+
             dataAccessLayer.CloseConnection();
             return datatable;
         }
-        public void InsertUpdateData(string query, List<SqlParameter> parameters)
+
+        public async Task InsertUpdateDataAsync(string query, List<SqlParameter> parameters)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            dataAccessLayer.OpenConnection();
+            await dataAccessLayer.OpenConnectionAsync();
+
             using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
                 command.CommandType = CommandType.Text;
+                
                 if (parameters != null)
                 {
                     parameters.ForEach(parameter =>
@@ -42,18 +44,23 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
                         command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
                     });
                 }
-                command.ExecuteNonQuery();
+
+                await Task.Run(() => command.ExecuteNonQuery());
             }
+
             dataAccessLayer.CloseConnection();
         }
-        public DataTable GetDataWithConditions(string query, List<SqlParameter> parameters)
+
+        public async Task<DataTable> GetDataWithConditionsAsync(string query, List<SqlParameter> parameters)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            dataAccessLayer.OpenConnection();
+            //await dataAccessLayer.OpenConnectionAsync();
             DataTable datatable = new DataTable();
+
             using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
                 command.CommandType = CommandType.Text;
+                
                 if (parameters != null)
                 {
                     parameters.ForEach(parameter =>
@@ -61,29 +68,35 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
                         command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
                     });
                 }
+
                 using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command))
                 {
-                    sqlDataAdapter.Fill(datatable);
+                    await Task.Run(() => sqlDataAdapter.Fill(datatable));
                 }
             }
+
             dataAccessLayer.CloseConnection();
             return datatable;
         }
-        public void UpdateDataNoConditions(String query)
+
+        public async Task UpdateDataNoConditionsAsync(string query)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            dataAccessLayer.OpenConnection();
+            await dataAccessLayer.OpenConnectionAsync();
+
             using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
                 command.CommandType = CommandType.Text;
-                command.ExecuteNonQuery();
+                await Task.Run(() => command.ExecuteNonQuery());
             }
+
             dataAccessLayer.CloseConnection();
         }
-        public object ExecuteScalar(string query, List<SqlParameter> parameters)
+
+        public async Task<object> ExecuteScalarAsync(string query, List<SqlParameter> parameters)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            dataAccessLayer.OpenConnection();
+            await dataAccessLayer.OpenConnectionAsync();
 
             using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
@@ -97,7 +110,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
                     });
                 }
 
-                object result = command.ExecuteScalar();
+                object result = await Task.Run(() => command.ExecuteScalar());
 
                 dataAccessLayer.CloseConnection();
 

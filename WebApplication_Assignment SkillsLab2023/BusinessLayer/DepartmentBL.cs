@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DAL.Interface;
@@ -16,9 +17,9 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             _departmentDAL = departmentDAL;
         }
         #region Get Models
-        public List<DepartmentModel> GetAllDepartments()
+        public async Task<List<DepartmentModel>> GetAllDepartmentsAsync()
         {
-            return _departmentDAL.GetAllDepartments();
+            return await _departmentDAL.GetAllDepartmentsAsync();
         }
         #endregion
 

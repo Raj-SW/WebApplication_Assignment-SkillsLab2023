@@ -10,7 +10,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Interface
     public interface IDepartmentDAL
     {
         #region Get Models
-        List<DepartmentModel> GetAllDepartments();
+        Task<List<DepartmentModel>> GetAllDepartmentsAsync();
         #endregion
 
     }

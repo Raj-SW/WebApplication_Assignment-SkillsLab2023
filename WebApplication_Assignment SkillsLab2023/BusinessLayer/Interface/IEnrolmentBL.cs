@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
@@ -12,10 +9,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
     public interface IEnrolmentBL
     {
         #region Get Model
-        List<GetPendingEmployeesEnrolmentOfAMangerDTO> GetEmployeesPendingEnrolmentByManagerId(byte managerId);
-        List<UserPrerequisiteModel> GetEnrolmentPrerequisitesOfAUserByEnrolmentId(byte enrolmentId);
-        List<UserPrerequisiteModel> GetAllEnrolmentsManagerWise(byte ManagerId);
-        bool isUserAlreadyRegisteredInTraining(byte trainingId, byte UserId);
+        Task<List<GetPendingEmployeesEnrolmentOfAMangerDTO>> GetEmployeesPendingEnrolmentByManagerIdAsync(byte managerId);
+        Task<List<UserPrerequisiteModel>> GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(byte enrolmentId);
+        Task<List<UserPrerequisiteModel>> GetAllEnrolmentsManagerWiseAsync(byte ManagerId);
+        Task<bool> isUserAlreadyRegisteredInTrainingAsync(byte trainingId, byte UserId);
         #endregion
 
         #region Insert Model
@@ -23,10 +20,11 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         #endregion
 
         #region Update Model
-        Task<bool> ManagerApproveEnrolmentAsync(byte enrolmentId,byte userId, byte trainingId);
+        Task<bool> ManagerApproveEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId);
         Task<bool> ManagerRejectEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId, string remarks);
-        void AutomaticEnrolmentProcessingForTrainingByTrainingId(byte trainingId);
+        Task AutomaticEnrolmentProcessingForTrainingByTrainingIdAsync(byte trainingId);
         Task AutomaticEnrolmentProcessingForAllTrainingAsync();
         #endregion
     }
 }
+

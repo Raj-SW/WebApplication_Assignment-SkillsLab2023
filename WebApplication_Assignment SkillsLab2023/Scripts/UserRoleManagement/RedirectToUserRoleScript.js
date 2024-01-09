@@ -8,7 +8,7 @@
     if (selectedRoleId) {
         var roleId = selectedRoleId.value;
 
-        fetch('/Authentication/RedirectToUserRole', {
+        fetch('/Authentication/RedirectToUserRoleAsync', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

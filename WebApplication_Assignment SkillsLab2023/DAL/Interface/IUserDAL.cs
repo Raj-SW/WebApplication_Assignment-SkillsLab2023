@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
 
@@ -7,21 +8,20 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
     public interface IUserDAL
     {
         #region Get Model
-        List<UserAndRolesDTO> GetAllUsersAndTheirRoles();
-        string GetEmployeeEmailbyUserId(byte UserId);
-        string GetManagerEmailThroughEmployeeUserId(byte UserId);
-        List<UserRolesModel> GetAllUserRolesModelByUserId(int UserId);
-        List<UserModel> GetAllPendingUserModels();
-        List<RoleModel> GetAllUserRoles();
-        List<ManagerDTO> GetAllManagers();
-        List<ManagerDTO> GetAllManagersByDepartmentId(byte DepartmentId);
+        Task<List<UserAndRolesDTO>> GetAllUsersAndTheirRolesAsync();
+        Task<string> GetEmployeeEmailbyUserIdAsync(byte UserId);
+        Task<string> GetManagerEmailThroughEmployeeUserIdAsync(byte UserId);
+        Task<List<UserRolesModel>> GetAllUserRolesModelByUserIdAsync(int UserId);
+        Task<List<UserModel>> GetAllPendingUserModelsAsync();
+        Task<List<RoleModel>> GetAllUserRolesAsync();
+        Task<List<ManagerDTO>> GetAllManagersAsync();
+        Task<List<ManagerDTO>> GetAllManagersByDepartmentIdAsync(byte DepartmentId);
         #endregion
 
-        bool ActivatePendingUser(ActivationDTO activationDTO);
-        bool UpdateUserAndRoles(UserAndRolesDTO userAndRolesDTO);
-        void DeactivatePendingUser(byte UserID);
-        void AssignTrainingToEmployee(byte EmployeeId, byte TrainingId);
-        string GetUserNamebyUserId(byte userId);
+        Task<bool> ActivatePendingUserAsync(ActivationDTO activationDTO);
+        Task<bool> UpdateUserAndRolesAsync(UserAndRolesDTO userAndRolesDTO);
+        Task DeactivatePendingUserAsync(byte UserID);
+        Task AssignTrainingToEmployeeAsync(byte EmployeeId, byte TrainingId);
+        Task<string> GetUserNamebyUserIdAsync(byte userId);
     }
-
 }

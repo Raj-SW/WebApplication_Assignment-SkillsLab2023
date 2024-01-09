@@ -1,33 +1,39 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
-using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
+using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
+using System.Web;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
     public class TrainingController : Controller
     {
         private readonly ITrainingBL _trainingBl;
+
         public TrainingController(ITrainingBL trainingBl)
         {
             _trainingBl = trainingBl;
         }
+
         #region Get Model
-        public ActionResult GetAllTraining()
+
+        public async Task<ActionResult> GetAllTrainingAsync()
         {
-            var ListOftraining = _trainingBl.GetAllTrainingModels();
-            ViewBag.ListOfTraining=ListOftraining;
-            return Json(new { result = true, listOfTraining = ListOftraining}) ;
+            var listOfTraining = await _trainingBl.GetAllTrainingModelsAsync();
+            ViewBag.ListOfTraining = listOfTraining;
+            return Json(new { result = true, listOfTraining });
         }
+
         [HttpPost]
-        public JsonResult GetTrainingPrerequisitebyTrainingId(int trainingId)
+        public async Task<JsonResult> GetTrainingPrerequisitebyTrainingIdAsync(int trainingId)
         {
-            List<PrerequisitesModel> trainingPrerequisiteModelListById = _trainingBl.GetTrainingPrerequisitesById(trainingId);
-            return Json(new { result = true, preReqList=trainingPrerequisiteModelListById});
+            List<PrerequisitesModel> trainingPrerequisiteModelListById = await _trainingBl.GetTrainingPrerequisitesByIdAsync(trainingId);
+            return Json(new { result = true, preReqList = trainingPrerequisiteModelListById });
         }
+
         public ActionResult GetFile(string filePath)
         {
             var fullPath = Path.Combine(Server.MapPath("~/"), filePath);
@@ -48,72 +54,80 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
                 return HttpNotFound();
             }
         }
+
         #endregion
 
         #region Insert
+
         [HttpPost]
-        public ActionResult CreateTraining(CreateTrainingDTO createTrainingDTO)
+        public async Task<ActionResult> CreateTrainingAsync(CreateTrainingDTO createTrainingDTO)
         {
-            var isSuccess = _trainingBl.CreateTraining(createTrainingDTO);
+            var isSuccess = await _trainingBl.CreateTrainingAsync(createTrainingDTO);
             if (isSuccess)
             {
                 return Json(new { result = true, message = "Training Created" });
             }
-            return Json(new { result = true, message = "Training Failed to create" });
+            return Json(new { result = false, message = "Training Failed to create" });
         }
+
         [HttpPost]
-        public ActionResult AddPrerequisiteToTraining(TrainingPrerequisiteModel trainingPrerequisiteModel)
+        public async Task<ActionResult> AddPrerequisiteToTrainingAsync(TrainingPrerequisiteModel trainingPrerequisiteModel)
         {
-            var isSucces = _trainingBl.AddPrerequisiteToTraining(trainingPrerequisiteModel);
-            if (isSucces)
+            var isSuccess = await _trainingBl.AddPrerequisiteToTrainingAsync(trainingPrerequisiteModel);
+            if (isSuccess)
             {
                 return Json(new { result = true, message = "Training Prerequisite Added to training successfully" });
             }
             return Json(new { result = false, message = "Training Prerequisite not being added" });
         }
+
         [HttpPost]
-        public ActionResult CreatePrerequisites(string prerequisiteDescription) 
+        public async Task<ActionResult> CreatePrerequisitesAsync(string prerequisiteDescription)
         {
-            var isSuccess = _trainingBl.CreatePrerequisite(prerequisiteDescription);
-            return Json(new { result = true, message="Prerequisite Added Successfully" });
+            var isSuccess = await _trainingBl.CreatePrerequisiteAsync(prerequisiteDescription);
+            return Json(new { result = true, message = "Prerequisite Added Successfully" });
         }
+
         #endregion
 
         #region Update
+
         [HttpPost]
-        public ActionResult UpdateTraining(TrainingModel trainingModel)
+        public async Task<ActionResult> UpdateTrainingAsync(TrainingModel trainingModel)
         {
-            var isSuccess= _trainingBl.UpdateTraining(trainingModel);
+            var isSuccess = await _trainingBl.UpdateTrainingAsync(trainingModel);
             if (isSuccess)
             {
                 return Json(new { result = true, message = "Training Updated Successfully" });
             }
-                return Json(new { result = false, message = "Training Update Unsuccessfully" });
+            return Json(new { result = false, message = "Training Update Unsuccessful" });
         }
+
         [HttpPost]
-        public ActionResult UpdatePrerequisiteInTraining(byte TrainingId,List<byte> Prerequisites) 
+        public async Task<ActionResult> UpdatePrerequisiteInTrainingAsync(byte TrainingId, List<byte> Prerequisites)
         {
-            var isSuccess = _trainingBl.UpdateTrainingPrerequisite(TrainingId,Prerequisites);
+            var isSuccess = await _trainingBl.UpdateTrainingPrerequisiteAsync(TrainingId, Prerequisites);
             if (isSuccess)
             {
-                return Json(new { result = true, message = "Training Prerequisite successfully updated" }); ;
+                return Json(new { result = true, message = "Training Prerequisite successfully updated" });
             }
             return Json(new { result = false, message = "Training Prerequisite update unsuccessful" });
         }
+
         #endregion
 
         #region Delete
+
         [HttpPost]
-        public ActionResult DeleteTraining(byte trainingId) 
+        public async Task<ActionResult> DeleteTrainingAsync(byte trainingId)
         {
-            var isSucces = _trainingBl.DeleteTraining(trainingId);
-            if (isSucces)
+            var isSuccess = await _trainingBl.DeleteTrainingAsync(trainingId);
+            if (isSuccess)
             {
-                return Json(new { result = true, message="Training deleted successfully" }); ;
+                return Json(new { result = true, message = "Training deleted successfully" });
             }
-            return Json(new { result = false, message = "Training deletion unsuccessful.There might be enrolments" }); ;
+            return Json(new { result = false, message = "Training deletion unsuccessful. There might be enrolments" });
         }
         #endregion
-
     }
 }

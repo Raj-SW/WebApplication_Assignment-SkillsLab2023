@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.Models;
@@ -15,14 +16,14 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public AuthenticationBL(IAuthenticationDAL authenticationDAL) {
             _authenticationDAL = authenticationDAL;
         }
-        public TaskResult RegisterUser(UserAndCredentialDTO dto)
+        public async Task<TaskResult> RegisterUserAsync(UserAndCredentialDTO dto)
         {
-            TaskResult result = IsUserModelUnique(dto);
+            TaskResult result = await IsUserModelUniqueAsync(dto);
             if (result.isSuccess)
             {
                 dto.credentialModel.Salt = GenerateTimestampSalt();
                 dto.credentialModel.HashedPassword = HashPassword(dto.credentialModel.Password, dto.credentialModel.Salt);
-                result.isSuccess = _authenticationDAL.InsertUserModelCredentialModel(dto.userModel, dto.credentialModel);
+                result.isSuccess = await _authenticationDAL.InsertUserModelCredentialModelAsync(dto.userModel, dto.credentialModel);
                 if (result.isSuccess)
                 {
                     result.AddResultMessage("Successfull Registration. Wait For Admin to Activate your Account");
@@ -34,11 +35,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             }
             return result;
         }
-
-        public DataModelResult<UserModel> LoginUser(CredentialModel model)
+        public async Task<DataModelResult<UserModel>> LoginUserAsync(CredentialModel model)
         {
             DataModelResult<UserModel> UserDataModelResult = new DataModelResult<UserModel>();
-            var retrieveCredentialModelByEmailResult = GetCredentialModelByEmail(model);
+            var retrieveCredentialModelByEmailResult = await GetCredentialModelByEmailAsync(model);
             if (!retrieveCredentialModelByEmailResult.ResultTask.isSuccess)
             {
                 UserDataModelResult.ResultTask.AddResultMessage("User not Found!");
@@ -56,7 +56,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
                 model.HashedPassword = HashPassword(model.Password, retrieveCredentialModelByEmailResult.ResultObject.Salt);
                 if (model.HashedPassword.SequenceEqual(retrieveCredentialModelByEmailResult.ResultObject.HashedPassword))
                 {
-                    UserDataModelResult.ResultObject = GetUserModelByID(retrieveCredentialModelByEmailResult.ResultObject.UserId);
+                    UserDataModelResult.ResultObject = await GetUserModelByIDAsync(retrieveCredentialModelByEmailResult.ResultObject.UserId);
                     UserDataModelResult.ResultTask.AddResultMessage("Logged In Successfully");
                     UserDataModelResult.ResultTask.isSuccess = true;
                 }
@@ -72,59 +72,58 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             throw new NotImplementedException();
         }
-      
-        public TaskResult IsUserModelUnique(UserAndCredentialDTO dto)
+        public async Task<TaskResult> IsUserModelUniqueAsync(UserAndCredentialDTO dto)
         {
             TaskResult taskResult = new TaskResult();
             taskResult.isSuccess = true;
-            if (isEmailUnique(dto))
+            if (await isEmailUniqueAsync(dto))
             {
                 taskResult.AddResultMessage("Email is already taken\n");
                 taskResult.isSuccess = false;
             }
-            if (isNicUnique(dto))
+            if (await isNicUniqueAsync(dto))
             {
                 taskResult.AddResultMessage("NIC is already taken\n");
                 taskResult.isSuccess = false;
             }
-            if (isMobileNumUnique(dto))
+            if (await isMobileNumUniqueAsync(dto))
             {
                 taskResult.AddResultMessage("Mobile Number is already taken\n");
                 taskResult.isSuccess = false;
             }
             return taskResult;
         }
-        public bool IsCredentialsExists(CredentialModel model)
+        public async Task<bool> IsCredentialsExistsAsync(CredentialModel model)
         {
-            return _authenticationDAL.IsCredentialsExists(model);
+            return await _authenticationDAL.IsCredentialsExistsAsync(model);
         }
-        public bool InsertCredentialModel(CredentialModel model)
+        public async Task<bool> InsertCredentialModelAsync(CredentialModel model)
         {
-            return _authenticationDAL.InsertCredentialModel(model);
+            return await _authenticationDAL.InsertCredentialModelAsync(model);
         }
-        public int GetUserModelIDbyNIC(UserModel model)
+        public async Task<int> GetUserModelIDbyNICAsync(UserModel model)
         {
-            return _authenticationDAL.GetUserModelIDbyNIC(model);
+            return await _authenticationDAL.GetUserModelIDbyNICAsync(model);
         }
-        public bool isEmailUnique(UserAndCredentialDTO dto)
+        public async Task<bool> isEmailUniqueAsync(UserAndCredentialDTO dto)
         {
-           return _authenticationDAL.isEmailUnique(dto);
+            return await _authenticationDAL.isEmailUniqueAsync(dto);
         }
-        public bool isNicUnique(UserAndCredentialDTO dto)
+        public async Task<bool> isNicUniqueAsync(UserAndCredentialDTO dto)
         {
-            return _authenticationDAL.isNicUnique(dto);
+            return await _authenticationDAL.isNicUniqueAsync(dto);
         }
-        public bool isMobileNumUnique(UserAndCredentialDTO dto)
+        public async Task<bool> isMobileNumUniqueAsync(UserAndCredentialDTO dto)
         {
-            return _authenticationDAL.isMobileNumUnique(dto);
+            return await _authenticationDAL.isMobileNumUniqueAsync(dto);
         }
-        public UserModel GetUserModelByID(int id)
+        public async Task<UserModel> GetUserModelByIDAsync(int id)
         {
-            return _authenticationDAL.GetUserModelByID(id);
+            return await _authenticationDAL.GetUserModelByIDAsync(id);
         }
-        public DataModelResult<CredentialModel> GetCredentialModelByEmail(CredentialModel model) 
+        public async Task<DataModelResult<CredentialModel>> GetCredentialModelByEmailAsync(CredentialModel model) 
         {
-            DataModelResult<CredentialModel> result= _authenticationDAL.GetCredentialModelByEmail(model);
+            DataModelResult<CredentialModel> result = await _authenticationDAL.GetCredentialModelByEmailAsync(model);
            return result;
         }
         public byte[] HashPassword(string password, byte[] salt)
@@ -142,9 +141,9 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             byte[] saltBytes = BitConverter.GetBytes(ticks);
             return saltBytes;
         }
-        public List<RoleModel> GetAllRoles()
+        public async Task<List<RoleModel>> GetAllRolesAsync()
         {
-            return _authenticationDAL.GetAllRoles();
+            return await _authenticationDAL.GetAllRolesAsync();
         }
     }
 }
