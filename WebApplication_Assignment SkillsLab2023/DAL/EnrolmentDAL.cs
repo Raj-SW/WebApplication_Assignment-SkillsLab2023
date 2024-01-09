@@ -138,6 +138,31 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             _command.InsertUpdateData(REJECT_ENROLMENT_BY_ID_QUERY, parameters);
             return true;
         }
+        public void AutomaticEnrolmentProcessingForTrainingByTrainingId(byte trainingId)
+        {
+            throw new NotImplementedException();
+        }
+        public List<AutomaticProcessingDTO> AutomaticEnrolmentProcessingForAllTraining()
+        {
+            const string EXECUTE_AUTOMATIC_ENROLMENT_PROCESSING_PROC = "EXEC AutomaticEnrolmentProcessingProcedure;";
+            List<AutomaticProcessingDTO> listofDTO = new List<AutomaticProcessingDTO>();
+            AutomaticProcessingDTO dto;
+            var dt = _command.GetData(EXECUTE_AUTOMATIC_ENROLMENT_PROCESSING_PROC);
+            foreach( DataRow row in dt.Rows )
+            {
+                dto = new AutomaticProcessingDTO();
+                dto.TrainingId = (byte)row["TrainingId"];
+                dto.TrainingName = (string)row["TrainingName"];
+                dto.EnrolmentId = (byte)row["EnrolmentId"];
+                dto.UserId = (byte)row["UserId"];
+                dto.UserFirstName = (string)row["UserFirstName"];
+                dto.UserLastName = (string)row["UserLastName"];
+                dto.Email = (string)row["Email"];
+                listofDTO.Add(dto);
+            }
+            return listofDTO;
+        }
+
         #endregion
     }
 }

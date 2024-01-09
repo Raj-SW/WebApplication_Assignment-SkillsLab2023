@@ -24,6 +24,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Interface
         #region Update Models
         bool ManagerApproveEnrolmentAsync(byte enrolmentId);
         bool ManagerRejectEnrolmentAsync(byte enrolmentId, string remarks);
+        void AutomaticEnrolmentProcessingForTrainingByTrainingId(byte trainingId);
+        List<AutomaticProcessingDTO> AutomaticEnrolmentProcessingForAllTraining();
         #endregion
     }
 }

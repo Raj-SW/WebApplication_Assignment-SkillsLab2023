@@ -75,6 +75,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             var ListOfManagers= _userBL.GetAllManagers();
             return Json(new {result = true, ListOfManagers=ListOfManagers});
         }
+        [HttpPost]
         public ActionResult GetAllManagersByDepartmentId(byte departmentId) {
             var ManagersListByDepartments = _userBL.GetAllManagersByDepartmentId(departmentId);
             return Json(new { result = true, managers = ManagersListByDepartments });

@@ -2,36 +2,49 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
 
 namespace WebApplication_Assignment_SkillsLab2023.Common
 {
-    public class DataAccessLayer : IDataAccessLayer
+    public class DataAccessLayer:IDataAccessLayer
     {
-        //public const string connectionString = @"server=localhost;database=TrainingAssignment;uid=wbpoc;pwd=sql@tfs2008";
-        //public SqlConnection connection;
-        public SqlConnection connection { get; set; }
+        public SqlConnection connection;
+        string connecionString ;
 
         public DataAccessLayer()
         {
+            connecionString = ConfigurationManager.AppSettings["DBConnection"];
+            connection = new SqlConnection(connecionString);
             OpenConnection();
         }
-        public void OpenConnection()
+        public async Task OpenConnectionAsync()
         {
             try
             {
-                var connecionString = ConfigurationManager.AppSettings["DBConnection"];
-                if (!string.IsNullOrEmpty(connecionString))
+                if (connection.State == System.Data.ConnectionState.Open)
                 {
-                    connection = new SqlConnection(connecionString);
-                    connection.Open();
+                    connection.Close();
                 }
+
+                await connection.OpenAsync();
             }
             catch (SqlException ex)
             {
                 throw ex;
             }
         }
+
+        public void OpenConnection()
+        {
+            //Task.Run(() => OpenConnectionAsync()).Wait();
+            if (connection.State == System.Data.ConnectionState.Open)
+            {
+                connection.Close();
+            }
+            connection.Open();
+        }
+
         public void CloseConnection()
         {
             if (connection != null && connection.State == System.Data.ConnectionState.Open)
@@ -40,7 +53,5 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                 connection.Dispose();
             }
         }
-
-       
     }
 }

@@ -9,7 +9,7 @@ using WebApplication_Assignment_SkillsLab2023.Common;
 
 namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
 {
-    public class DBCommand: IDBCommand
+    public class DBCommand : IDBCommand
     {
         public DataTable GetData(string query)
         {
@@ -37,7 +37,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
                 command.CommandType = CommandType.Text;
                 if (parameters != null)
                 {
-                    parameters.ForEach(parameter => {
+                    parameters.ForEach(parameter =>
+                    {
                         command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
                     });
                 }
@@ -71,7 +72,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
         public void UpdateDataNoConditions(String query)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            dataAccessLayer.OpenConnection();  
+            dataAccessLayer.OpenConnection();
             using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
                 command.CommandType = CommandType.Text;

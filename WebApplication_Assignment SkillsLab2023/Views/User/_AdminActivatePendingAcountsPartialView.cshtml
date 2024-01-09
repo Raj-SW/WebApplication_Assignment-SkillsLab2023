@@ -70,12 +70,12 @@
 <script>
     function getManagersByDepartment(departmentId, userId) {
         console.log("department id ", departmentId);
-        fetch('/User/GetManagerByDepartment', {
+        fetch('/User/GetAllManagersByDepartmentId', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ DepartmentId: departmentId })
+            body: JSON.stringify({ departmentId: departmentId })
         })
             .then(response => {
                 if (response.ok) {

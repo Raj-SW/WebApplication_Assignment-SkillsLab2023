@@ -100,6 +100,23 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             isSentManager = await EmailSender.SendEmailAsync($"Employee Enrolment for {trainingName}", $"You have rejected training for employee: {employeeName}", managerEmail);
             return isSuccess;
         }
+        public void AutomaticEnrolmentProcessingForTrainingByTrainingId(byte trainingId)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task AutomaticEnrolmentProcessingForAllTrainingAsync()
+        {
+            var automaticProcessingDTO = _enrolmentDAL.AutomaticEnrolmentProcessingForAllTraining();
+            foreach (var approvedEnrolment in automaticProcessingDTO)
+            {
+                //get email of employees manager
+                var managerEmail = _userBL.GetManagerEmailThroughEmployeeUserId(approvedEnrolment.UserId);
+                //send email notifications to employee
+                var employeeResult = await EmailSender.SendEmailAsync($"Enrolment for {approvedEnrolment.TrainingName} - DF Learning Hub", $"You have been successfully enrolled for the training {approvedEnrolment.TrainingName}. Good Luck! ",approvedEnrolment.Email);
+                // send email notifications to manager
+                var managerResult = await EmailSender.SendEmailAsync($"Employee Enrolment for {approvedEnrolment.TrainingName}",$"Your employee {approvedEnrolment.UserFirstName} {approvedEnrolment.UserLastName} has been successfully enrolled in the training {approvedEnrolment.TrainingName}", managerEmail);
+            }
+        }
         #endregion
     }
 }

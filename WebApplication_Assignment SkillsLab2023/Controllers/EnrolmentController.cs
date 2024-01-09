@@ -65,5 +65,17 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "There has been an error " });
         }
+
+        [HttpPost]
+        public ActionResult AutomaticEnrolmentProcessingForTrainingByTrainingId(byte trainingId)
+        {
+            return Json(new { });
+        }
+        [HttpPost]
+        public ActionResult AutomaticEnrolmentProcessingForAllTraining()
+        {
+            _enrolmentBL.AutomaticEnrolmentProcessingForAllTrainingAsync();
+            return Json(new { });
+        }
     }
 }

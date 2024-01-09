@@ -25,6 +25,8 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         #region Update Model
         Task<bool> ManagerApproveEnrolmentAsync(byte enrolmentId,byte userId, byte trainingId);
         Task<bool> ManagerRejectEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId, string remarks);
+        void AutomaticEnrolmentProcessingForTrainingByTrainingId(byte trainingId);
+        Task AutomaticEnrolmentProcessingForAllTrainingAsync();
         #endregion
     }
 }

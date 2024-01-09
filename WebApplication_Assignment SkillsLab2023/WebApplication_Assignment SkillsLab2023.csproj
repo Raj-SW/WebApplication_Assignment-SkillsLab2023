@@ -198,6 +198,7 @@
     <Compile Include="DAL\TestDAL.cs" />
     <Compile Include="DAL\TrainingDAL.cs" />
     <Compile Include="DataTransferObjects\ActivationDTO.cs" />
+    <Compile Include="DataTransferObjects\AutomaticProcessingDTO.cs" />
     <Compile Include="DataTransferObjects\GetPendingEmployeesEnrolmentOfAMangerDTO.cs" />
     <Compile Include="DataTransferObjects\TrainingWithPrerequisitesModel.cs" />
     <Compile Include="DataTransferObjects\CreateTrainingDTO.cs" />
