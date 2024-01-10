@@ -22,11 +22,11 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             if (result.isSuccess)
             {
                 dto.credentialModel.Salt = GenerateTimestampSalt();
-                dto.credentialModel.HashedPassword = HashPassword(dto.credentialModel.Password, dto.credentialModel.Salt);
+                dto.credentialModel.Password = HashPassword(dto.credentialModel.RawPassword, dto.credentialModel.Salt);
                 result.isSuccess = await _authenticationDAL.InsertUserModelCredentialModelAsync(dto.userModel, dto.credentialModel);
                 if (result.isSuccess)
                 {
-                    result.AddResultMessage("Successfull Registration. Wait For Admin to Activate your Account");
+                    result.AddResultMessage("Successful Registration. Wait For Admin to Activate your Account");
                 }
                 else
                 {
@@ -53,8 +53,8 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             }
             else
             {
-                model.HashedPassword = HashPassword(model.Password, retrieveCredentialModelByEmailResult.ResultObject.Salt);
-                if (model.HashedPassword.SequenceEqual(retrieveCredentialModelByEmailResult.ResultObject.HashedPassword))
+                model.Password = HashPassword(model.RawPassword, retrieveCredentialModelByEmailResult.ResultObject.Salt);
+                if (model.Password.SequenceEqual(retrieveCredentialModelByEmailResult.ResultObject.Password))
                 {
                     UserDataModelResult.ResultObject = await GetUserModelByIDAsync(retrieveCredentialModelByEmailResult.ResultObject.UserId);
                     UserDataModelResult.ResultTask.AddResultMessage("Logged In Successfully");
@@ -93,10 +93,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             }
             return taskResult;
         }
-        public async Task<bool> IsCredentialsExistsAsync(CredentialModel model)
-        {
-            return await _authenticationDAL.IsCredentialsExistsAsync(model);
-        }
         public async Task<bool> InsertCredentialModelAsync(CredentialModel model)
         {
             return await _authenticationDAL.InsertCredentialModelAsync(model);
@@ -126,11 +122,11 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             DataModelResult<CredentialModel> result = await _authenticationDAL.GetCredentialModelByEmailAsync(model);
            return result;
         }
-        public byte[] HashPassword(string password, byte[] salt)
+        public byte[] HashPassword(string rawpassword, byte[] salt)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(password + salt);
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(rawpassword + salt);
                 byte[] hashedBytes = sha256.ComputeHash(passwordBytes);
                 return hashedBytes;
             }

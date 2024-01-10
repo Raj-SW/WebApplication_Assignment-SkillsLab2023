@@ -10,7 +10,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         Task<TaskResult> RegisterUserAsync(UserAndCredentialDTO dto);
         void Logout();
         Task<TaskResult> IsUserModelUniqueAsync(UserAndCredentialDTO dto);
-        Task<bool> IsCredentialsExistsAsync(CredentialModel model);
         Task<bool> InsertCredentialModelAsync(CredentialModel model);
         Task<int> GetUserModelIDbyNICAsync(UserModel model);
         Task<bool> isEmailUniqueAsync(UserAndCredentialDTO dto);

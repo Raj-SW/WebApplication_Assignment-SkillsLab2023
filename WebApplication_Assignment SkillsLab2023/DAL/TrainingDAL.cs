@@ -48,17 +48,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             const string GET_PREREQUISITE_BY_TRAINING_ID = "SELECT p.* FROM  [Prerequisites] p INNER JOIN [TrainingPrerequisite] tp ON p.PrerequisiteId = tp.PrerequisiteId WHERE tp.TrainingId = @TrainingId";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@TrainingId", trainingId));
-            var DataTable = await _command.GetDataWithConditionsAsync(GET_PREREQUISITE_BY_TRAINING_ID,parameters);
-            List<PrerequisitesModel> ListOfTrainingPrerequisiteModelsByTrainingId = new List<PrerequisitesModel>();
-            PrerequisitesModel trainingPrerequisiteModel;
-            foreach (DataRow row in DataTable.Rows)
-            { 
-                trainingPrerequisiteModel = new PrerequisitesModel();
-                trainingPrerequisiteModel.PrerequisiteId = (byte)row["PrerequisiteId"];
-                trainingPrerequisiteModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
-                ListOfTrainingPrerequisiteModelsByTrainingId.Add(trainingPrerequisiteModel);
-            }
-                return ListOfTrainingPrerequisiteModelsByTrainingId;
+            var DataTable = await _command.GetDataWithConditionsAsync<PrerequisitesModel>(GET_PREREQUISITE_BY_TRAINING_ID,parameters);
+            return DataTable;
         }
         public async Task<List<PrerequisitesModel>> GetAllPrerequisitesAsync()
         {
@@ -78,27 +69,17 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         public async Task<List<PrerequisitesModel>> GetAllPrerequisiteOfATrainingModelByTrainingIdAsync(byte trainingId)
         {
             const string GET_ALL_PREREQUISITES_OF_A_TRAINING = @"SELECT p.* FROM Prerequisites p INNER JOIN TrainingPrerequisite tp ON p.PrerequisiteId= tp.PrerequisiteId WHERE tp.TrainingId = @TrainingId; ";
-            List<PrerequisitesModel> listOfPrerequisite = new List<PrerequisitesModel>();
             List<SqlParameter> parameters = new List<SqlParameter>();
-            PrerequisitesModel prerequisitesModel;
             parameters.Add(new SqlParameter("@TrainingId",trainingId));
-            var dt = await _command.GetDataWithConditionsAsync(GET_ALL_PREREQUISITES_OF_A_TRAINING,parameters);
-            foreach (DataRow row in dt.Rows) 
-            {
-                prerequisitesModel = new PrerequisitesModel();
-                prerequisitesModel.PrerequisiteId = (byte)row["PrerequisiteId"];    
-                prerequisitesModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
-                listOfPrerequisite.Add(prerequisitesModel);
-            }
-            return listOfPrerequisite;
+            var dt = await _command.GetDataWithConditionsAsync<PrerequisitesModel>(GET_ALL_PREREQUISITES_OF_A_TRAINING,parameters);
+            return dt;
         }
         public async Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId) 
         {
             const string GET_TRAINING_NAME_BY_TRAINING_ID_QUERY= @"SELECT TrainingName FROM Training WHERE TrainingId = @TrainingId";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("TrainingId",trainingId)};
-            var dt = await _command.GetDataWithConditionsAsync(GET_TRAINING_NAME_BY_TRAINING_ID_QUERY,parameters);
-            string TrainingName = (string)dt.Rows[0]["TrainingName"];
-            return TrainingName;
+            var dt = await _command.GetDataWithConditionsAsync<TrainingModel>(GET_TRAINING_NAME_BY_TRAINING_ID_QUERY,parameters);
+            return dt.FirstOrDefault().TrainingName;
         }
         #endregion
 
@@ -212,8 +193,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             const string SELECT_ENROLMENTS_QUERY = @"SELECT * FROM Enrolment WHERE TrainingId = @TrainingId;";
             List<SqlParameter> parameters = new List<SqlParameter>() {new SqlParameter("@TrainingId",trainingId) };
-            var dt = await _command.GetDataWithConditionsAsync(SELECT_ENROLMENTS_QUERY, parameters);
-            return dt.Rows.Count<=0;
+            var dt = await _command.GetDataWithConditionsAsync<bool>(SELECT_ENROLMENTS_QUERY, parameters);
+            return dt.FirstOrDefault();
         }
         #endregion
     }

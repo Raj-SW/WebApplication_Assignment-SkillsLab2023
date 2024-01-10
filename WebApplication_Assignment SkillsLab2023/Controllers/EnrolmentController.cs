@@ -36,7 +36,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = true, message = "Successfully retrieved prerequisites", EnrolmentPrerequisites = enrolmentPrerequisites });
         }
         [HttpPost]
-        public async Task<ActionResult> isUserAlreadyRegisteredForTrainingAsync(byte trainingId, byte userId) {
+        public async Task<ActionResult> isUserAlreadyRegisteredForTrainingAsync(byte trainingId, byte userId)
+        {
             var result = await _enrolmentBL.isUserAlreadyRegisteredInTrainingAsync(trainingId, userId);
             if (result)
             {

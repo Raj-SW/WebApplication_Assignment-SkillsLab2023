@@ -23,18 +23,13 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         #region Get Model
         public async Task<string> GetEmployeeEmailbyUserIdAsync(byte UserId)
         {
-            const string GET_EMPLOYEE_EMAL_BY_USER_ID = @"
+            const string GET_EMPLOYEE_EMAIL_BY_USER_ID = @"
                             SELECT Email
                             FROM [Credential]
                             WHERE UserId = @UserId";
             List<SqlParameter>parameters = new List<SqlParameter>() { new SqlParameter("@UserId",UserId)};
-            var dt =await  _command.GetDataWithConditionsAsync(GET_EMPLOYEE_EMAL_BY_USER_ID, parameters);
-            string email="";
-            foreach (DataRow row in dt.Rows)
-            {
-                email = (string)row["Email"];
-            }
-            return email;
+            var dt =await  _command.GetDataWithConditionsAsync<CredentialModel>(GET_EMPLOYEE_EMAIL_BY_USER_ID, parameters);
+            return dt.FirstOrDefault().Email;
         }
         public async Task<string> GetManagerEmailThroughEmployeeUserIdAsync(byte UserId)
         {
@@ -43,20 +38,14 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                             INNER JOIN [User] u ON c.UserId= u.ManagerId
                             WHERE u.UserId = @UserId";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@UserId", UserId) };
-            var dt = await _command.GetDataWithConditionsAsync(GET_EMPLOYEE_EMAL_BY_USER_ID, parameters);
-            string email = "";
-            foreach (DataRow row in dt.Rows)
-            {
-                email = (string)row["Email"];
-            }
-            return email;
+            var dt = await _command.GetDataWithConditionsAsync<CredentialModel>(GET_EMPLOYEE_EMAL_BY_USER_ID, parameters);
+            return dt.FirstOrDefault().Email;
         }
         public async Task<string> GetUserNamebyUserIdAsync(byte userId) {
-            const string GET_USER_NAME_BY_USER_ID = @"SELECT UserFirstName + ' ' + UserLastName AS UserName FROM [User] WHERE UserId = @UserId";
+            const string GET_USER_NAME_BY_USER_ID = @"SELECT UserFirstName, UserLastName FROM [User] WHERE UserId = @UserId";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@UserId",userId) };
-            var dt = await _command.GetDataWithConditionsAsync(GET_USER_NAME_BY_USER_ID,parameters);
-            string UserName = (string)dt.Rows[0]["UserName"];
-            return UserName;
+            var dt = await _command.GetDataWithConditionsAsync<UserModel>(GET_USER_NAME_BY_USER_ID,parameters);
+            return dt.FirstOrDefault().UserFirstName + ' ' + dt.FirstOrDefault().UserLastName;
         }
         #endregion
 
@@ -83,12 +72,9 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             foreach(var User in dtoList)
             {
                 List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@UserId",User.UserId)};
-                var dt2 = await _command.GetDataWithConditionsAsync(GET_ALL_ROLES_OF_A_USER_BY_USER_ID, parameters);
+                var dt2 = await _command.GetDataWithConditionsAsync<byte>(GET_ALL_ROLES_OF_A_USER_BY_USER_ID, parameters);
                 User.Roles = new List<byte>();
-                foreach (DataRow row in dt2.Rows)
-                {
-                    User.Roles.Add((byte)row["RoleId"]);
-                }
+                User.Roles=dt2;
             }
             return dtoList;
         }
@@ -181,19 +167,10 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             const string GET_ALL_MANAGERS_FROM_A_DEPARTMENT = @"SELECT u.* FROM [User] u INNER JOIN [User_Roles] ur ON u.UserId=ur.UserId WHERE ur.RoleId = 2 AND u.DepartmentId = @DepartmentId ";
             List<ManagerDTO> listOfManagers = new List<ManagerDTO>();
-            ManagerDTO managerDTO;
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@DepartmentId", DepartmentId));
-            var dt = await _command.GetDataWithConditionsAsync(GET_ALL_MANAGERS_FROM_A_DEPARTMENT, parameters);
-            foreach (DataRow row in dt.Rows)
-            {
-                managerDTO = new ManagerDTO();
-                managerDTO.UserId = (byte)row["UserId"];
-                managerDTO.UserFirstName = (string)row["UserFirstName"];
-                managerDTO.UserLastName = (string)row["UserLastName"];
-                listOfManagers.Add(managerDTO);
-            }
-            return listOfManagers;
+            var dt = await _command.GetDataWithConditionsAsync<ManagerDTO>(GET_ALL_MANAGERS_FROM_A_DEPARTMENT, parameters);
+            return dt;
         }
         #endregion
 
@@ -217,18 +194,10 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             const string RETRIEVE_USER_ROLES_BY_USER_ID_QUERY = @"SELECT * FROM Roles r INNER JOIN User_Roles ur ON ur.RoleId=r.RoleId WHERE ur.UserId=@UserId";
             List<UserRolesModel> UserRolesList = new List<UserRolesModel>();
-            UserRolesModel userRolesModel;
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@UserId", UserId));
-            var dt = await _command.GetDataWithConditionsAsync(RETRIEVE_USER_ROLES_BY_USER_ID_QUERY, parameters);
-            foreach (DataRow row in dt.Rows)
-            {
-                userRolesModel = new UserRolesModel();
-                userRolesModel.RoleId = (byte)row["RoleId"];
-                userRolesModel.RoleName = (string)row["RoleName"];
-                UserRolesList.Add(userRolesModel);
-            }
-            return UserRolesList;
+            var dt = await _command.GetDataWithConditionsAsync<UserRolesModel>(RETRIEVE_USER_ROLES_BY_USER_ID_QUERY, parameters);
+            return dt;
         }
         #endregion
 

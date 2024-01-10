@@ -9,7 +9,5 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
     {
         public UserModel userModel { get; set; }
         public CredentialModel credentialModel { get; set; }
-
-
     }
 }

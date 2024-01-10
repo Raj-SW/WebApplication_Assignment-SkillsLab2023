@@ -29,26 +29,10 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             INNER JOIN [User] u ON u.UserId = e.UserId
             INNER JOIN Training t ON t.TrainingId = e.TrainingId
             WHERE e.ManagerApproval = 'Pending' AND u.ManagerId = @ManagerId";
-
-            List<GetPendingEmployeesEnrolmentOfAMangerDTO> employeesEnrolmentList = new List<GetPendingEmployeesEnrolmentOfAMangerDTO>();
-            GetPendingEmployeesEnrolmentOfAMangerDTO employeesEnrolment;
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@ManagerId", managerId));
-            var dt = await _command.GetDataWithConditionsAsync(GET_EMPLOYEES_PENDING_ENROLMENT_BY_MANAGER_ID_QUERY, parameters);
-            foreach (DataRow row in dt.Rows)
-            {
-                employeesEnrolment = new GetPendingEmployeesEnrolmentOfAMangerDTO();
-                employeesEnrolment.EnrolmentId = (byte)row["EnrolmentId"];
-                employeesEnrolment.TrainingId = (byte)row["TrainingId"];
-                employeesEnrolment.UserId = (byte)row["UserId"];
-                employeesEnrolment.UserFirstName = (string)row["UserFirstName"];
-                employeesEnrolment.UserLastName = (string)row["UserLastName"];
-                employeesEnrolment.EnrolmentDateTime = (DateTime)row["EnrolmentDateTime"];
-                employeesEnrolment.TrainingName = (string)row["TrainingName"];
-                employeesEnrolment.TrainingRegistrationDeadline = (DateTime)row["TrainingRegistrationDeadline"];
-                employeesEnrolmentList.Add(employeesEnrolment);
-            }
-            return employeesEnrolmentList;
+            var dt = await _command.GetDataWithConditionsAsync<GetPendingEmployeesEnrolmentOfAMangerDTO>(GET_EMPLOYEES_PENDING_ENROLMENT_BY_MANAGER_ID_QUERY, parameters);
+            return dt;
         }
         public async Task<List<UserPrerequisiteModel>> GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(byte enrolmentId)
         {
@@ -58,18 +42,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             INNER JOIN Enrolment e ON e.EnrolmentId = ep.EnrolmentId
             WHERE ep.EnrolmentId = @EnrolmentId;";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@EnrolmentId", enrolmentId) };
-            UserPrerequisiteModel userPrerequisiteModel;
-            List<UserPrerequisiteModel> userPrerequisiteModelList = new List<UserPrerequisiteModel>();
-            var dt = await _command.GetDataWithConditionsAsync(GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID, parameters);
-            foreach (DataRow item in dt.Rows)
-            {
-                userPrerequisiteModel = new UserPrerequisiteModel();
-                userPrerequisiteModel.EnrolmentPrerequisiteId = (byte)item["EnrolmentPrerequisiteId"];
-                userPrerequisiteModel.EnrolmentId = (byte)item["EnrolmentId"];
-                userPrerequisiteModel.FilePath = (string)item["FilePath"];
-                userPrerequisiteModelList.Add(userPrerequisiteModel);
-            }
-            return userPrerequisiteModelList;
+            var dt = await _command.GetDataWithConditionsAsync<UserPrerequisiteModel>(GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID, parameters);
+            return dt;
         }
         public Task<List<UserPrerequisiteModel>> GetAllEnrolmentsManagerWiseAsync(byte ManagerId)
         {
@@ -82,8 +56,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 new SqlParameter("@TrainingId",trainingId),
                 new SqlParameter("@UserId",UserId)
             };
-            var dt = await _command.GetDataWithConditionsAsync(CHECK_IF_USER_ALREADY_REGISTERED, parameters);
-            return dt.Rows.Count>0;
+            var dt = await _command.IsRowExistsAsync(CHECK_IF_USER_ALREADY_REGISTERED, parameters);
+            return dt;
         }
         #endregion
 

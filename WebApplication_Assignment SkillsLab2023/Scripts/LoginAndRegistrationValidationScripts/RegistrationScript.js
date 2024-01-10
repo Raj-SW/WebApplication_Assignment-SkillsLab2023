@@ -26,7 +26,7 @@ function Register()
     }
     var CredentialModel = {
         Email: email,
-        Password: password
+        RawPassword: password
     }
     var RegistrationModel = {
         userModel: UserModel,

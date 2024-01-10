@@ -12,7 +12,7 @@ async function login() {
 
         var loginObject = {
             Email: email,
-            Password: password,
+            RawPassword: password,
         };
 
         try {

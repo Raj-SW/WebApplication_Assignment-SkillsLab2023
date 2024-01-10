@@ -14,9 +14,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Models
         public byte AccessId { get; set; }
         public byte UserId { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string RawPassword { get; set; }
         public byte[] Salt { get; set; }
-        public byte[] HashedPassword { get; set; }
+        public byte[] Password { get; set; }
         public bool Activated { get; set; }
 
     }
