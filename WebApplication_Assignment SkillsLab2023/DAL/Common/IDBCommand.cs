@@ -12,6 +12,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Common
         Task<List<T>> GetDataWithConditionsAsync<T>(string query, List<SqlParameter> parameters) where T : new();
         Task<bool> InsertUpdateDataAsync(string query, List<SqlParameter> parameters);
         Task<bool> IsRowExistsAsync(string query, List<SqlParameter> parameters);
+        Task<bool> UpdateDataNoConditionsAsync(string query);
 
     }
 }
