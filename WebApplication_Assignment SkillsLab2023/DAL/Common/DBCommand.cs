@@ -10,140 +10,23 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
 {
     public class DBCommand : IDBCommand
     {
-        public async Task<DataTable> GetDataAsync(string query)
+        public async Task<List<T>> GetDataAsync<T>(string query) where T : new()
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            //await dataAccessLayer.OpenConnectionAsync();
-            DataTable datatable = new DataTable();
-
-            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
-            {
-                command.CommandType = CommandType.Text;
-                using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command))
-                {
-                    await Task.Run(() => sqlDataAdapter.Fill(datatable));
-                }
-            }
-
-            dataAccessLayer.CloseConnection();
-            return datatable;
-        }
-        public async Task InsertUpdateDataAsync(string query, List<SqlParameter> parameters)
-        {
-            DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            await dataAccessLayer.OpenConnectionAsync();
-
-            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
-            {
-                command.CommandType = CommandType.Text;
-
-                if (parameters != null)
-                {
-                    parameters.ForEach(parameter =>
-                    {
-                        command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
-                    });
-                }
-
-                await Task.Run(() => command.ExecuteNonQuery());
-            }
-
-            dataAccessLayer.CloseConnection();
-        }
-        //public async Task<DataTable> GetDataWithConditionsAsync(string query, List<SqlParameter> parameters)
-        //{
-        //    DataAccessLayer dataAccessLayer = new DataAccessLayer();
-        //    //await dataAccessLayer.OpenConnectionAsync();
-        //    DataTable datatable = new DataTable();
-
-        //    using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
-        //    {
-        //        command.CommandType = CommandType.Text;
-
-        //        if (parameters != null)
-        //        {
-        //            parameters.ForEach(parameter =>
-        //            {
-        //                command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
-        //            });
-        //        }
-
-        //        using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command))
-        //        {
-        //            await Task.Run(() => sqlDataAdapter.Fill(datatable));
-        //        }
-        //    }
-
-        //    dataAccessLayer.CloseConnection();
-        //    return datatable;
-        //}
-        public async Task UpdateDataNoConditionsAsync(string query)
-        {
-            DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            await dataAccessLayer.OpenConnectionAsync();
-
-            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
-            {
-                command.CommandType = CommandType.Text;
-                await Task.Run(() => command.ExecuteNonQuery());
-            }
-
-            dataAccessLayer.CloseConnection();
-        }
-        public async Task<object> ExecuteScalarAsync(string query, List<SqlParameter> parameters)
-        {
-            DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            await dataAccessLayer.OpenConnectionAsync();
-
-            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
-            {
-                command.CommandType = CommandType.Text;
-
-                if (parameters != null)
-                {
-                    parameters.ForEach(parameter =>
-                    {
-                        command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
-                    });
-                }
-
-                object result = await Task.Run(() => command.ExecuteScalar());
-
-                dataAccessLayer.CloseConnection();
-
-                return result;
-            }
-        }
-        public async Task<SqlDataReader> GetDataReaderAsync(string query)
-        {
-            DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            await dataAccessLayer.OpenConnectionAsync();
-
-            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
-            {
-                command.CommandType = CommandType.Text;
-                SqlDataReader dataReader = await Task.Run(() => command.ExecuteReader(CommandBehavior.CloseConnection));
-                return dataReader;
-            }
-        }
-        public async Task<bool> IsRowExistsAsync(string query, List<SqlParameter> parameters)
-        {
-            DataAccessLayer dataAccessLayer = new DataAccessLayer();
-
+            List<T> resultList = new List<T>();
             try
             {
                 using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
                 {
                     command.CommandType = CommandType.Text;
 
-                    if (parameters != null)
-                    {
-                        command.Parameters.AddRange(parameters.ToArray());
-                    }
-
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {
-                        return await reader.ReadAsync();
+                        while (await reader.ReadAsync())
+                        {
+                            T mappedObject = MapToObject<T>(reader);
+                            resultList.Add(mappedObject);
+                        }
                     }
                 }
             }
@@ -151,8 +34,10 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
             {
                 dataAccessLayer.CloseConnection();
             }
+
+            return resultList;
         }
-        public async Task<List<T>> GetDataWithConditionsAsync<T>(string query, List<SqlParameter> parameters) where T : new()
+        public async Task<List<T>> GetDataWithConditionsAsync<T>(string query, List<SqlParameter> parameters=null) where T : new()
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
             List<T> resultList = new List<T>();
@@ -182,6 +67,92 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                 dataAccessLayer.CloseConnection();
             }
             return resultList;
+        }
+        public async Task<bool> IsRowExistsAsync(string query, List<SqlParameter> parameters)
+        {
+            DataAccessLayer dataAccessLayer = new DataAccessLayer();
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
+                {
+                    command.CommandType = CommandType.Text;
+
+                    if (parameters != null)
+                    {
+                        command.Parameters.AddRange(parameters.ToArray());
+                    }
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        return await reader.ReadAsync();
+                    }
+                }
+            }
+            finally
+            {
+                dataAccessLayer.CloseConnection();
+            }
+        }
+        public async Task<object> ExecuteScalarAsync(string query, List<SqlParameter> parameters)
+        {
+            DataAccessLayer dataAccessLayer = new DataAccessLayer();
+            await dataAccessLayer.OpenConnectionAsync();
+
+            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
+            {
+                command.CommandType = CommandType.Text;
+
+                if (parameters != null)
+                {
+                    parameters.ForEach(parameter =>
+                    {
+                        command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
+                    });
+                }
+
+                object result = await Task.Run(() => command.ExecuteScalar());
+
+                dataAccessLayer.CloseConnection();
+
+                return result;
+            }
+        }
+        public async Task<bool> InsertUpdateDataAsync(string query, List<SqlParameter> parameters)
+        {
+            DataAccessLayer dataAccessLayer = new DataAccessLayer();
+            await dataAccessLayer.OpenConnectionAsync();
+            int rowsAffected = 0;
+            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
+            {
+                command.CommandType = CommandType.Text;
+
+                if (parameters != null)
+                {
+                    parameters.ForEach(parameter =>
+                    {
+                        command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
+                    });
+                }
+
+                rowsAffected = await Task.Run(() => command.ExecuteNonQuery());
+            }
+
+            dataAccessLayer.CloseConnection();
+            return rowsAffected > 0;
+        }
+        public async Task UpdateDataNoConditionsAsync(string query)
+        {
+            DataAccessLayer dataAccessLayer = new DataAccessLayer();
+            await dataAccessLayer.OpenConnectionAsync();
+
+            using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
+            {
+                command.CommandType = CommandType.Text;
+                await Task.Run(() => command.ExecuteNonQuery());
+            }
+
+            dataAccessLayer.CloseConnection();
         }
         private T MapToObject<T>(SqlDataReader reader)
         {

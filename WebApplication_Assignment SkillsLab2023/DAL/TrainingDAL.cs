@@ -26,60 +26,37 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         public async Task<List<TrainingWithPrerequisitesModel>> GetAllTrainingModelsAsync()
         {
             const string GET_ALL_TRAINING_QUERY = "SELECT *  FROM [TrainingAssignment].[dbo].[Training]";
-            var DataTable = await _command.GetDataAsync(GET_ALL_TRAINING_QUERY);
-            List<TrainingWithPrerequisitesModel> ListOfTrainingModels= new List<TrainingWithPrerequisitesModel>();
-            TrainingWithPrerequisitesModel trainingModel;
-            foreach (DataRow row in DataTable.Rows)
-            {
-                trainingModel = new TrainingWithPrerequisitesModel();
-                trainingModel.TrainingId = (byte)row["TrainingId"];
-                trainingModel.TrainingName = (string)row["TrainingName"];
-                trainingModel.TrainingDescription = (string)row["TrainingDescription"];
-                trainingModel.TrainingRegistrationDeadline = (DateTime)row["TrainingRegistrationDeadline"];
-                trainingModel.TrainingStatus = (string)row["TrainingStatus"];
-                trainingModel.SeatsTotal = (byte)row["SeatsTotal"];
-                trainingModel.CoachId = (byte)row["CoachId"];
-                ListOfTrainingModels.Add(trainingModel);
-            }
-            return ListOfTrainingModels;
+            var result = await _command.GetDataAsync<TrainingWithPrerequisitesModel>(GET_ALL_TRAINING_QUERY);
+            return result;
         }
         public async Task<List<PrerequisitesModel>> GetTrainingPrerequisitesByIdAsync(int trainingId) 
         {
             const string GET_PREREQUISITE_BY_TRAINING_ID = "SELECT p.* FROM  [Prerequisites] p INNER JOIN [TrainingPrerequisite] tp ON p.PrerequisiteId = tp.PrerequisiteId WHERE tp.TrainingId = @TrainingId";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@TrainingId", trainingId));
-            var DataTable = await _command.GetDataWithConditionsAsync<PrerequisitesModel>(GET_PREREQUISITE_BY_TRAINING_ID,parameters);
-            return DataTable;
+            var result = await _command.GetDataWithConditionsAsync<PrerequisitesModel>(GET_PREREQUISITE_BY_TRAINING_ID,parameters);
+            return result;
         }
         public async Task<List<PrerequisitesModel>> GetAllPrerequisitesAsync()
         {
             const string GET_ALL_PREREQUISITES_QUERY = "SELECT * FROM  [Prerequisites]";
-            List<PrerequisitesModel> prerequisitesModelsList = new List<PrerequisitesModel>();
-            PrerequisitesModel prerequisitesModel;
-            var dt = await _command.GetDataAsync(GET_ALL_PREREQUISITES_QUERY);
-            foreach (DataRow row in dt.Rows)
-            {
-                prerequisitesModel = new PrerequisitesModel();
-                prerequisitesModel.PrerequisiteId = (byte)row["PrerequisiteId"];
-                prerequisitesModel.PrerequisiteDescription = (string)row["PrerequisiteDescription"];
-                prerequisitesModelsList.Add(prerequisitesModel);
-            }
-            return prerequisitesModelsList;
+            var result = await _command.GetDataAsync<PrerequisitesModel>(GET_ALL_PREREQUISITES_QUERY);
+            return result;
         }
         public async Task<List<PrerequisitesModel>> GetAllPrerequisiteOfATrainingModelByTrainingIdAsync(byte trainingId)
         {
             const string GET_ALL_PREREQUISITES_OF_A_TRAINING = @"SELECT p.* FROM Prerequisites p INNER JOIN TrainingPrerequisite tp ON p.PrerequisiteId= tp.PrerequisiteId WHERE tp.TrainingId = @TrainingId; ";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@TrainingId",trainingId));
-            var dt = await _command.GetDataWithConditionsAsync<PrerequisitesModel>(GET_ALL_PREREQUISITES_OF_A_TRAINING,parameters);
-            return dt;
+            var result = await _command.GetDataWithConditionsAsync<PrerequisitesModel>(GET_ALL_PREREQUISITES_OF_A_TRAINING,parameters);
+            return result;
         }
         public async Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId) 
         {
             const string GET_TRAINING_NAME_BY_TRAINING_ID_QUERY= @"SELECT TrainingName FROM Training WHERE TrainingId = @TrainingId";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("TrainingId",trainingId)};
-            var dt = await _command.GetDataWithConditionsAsync<TrainingModel>(GET_TRAINING_NAME_BY_TRAINING_ID_QUERY,parameters);
-            return dt.FirstOrDefault().TrainingName;
+            var result = await _command.GetDataWithConditionsAsync<TrainingModel>(GET_TRAINING_NAME_BY_TRAINING_ID_QUERY,parameters);
+            return result.FirstOrDefault().TrainingName;
         }
         #endregion
 
@@ -108,8 +85,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                     index++;
                 }
             }
-            await _command.InsertUpdateDataAsync(CREATE_TRAINING_QUERY, parameters);
-            return true;
+            return await _command.InsertUpdateDataAsync(CREATE_TRAINING_QUERY, parameters);
         }
         public async Task<bool> AddPrerequisiteToTrainingAsync(TrainingPrerequisiteModel trainingPrerequisiteModel)
         {
@@ -120,8 +96,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@PrerequisiteId",trainingPrerequisiteModel.PrerequisiteId));
             parameters.Add(new SqlParameter("@TrainingId",trainingPrerequisiteModel.TrainingId));
-            await _command.InsertUpdateDataAsync(ADD_PREREQUISITE_TO_TRAINING_QUERY, parameters);
-            return true;
+            return await _command.InsertUpdateDataAsync(ADD_PREREQUISITE_TO_TRAINING_QUERY, parameters);
         }
         public async Task<bool> CreatePrerequisiteAsync(string description)
         {
@@ -129,8 +104,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             List<SqlParameter> parameters = new List<SqlParameter>() {
                 new SqlParameter("@PrerequisiteDescription", description),
             };
-            await _command.InsertUpdateDataAsync(INSERT_PREREQUISITE_QUERY, parameters);
-            return true;
+            return await _command.InsertUpdateDataAsync(INSERT_PREREQUISITE_QUERY, parameters);
         }
         #endregion
 
@@ -158,8 +132,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             parameters.Add(new SqlParameter("@UpdatedDeadline", trainingmodel.TrainingRegistrationDeadline));
             parameters.Add(new SqlParameter("@UpdatedDescription", trainingmodel.TrainingDescription));
             parameters.Add(new SqlParameter("@TrainingId", trainingmodel.TrainingId));
-            await _command.InsertUpdateDataAsync(UPDATE_TRAINING_QUERY, parameters);
-            return true;
+            return await _command.InsertUpdateDataAsync(UPDATE_TRAINING_QUERY, parameters);
         }
         public async Task<bool> UpdateTrainingPrerequisiteAsync(byte TrainingId, List<byte> Prerequisites)
         {
@@ -175,8 +148,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 parameters.Add(new SqlParameter($"@PrerequisiteId{index}", prerequisite));
                 index++;
             }
-            await _command.InsertUpdateDataAsync(UPDATE_TRAINING_PREQUISITE_QUERY, parameters);
-            return true;
+            return await _command.InsertUpdateDataAsync(UPDATE_TRAINING_PREQUISITE_QUERY, parameters);
         }
         #endregion
 
@@ -186,8 +158,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             const string DELETE_TRAINING_QUERY = @"DELETE From Training WHERE TrainingId = @TrainingId";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@TrainingId", trainingId));
-            await _command.InsertUpdateDataAsync(DELETE_TRAINING_QUERY, parameters);
-            return true;
+            return await _command.InsertUpdateDataAsync(DELETE_TRAINING_QUERY, parameters);
         }
         public async Task<bool> isTrainingDeletableAsync(byte trainingId)
         {

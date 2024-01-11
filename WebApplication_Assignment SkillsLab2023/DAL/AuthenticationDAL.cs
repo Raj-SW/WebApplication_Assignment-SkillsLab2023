@@ -20,22 +20,23 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             _command = command;
         }
+
         #region Get
         public async Task<UserModel> GetUserModelByIDAsync(CredentialModel model)
         {
             const string RETRIEVE_USER_MODEL_QUERY_BY_ID = @"SELECT * FROM [User] WHERE UserId = @UserId";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@UserId", model.UserId));
-            var dt = await _command.GetDataWithConditionsAsync<UserModel>(RETRIEVE_USER_MODEL_QUERY_BY_ID, parameters);
-            return dt.FirstOrDefault();
+            var result = await _command.GetDataWithConditionsAsync<UserModel>(RETRIEVE_USER_MODEL_QUERY_BY_ID, parameters);
+            return result.FirstOrDefault();
         }
         public async Task<byte> GetUserModelIDbyNICAsync(UserModel model)
         {
             const string RETRIEVE_USER_MODEL_QUERY_BY_NIC = @"SELECT * FROM [User] WHERE NIC = @NIC";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@NIC", model.NIC));
-            var dt = await _command.GetDataWithConditionsAsync<byte>(RETRIEVE_USER_MODEL_QUERY_BY_NIC, parameters);
-            return dt.FirstOrDefault();
+            var result = await _command.GetDataWithConditionsAsync<byte>(RETRIEVE_USER_MODEL_QUERY_BY_NIC, parameters);
+            return result.FirstOrDefault();
         }
         public async Task<byte> GetUserIdByCredentialsAsync(CredentialModel model)
         {
@@ -43,8 +44,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@Email", model.Email.ToLower()));
             parameters.Add(new SqlParameter("@Password", model.Password));
-            var dt = await _command.GetDataWithConditionsAsync<byte>(GET_USER_ID_BY_CREDENTIAL, parameters);
-            return dt.FirstOrDefault();
+            var result = await _command.GetDataWithConditionsAsync<byte>(GET_USER_ID_BY_CREDENTIAL, parameters);
+            return result.FirstOrDefault();
         }
         public async Task<UserModel> GetUserModelByCredentialsAsync(CredentialModel model) 
         {
@@ -56,38 +57,17 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@Email", model.Email.ToLower()));
             parameters.Add(new SqlParameter("@Password", model.Password));
-            var dt = await _command.GetDataWithConditionsAsync<UserModel>(RETRIEVE_USER_MODEL_BY_CREDENTIALS_QUERY, parameters);
-            return dt.FirstOrDefault();
+            var result = await _command.GetDataWithConditionsAsync<UserModel>(RETRIEVE_USER_MODEL_BY_CREDENTIALS_QUERY, parameters);
+            return result.FirstOrDefault();
         }
         public async Task<UserModel> GetUserModelByIDAsync(int id)
         {
             const string GET_USER_MODEL_BY_ID_QUERY = @"SELECT TOP 1 * FROM [User] WHERE UserId = @UserId";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@UserId", id));
-            var dt = await _command.GetDataWithConditionsAsync<UserModel>(GET_USER_MODEL_BY_ID_QUERY, parameters);
-            return dt.FirstOrDefault();
+            var result = await _command.GetDataWithConditionsAsync<UserModel>(GET_USER_MODEL_BY_ID_QUERY, parameters);
+            return result.FirstOrDefault();
         }
-        //public async Task<DataModelResult<CredentialModel>> GetCredentialModelByEmailAsync(CredentialModel model)
-        //{
-        //    const string RETRIEVE_USER_CREDENTIALS_BY_EMAIL_QUERY = @"SELECT TOP 1 * FROM [Credential] WHERE Email = @Email";
-        //    DataModelResult<CredentialModel> result = new DataModelResult<CredentialModel>();
-        //    result.ResultTask.isSuccess = false;
-        //    List<SqlParameter> parameters = new List<SqlParameter>();
-        //    parameters.Add(new SqlParameter("@Email", model.Email.ToLower()));
-        //    var dt = await _command.GetDataWithConditionsAsync(RETRIEVE_USER_CREDENTIALS_BY_EMAIL_QUERY, parameters);
-        //    if (dt.Rows.Count > 0)
-        //    {
-        //        result.ResultTask.isSuccess = true;
-        //        DataRow row = dt.Rows[0];
-        //        result.ResultObject.AccessId = (byte)row["AccessId"];
-        //        result.ResultObject.UserId = (byte)row["UserId"];
-        //        result.ResultObject.Email = row["Email"].ToString();
-        //        result.ResultObject.Password = (byte[])row["Password"];
-        //        result.ResultObject.Salt = (byte[])row["Salt"];
-        //        result.ResultObject.Activated = Convert.ToBoolean(row["Activated"]);
-        //    }
-        //    return result;
-        //}
         public async Task<DataModelResult<CredentialModel>> GetCredentialModelByEmailAsync(CredentialModel model)
         {
             const string RETRIEVE_USER_CREDENTIALS_BY_EMAIL_QUERY = @"SELECT TOP 1 * FROM [Credential] WHERE Email = @Email";
@@ -108,23 +88,13 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             const string RETRIEVE_USER_ROLES_BY_USER_ID_QUERY = @"SELECT * FROM Roles r INNER JOIN User_Roles ur ON ur.RoleId=r.RoleId WHERE ur.UserId=@UserId";
             List<SqlParameter> parameters= new List<SqlParameter>();
             parameters.Add(new SqlParameter("@UserId",UserId));
-            var dt = await _command.GetDataWithConditionsAsync<UserRolesModel>(RETRIEVE_USER_ROLES_BY_USER_ID_QUERY,parameters);
-            return dt;
+            return await _command.GetDataWithConditionsAsync<UserRolesModel>(RETRIEVE_USER_ROLES_BY_USER_ID_QUERY,parameters);
         }
         public async Task<List<RoleModel>> GetAllRolesAsync()
         {
             const string GET_ALL_ROLES_MODEL_QUERY = @"SELECT * FROM Roles";
-            List<RoleModel> RolesList = new List<RoleModel>();
-            RoleModel RoleModel;
-            var dt = await _command.GetDataAsync(GET_ALL_ROLES_MODEL_QUERY);
-            foreach (DataRow row in dt.Rows)
-            {
-                RoleModel = new RoleModel();
-                RoleModel.RoleId = (byte)row["RoleId"];
-                RoleModel.RoleName = (string)row["RoleName"];
-                RolesList.Add(RoleModel);
-            }
-            return RolesList;
+            var result = await _command.GetDataAsync<RoleModel>(GET_ALL_ROLES_MODEL_QUERY);
+            return result;
         }
         public async Task<bool> IsUserModelUnique(UserModel model)
         {
@@ -132,24 +102,21 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@NIC", model.NIC));
             parameters.Add(new SqlParameter("@MobileNum", model.MobileNum));
-            var dt =await _command.IsRowExistsAsync(CHECK_UNIQUE_USER_MODEL_QUERY, parameters);
-            return dt;
+            return await _command.IsRowExistsAsync(CHECK_UNIQUE_USER_MODEL_QUERY, parameters);
         }
         public async Task<bool> isEmailUniqueAsync(UserAndCredentialDTO dto)
         {
             const string GET_MODEL_BY_EMAIL = @"SELECT * FROM [CREDENTIAL] WHERE Email=@Email";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@Email", dto.credentialModel.Email));
-            var dt = await  _command.IsRowExistsAsync(GET_MODEL_BY_EMAIL, parameters);
-            return dt;
+            return await  _command.IsRowExistsAsync(GET_MODEL_BY_EMAIL, parameters);
         }
         public async Task<bool> isNicUniqueAsync(UserAndCredentialDTO dto)
         {
             const string GET_MODEL_BY_NIC = @"SELECT * FROM [User] WHERE NIC=@NIC";
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@NIC", dto.userModel.NIC));
-            var dt = await _command.IsRowExistsAsync(GET_MODEL_BY_NIC, parameters);
-            return dt;
+            return await _command.IsRowExistsAsync(GET_MODEL_BY_NIC, parameters);
         }
         public async Task<bool> isMobileNumUniqueAsync(UserAndCredentialDTO dto)
         {
@@ -168,8 +135,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 parameters.Add(new SqlParameter("@UserId", model.UserId));
                 parameters.Add(new SqlParameter("@Email", model.Email.ToLower()));
                 parameters.Add(new SqlParameter("@Password", model.Password));
-                await _command.InsertUpdateDataAsync(INSERT_USER_CREDENTIAL_MODEL_QUERY, parameters);
-                return true;
+                return await _command.InsertUpdateDataAsync(INSERT_USER_CREDENTIAL_MODEL_QUERY, parameters);
         }
         public async Task<bool> InsertUserModelCredentialModelAsync(UserModel userModel,CredentialModel credentialModel)
         {
@@ -188,10 +154,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             parameters.Add(new SqlParameter("@Email", credentialModel.Email.ToLower()));
             parameters.Add(new SqlParameter("@Password", credentialModel.Password));
             parameters.Add(new SqlParameter("@Salt", credentialModel.Salt));
-            await _command.InsertUpdateDataAsync(INSERT_USER_MODEL_CREDENTIAL_MODEL_QUERY, parameters);
-            return true;
+            return await _command.InsertUpdateDataAsync(INSERT_USER_MODEL_CREDENTIAL_MODEL_QUERY, parameters);
         }
-        
         #endregion
 
     }

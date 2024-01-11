@@ -18,18 +18,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         public async Task<List<DepartmentModel>> GetAllDepartmentsAsync()
         {
             const string GET_ALL_DEPARTMENTS_QUERY = @"SELECT * FROM [Department]";
-            List<DepartmentModel> listOfDepartments = new List<DepartmentModel>();
-            DepartmentModel departmentModel;
-            var dt = await _command.GetDataAsync(GET_ALL_DEPARTMENTS_QUERY);
-            foreach (DataRow row in dt.Rows)
-            {
-                departmentModel = new DepartmentModel();
-                departmentModel.DepartmentId = (byte)row["DepartmentId"];
-                departmentModel.DepartmentName = (string)row["DepartmentName"];
-                departmentModel.NoOfEmployees = (byte)row["NoOfEmployees"];
-                listOfDepartments.Add(departmentModel);
-            }
-            return listOfDepartments;
+            var result = await _command.GetDataAsync<DepartmentModel>(GET_ALL_DEPARTMENTS_QUERY);
+            return result;
         }
     }
 }
