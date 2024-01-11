@@ -33,17 +33,14 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return await _enrolmentDAL.GetEmployeesPendingEnrolmentByManagerIdAsync(managerId);
         }
-
         public async Task<List<UserPrerequisiteModel>> GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(byte enrolmentId)
         {
             return await _enrolmentDAL.GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(enrolmentId);
         }
-
         public async Task<List<UserPrerequisiteModel>> GetAllEnrolmentsManagerWiseAsync(byte ManagerId)
         {
             return await _enrolmentDAL.GetAllEnrolmentsManagerWiseAsync(ManagerId);
         }
-
         public async Task<bool> isUserAlreadyRegisteredInTrainingAsync(byte trainingId, byte UserId)
         {
             return await _enrolmentDAL.isUserAlreadyRegisteredInTrainingAsync(trainingId, UserId);
@@ -54,12 +51,11 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public async Task<bool> EnrolEmployeeIntoTrainingAsync(byte userId, byte trainingId, HttpFileCollectionBase FileCollection)
         {
             TaskResult uploadTaskResult = new TaskResult();
-            
+            //check if training requires prerequisite and if user uploaded
             if (FileCollection != null && FileCollection.Count > 0)
             {
                 uploadTaskResult = _iFileHandlerService.FileUpload(userId, trainingId, FileCollection);
             }
-
             uploadTaskResult.isSuccess = await _enrolmentDAL.EnrolEmployeeIntoTrainingAsync(userId, trainingId, uploadTaskResult.ResultMessageList);
             string userEmail = await _userBL.GetEmployeeEmailbyUserIdAsync(userId);
             string employeeName = await _userBL.GetUserNamebyUserIdAsync(userId);
@@ -91,7 +87,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 
             return (isSuccess);
         }
-
         public async Task<bool> ManagerRejectEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId, string remarks)
         {
             var isSentEmployee = false;
@@ -106,12 +101,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 
             return isSuccess;
         }
-
         public async Task AutomaticEnrolmentProcessingForTrainingByTrainingIdAsync(byte trainingId)
         {
             await _enrolmentDAL.AutomaticEnrolmentProcessingForTrainingByTrainingIdAsync(trainingId);
         }
-
         public async Task AutomaticEnrolmentProcessingForAllTrainingAsync()
         {
             var automaticProcessingDTO = await _enrolmentDAL.AutomaticEnrolmentProcessingForAllTrainingAsync();

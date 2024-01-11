@@ -42,15 +42,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             {
                 var fileContents = System.IO.File.ReadAllBytes(fullPath);
                 var mimeType = MimeMapping.GetMimeMapping(filePath);
-
-                // Set the Content-Disposition header to "inline" for the file to be displayed in the browser
                 Response.AppendHeader("Content-Disposition", "inline; filename=" + Path.GetFileName(filePath));
-
                 return File(fileContents, mimeType);
             }
             else
             {
-                // Handle file not found appropriately
                 return HttpNotFound();
             }
         }

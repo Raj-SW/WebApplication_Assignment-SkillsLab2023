@@ -25,6 +25,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                             T mappedObject = MapToObject<T>(reader);
                             resultList.Add(mappedObject);
                         }
+                    reader.Close();
                     }
                 }
             return resultList;
@@ -36,12 +37,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
             using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection))
             {
                 command.CommandType = CommandType.Text;
-
                 if (parameters != null)
                 {
                     command.Parameters.AddRange(parameters.ToArray());
                 }
-
+                //await dataAccessLayer.OpenConnectionAsync();
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
@@ -49,6 +49,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                         T mappedObject = MapToObject<T>(reader);
                         resultList.Add(mappedObject);
                     }
+                reader.Close();
                 }
             }
             dataAccessLayer.CloseConnection();
@@ -56,6 +57,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
             }
         public async Task<bool> IsRowExistsAsync(string query, List<SqlParameter> parameters)
         {
+            var result =false;
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
             using (SqlTransaction transaction = dataAccessLayer.connection.BeginTransaction())
             {
@@ -69,13 +71,13 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                         {
                             command.Parameters.AddRange(parameters.ToArray());
                         }
-
                         using (SqlDataReader reader = await command.ExecuteReaderAsync())
                         {
-                            transaction.Commit();
-                            return await reader.ReadAsync();
+                            result = await reader.ReadAsync();
                         }
+                        transaction.Commit();
                     }
+                    return result;
                 }
                 catch (Exception ex)
                 {
@@ -88,12 +90,14 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
         public async Task<bool> InsertUpdateDataAsync(string query, List<SqlParameter> parameters)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
+            //await dataAccessLayer.OpenConnectionAsync();
             using (SqlTransaction transaction = dataAccessLayer.connection.BeginTransaction())
             {
                 try
                 {
-                    await dataAccessLayer.OpenConnectionAsync();
+
                     int rowsAffected = 0;
+
                     using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection, transaction))
                     {
                         command.CommandType = CommandType.Text;
@@ -105,16 +109,17 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                                 command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
                             });
                         }
+
                         rowsAffected = await command.ExecuteNonQueryAsync();
+                        transaction.Commit();
                     }
-                    transaction.Commit();
                     return rowsAffected > 0;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error: {ex.Message}");
                     transaction.Rollback();
-                    return false;
+                    throw;
                 }
                 finally
                 {
@@ -125,12 +130,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
         public async Task<bool> UpdateDataNoConditionsAsync(string query)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
-
+            await dataAccessLayer.OpenConnectionAsync();
             using (SqlTransaction transaction = dataAccessLayer.connection.BeginTransaction())
             {
                 try
                 {
-                    await dataAccessLayer.OpenConnectionAsync();
                     int rowsAffected = 0;
                     using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection, transaction))
                     {

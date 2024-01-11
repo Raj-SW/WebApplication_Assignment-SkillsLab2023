@@ -22,6 +22,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         {
             var userId = byte.Parse(HttpContext.Request.Form["userId"]);
             var trainingId = byte.Parse(HttpContext.Request.Form["trainingId"]);
+            var isAlreadyEnrolled= await _enrolmentBL.isUserAlreadyRegisteredInTrainingAsync(trainingId, userId);
+            if (isAlreadyEnrolled)
+            {
+                return Json(new { result = false, message = "You were already enrolled in this training." });
+            }
             var result = await  _enrolmentBL.EnrolEmployeeIntoTrainingAsync(userId, trainingId, Request.Files);
             if (result)
             {

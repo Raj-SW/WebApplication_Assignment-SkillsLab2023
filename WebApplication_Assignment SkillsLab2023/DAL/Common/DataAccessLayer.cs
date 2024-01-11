@@ -34,12 +34,12 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
         }
         public void OpenConnection()
         {
-            Task.Run(() => OpenConnectionAsync()).Wait(); // Wait for the asynchronous operation to complete
-            //if (connection.State == System.Data.ConnectionState.Open)
-            //{
-            //    connection.Close();
-            //}
-            //connection.Open();
+            //Task.Run(() => OpenConnectionAsync()).Wait(); // Wait for the asynchronous operation to complete
+            if (connection.State == System.Data.ConnectionState.Open)
+            {
+                connection.Close();
+            }
+            connection.Open();
         }
         public void CloseConnection()
         {
