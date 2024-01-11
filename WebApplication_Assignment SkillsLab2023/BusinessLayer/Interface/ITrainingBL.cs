@@ -22,6 +22,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         Task<List<PrerequisitesModel>> GetAllPrerequisiteOfATrainingModelByTrainingIdAsync(byte TrainingId);
         Task<List<PrerequisitesModel>> GetAllPrerequisitesAsync();
         Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId);
+        Task<bool> DoesTrainingHavePrerequisitesAsync(byte trainingId);
         #endregion
 
         #region Update Models

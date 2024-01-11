@@ -54,9 +54,15 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         public async Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId) 
         {
             const string GET_TRAINING_NAME_BY_TRAINING_ID_QUERY= @"SELECT TrainingName FROM Training WHERE TrainingId = @TrainingId";
-            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("TrainingId",trainingId)};
+            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@TrainingId",trainingId)};
             var result = await _command.GetDataWithConditionsAsync<TrainingModel>(GET_TRAINING_NAME_BY_TRAINING_ID_QUERY,parameters);
             return result.FirstOrDefault().TrainingName;
+        }
+        public async Task<bool> DoesTrainingHavePrerequisitesAsync(byte trainingId)
+        {
+            const string DOES_TRAINING_HAS_PRE_REQ_QUERY = @"SELECT * FROM  [TrainingPrerequisite] WHERE TrainingId = @TrainingId";
+            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@TrainingId", trainingId) };
+            return await _command.IsRowExistsAsync(DOES_TRAINING_HAS_PRE_REQ_QUERY,parameters);
         }
         #endregion
 

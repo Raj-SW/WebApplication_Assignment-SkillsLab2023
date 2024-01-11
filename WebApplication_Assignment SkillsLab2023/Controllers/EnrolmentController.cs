@@ -6,15 +6,18 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
+using WebApplication_Assignment_SkillsLab2023.DAL;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
     public class EnrolmentController : Controller
     {
         private readonly IEnrolmentBL _enrolmentBL;
-        public EnrolmentController(IEnrolmentBL enrolmentBL)
+        private readonly ITrainingBL _trainingBL;
+        public EnrolmentController(IEnrolmentBL enrolmentBL, ITrainingBL trainingBL)
         {
             _enrolmentBL = enrolmentBL;
+            _trainingBL = trainingBL;
         }
 
         [HttpPost]
@@ -26,6 +29,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             if (isAlreadyEnrolled)
             {
                 return Json(new { result = false, message = "You were already enrolled in this training." });
+            }
+            var isPrerequisiteRequired =await _trainingBL.DoesTrainingHavePrerequisitesAsync(trainingId);
+            if (isPrerequisiteRequired)
+            {
+                return Json(new { result = false, message = "Enrolment cancelled. No Prerequisite file uploaded" });
             }
             var result = await  _enrolmentBL.EnrolEmployeeIntoTrainingAsync(userId, trainingId, Request.Files);
             if (result)

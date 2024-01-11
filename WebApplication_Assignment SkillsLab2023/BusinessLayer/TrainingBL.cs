@@ -69,6 +69,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 
             return await _itrainingDAL.GetTrainingNameByTrainingIdAsync(trainingId);
         }
+        public Task<bool> DoesTrainingHavePrerequisitesAsync(byte trainingId)
+        {
+            return _itrainingDAL.DoesTrainingHavePrerequisitesAsync(trainingId);
+        }
         #endregion
 
         #region Update Models

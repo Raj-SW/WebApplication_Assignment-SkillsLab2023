@@ -13,6 +13,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         Task<List<PrerequisitesModel>> GetAllPrerequisitesAsync();
         Task<List<PrerequisitesModel>> GetAllPrerequisiteOfATrainingModelByTrainingIdAsync(byte trainingId);
         Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId);
+        Task<bool> DoesTrainingHavePrerequisitesAsync(byte trainingId);
         #endregion
 
         #region Insert
