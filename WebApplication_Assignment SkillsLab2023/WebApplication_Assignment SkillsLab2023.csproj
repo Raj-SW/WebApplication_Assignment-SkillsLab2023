@@ -230,6 +230,7 @@
     <Compile Include="Services\Interfaces\IFileHandlerService.cs" />
     <Compile Include="Services\Interfaces\INotificationServices.cs" />
     <Compile Include="Services\LocalFileHandlerService.cs" />
+    <Compile Include="SessionManagement\RoleAuthorisation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -327,6 +328,8 @@
     <Content Include="Views\ErrorHandler\Index.cshtml" />
     <Content Include="Views\ErrorHandler\InternalServerError.cshtml" />
     <Content Include="Views\ErrorHandler\NotFound.cshtml" />
+    <Content Include="Views\ErrorHandler\SessionTimeOut.cshtml" />
+    <Content Include="Views\ErrorHandler\AuthorizationError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

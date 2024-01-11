@@ -40,8 +40,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             {
                 if (role.RoleId == roleId)
                 {
-                    Session["CurrentUserRoleId"] = role.RoleId;
-                    Session["CurrentUserRoleName"] = role.RoleName;
+                    Session["CurrentRoleId"] = role.RoleId;
+                    Session["CurrentRole"] = role.RoleName;
                     return Json(new { result = true, url = $"/User/{role.RoleName}View", message = "Redirection Successful" });
                 }
             }

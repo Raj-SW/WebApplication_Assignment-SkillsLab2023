@@ -9,6 +9,7 @@ using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
 using WebApplication_Assignment_SkillsLab2023.Models.Others;
+using WebApplication_Assignment_SkillsLab2023.SessionManagement;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
@@ -27,12 +28,14 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         }
 
         #region View
+        [RoleAuthorisation("Employee")]
         public async Task<ActionResult> EmployeeView()
         {
             var ListOfTrainings = await _itrainingbl.GetAllTrainingModelsAsync();
             ViewBag.ListOfTrainings = ListOfTrainings;
             return View();
         }
+        [RoleAuthorisation("Admin")]
         public async Task<ActionResult> AdminView()
         {
             List<UserModel> ListOfPendingUserAccounts = await _userBL.GetAllPendingUserModelsAsync();
@@ -51,6 +54,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             ViewBag.ListOfUserModelsAndTheirRoles=await _userBL.GetAllUsersAndTheirRolesAsync();
             return View();
         }
+        [RoleAuthorisation("Manager")]
         public async Task<ActionResult> ManagerView()
         {
             //TODO:

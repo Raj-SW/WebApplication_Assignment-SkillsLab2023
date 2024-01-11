@@ -17,5 +17,13 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         {
             return View();
         }
+        public ActionResult AuthorizationError()
+        {
+            return View();
+        }
+        public ActionResult SessionTimeOut()
+        {
+            return View();
+        }
     }
 }
