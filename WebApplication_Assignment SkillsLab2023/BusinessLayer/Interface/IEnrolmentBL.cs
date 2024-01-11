@@ -24,6 +24,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         Task<bool> ManagerRejectEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId, string remarks);
         Task AutomaticEnrolmentProcessingForTrainingByTrainingIdAsync(byte trainingId);
         Task AutomaticEnrolmentProcessingForAllTrainingAsync();
+        Task<int> GetPrerequisiteCountOfATraining(byte trainingId);
         #endregion
     }
 }

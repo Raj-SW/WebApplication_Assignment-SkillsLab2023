@@ -23,6 +23,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         Task<List<PrerequisitesModel>> GetAllPrerequisitesAsync();
         Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId);
         Task<bool> DoesTrainingHavePrerequisitesAsync(byte trainingId);
+
         #endregion
 
         #region Update Models
@@ -33,6 +34,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         #region Delete Models
         Task<bool> DeleteTrainingAsync(byte id);
         Task<bool> isTrainingDeletableAsync(byte trainingId);
+        Task<int> GetPrerequisiteCountOfATraining(byte trainingId);
         #endregion
     }
 }

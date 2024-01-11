@@ -64,6 +64,13 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@TrainingId", trainingId) };
             return await _command.IsRowExistsAsync(DOES_TRAINING_HAS_PRE_REQ_QUERY,parameters);
         }
+        public async Task<int> GetPrerequisiteCountOfATraining(byte trainingId)
+        {
+            const string GET_PREREQUISITE_COUNT_OF_A_TRAINING = @"SELECT COUNT(*) AS Count FROM [TrainingPrerequisite] WHERE TrainingId = @TrainingId";
+            List<SqlParameter> parameters =new List<SqlParameter>() { new SqlParameter("@TrainingId",trainingId) };
+            var result = await _command.GetDataWithConditionsAsync<int>(GET_PREREQUISITE_COUNT_OF_A_TRAINING, parameters);
+            return result.FirstOrDefault();
+        }
         #endregion
 
         #region Insert

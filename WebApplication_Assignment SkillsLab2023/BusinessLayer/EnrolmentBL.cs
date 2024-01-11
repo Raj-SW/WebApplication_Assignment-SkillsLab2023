@@ -45,6 +45,9 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return await _enrolmentDAL.isUserAlreadyRegisteredInTrainingAsync(trainingId, UserId);
         }
+        public async Task<int> GetPrerequisiteCountOfATraining(byte trainingId) {
+            return await _trainingBL.GetPrerequisiteCountOfATraining(trainingId);
+        }
         #endregion
 
         #region Insert Models

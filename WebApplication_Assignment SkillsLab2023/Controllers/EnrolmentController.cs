@@ -30,10 +30,10 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             {
                 return Json(new { result = false, message = "You were already enrolled in this training." });
             }
-            var isPrerequisiteRequired =await _trainingBL.DoesTrainingHavePrerequisitesAsync(trainingId);
-            if (isPrerequisiteRequired)
+            var prereqcount = await _trainingBL.GetTrainingPrerequisitesByIdAsync(trainingId);
+            if (prereqcount.Count> Request.Files.Count)
             {
-                return Json(new { result = false, message = "Enrolment cancelled. No Prerequisite file uploaded" });
+                return Json(new { result = false, message = "Enrolment cancelled. Please Uploade All Prerequisite Attachemnts" });
             }
             var result = await  _enrolmentBL.EnrolEmployeeIntoTrainingAsync(userId, trainingId, Request.Files);
             if (result)

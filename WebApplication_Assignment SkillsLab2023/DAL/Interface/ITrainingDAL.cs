@@ -30,6 +30,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         #region Delete
         Task<bool> DeleteTrainingAsync(byte trainingId);
         Task<bool> isTrainingDeletableAsync(byte trainingId);
+        Task<int> GetPrerequisiteCountOfATraining(byte trainingId);
         #endregion
     }
 }
