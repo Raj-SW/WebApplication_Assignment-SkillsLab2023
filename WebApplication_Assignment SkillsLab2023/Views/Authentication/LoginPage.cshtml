@@ -25,18 +25,15 @@
                 <input type="email" id="email" name="email" required oninput="validateEmail('email','emailValidation')">
                 <p id="emailValidation"></p>
             </div>
-
             <div>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required oninput="validatePasswords('password','passwordValidation','password','passwordValidation')">
                 <p id="passwordValidation"></p>
             </div>
-
             <div>
                 <button type="submit" name="loginBtn" value="Login" id="loginBtn" onclick="login()">Login</button>
             </div>
         </form>
-
         <p>
             Don't have an account? @Html.ActionLink("Register Here", "RegistrationPage", "Authentication", new { msg = "Hello from action link" }, null)
         </p>

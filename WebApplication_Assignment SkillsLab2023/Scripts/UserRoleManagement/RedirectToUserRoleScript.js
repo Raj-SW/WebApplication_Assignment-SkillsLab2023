@@ -1,10 +1,9 @@
 ﻿function RedirectToUserRole() {
     var selectedRoleId = document.querySelector('input[name="selectedRole"]:checked');
-
     let form = document.querySelector('form');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-        });
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+    });
     if (selectedRoleId) {
         var roleId = selectedRoleId.value;
 
@@ -20,15 +19,20 @@
                 if (response.ok) {
                     return response.json();
                 } else {
-                    alert("Sorry we're having some trouble with response", response)
+                    toastr.error("Sorry, we're having some trouble with the response");
                 }
             })
             .then(data => {
-                console.log(data.message);
-                window.location = data.url;
+                toastr.success(data.message, '', { timeOut: 1000, });
+                setTimeout(() => {
+                    window.location = data.url;
+                }, 1000);
             })
-            .catch(error => alert('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                toastr.error("An error occurred. Please try again.");
+            });
     } else {
-        alert('Please select a role before submitting.');
+        toastr.warning('Please select a role before submitting.');
     }
 }

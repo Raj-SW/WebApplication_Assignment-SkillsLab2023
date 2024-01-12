@@ -48,7 +48,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
                 {
                     Session["CurrentRoleId"] = role.RoleId;
                     Session["CurrentRole"] = role.RoleName;
-                    return Json(new { result = true, url = $"/User/{role.RoleName}View", message = "Redirection Successful" });
+                    return Json(new { result = true, url = $"/User/{role.RoleName}View", message = $"Redirecting to {role.RoleName} Role Page" });
                 }
             }
             return Json(new { success = false, message = "Internal Server Error. Your selected Role was not found" });
@@ -56,11 +56,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public async Task<ActionResult> LoginUserAsync(CredentialModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-
             DataModelResult<UserModel> UserDataModelResult = await _authenticationBL.LoginUserAsync(model);
-
             if (UserDataModelResult.ResultTask.isSuccess)
             {
                 Session["CurrentUserId"] = UserDataModelResult.ResultObject.UserId;
@@ -69,11 +65,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
                 return Json(new { result = true, url = Url.Action("RoleSelectionPage", "Authentication"), user = UserDataModelResult.ResultObject, message = UserDataModelResult.ResultTask.GetAllResultMessageAsString() });
             }
             return Json(new { result = true, url = Url.Action("LoginPage", "Authentication"), message = UserDataModelResult.ResultTask.GetAllResultMessageAsString() });
-            //}
-            //var errors = ModelState.ToDictionary(
-            // attribute => attribute.Key,
-            // attribute => attribute.Value.Errors.Select(error => error.ErrorMessage).ToArray());
-            //return Json(new { result = false, error = errors });
         }
         [HttpPost]
         public async Task<ActionResult> RegisterUserAsync(UserAndCredentialDTO model)

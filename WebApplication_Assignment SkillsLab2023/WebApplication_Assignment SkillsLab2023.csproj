@@ -199,7 +199,6 @@
     <Compile Include="DataTransferObjects\ActivationDTO.cs" />
     <Compile Include="DataTransferObjects\AutomaticProcessingDTO.cs" />
     <Compile Include="DataTransferObjects\GetPendingEmployeesEnrolmentOfAMangerDTO.cs" />
-    <Compile Include="DataTransferObjects\LoginDTO.cs" />
     <Compile Include="DataTransferObjects\TrainingWithPrerequisitesModel.cs" />
     <Compile Include="DataTransferObjects\CreateTrainingDTO.cs" />
     <Compile Include="DataTransferObjects\EnrolmentDTO.cs" />
