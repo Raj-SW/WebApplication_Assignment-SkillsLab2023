@@ -334,7 +334,6 @@
     <Content Include="Views\ErrorHandler\NotFound.cshtml" />
     <Content Include="Views\ErrorHandler\SessionTimeOut.cshtml" />
     <Content Include="Views\ErrorHandler\AuthorizationError.cshtml" />
-    <Content Include="Views\Authentication\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
