@@ -19,7 +19,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             _enrolmentBL = enrolmentBL;
             _trainingBL = trainingBL;
         }
-
         [HttpPost]
         public async Task<ActionResult> EnrolEmployeeIntoTrainingAsync() 
         {
@@ -33,7 +32,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             var prereqcount = await _trainingBL.GetTrainingPrerequisitesByIdAsync(trainingId);
             if (prereqcount.Count> Request.Files.Count)
             {
-                return Json(new { result = false, message = "Enrolment cancelled. Please Uploade All Prerequisite Attachemnts" });
+                return Json(new { result = false, message = "Enrolment cancelled. Please Upload All Prerequisite Attachemnts" });
             }
             var result = await  _enrolmentBL.EnrolEmployeeIntoTrainingAsync(userId, trainingId, Request.Files);
             if (result)
@@ -79,7 +78,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "There has been an error " });
         }
-
         [HttpPost]
         public ActionResult AutomaticEnrolmentProcessingForTrainingByTrainingId(byte trainingId)
         {

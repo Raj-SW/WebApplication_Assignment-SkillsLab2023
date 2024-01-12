@@ -171,6 +171,7 @@
     <Compile Include="Controllers\EnrolmentController.cs" />
     <Compile Include="Controllers\ErrorHandlerController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="CustomeServerSideValidations\CustomServerSideValidation.cs" />
     <Compile Include="DAL\DepartmentDAL.cs" />
     <Compile Include="DAL\EnrolmentDAL.cs" />
     <Compile Include="DAL\Interface\IDepartmentDAL.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="DataTransferObjects\ActivationDTO.cs" />
     <Compile Include="DataTransferObjects\AutomaticProcessingDTO.cs" />
     <Compile Include="DataTransferObjects\GetPendingEmployeesEnrolmentOfAMangerDTO.cs" />
+    <Compile Include="DataTransferObjects\LoginDTO.cs" />
     <Compile Include="DataTransferObjects\TrainingWithPrerequisitesModel.cs" />
     <Compile Include="DataTransferObjects\CreateTrainingDTO.cs" />
     <Compile Include="DataTransferObjects\EnrolmentDTO.cs" />
@@ -211,6 +213,7 @@
     <Compile Include="Logger\Interface\ILogger.cs" />
     <Compile Include="Models\CredentialModel.cs" />
     <Compile Include="Models\DataModelResult.cs" />
+    <Compile Include="Models\LoginVewModel.cs" />
     <Compile Include="Models\Others\CustomerModel.cs" />
     <Compile Include="Models\DepartmentModel.cs" />
     <Compile Include="Models\Others\RolesEnum.cs" />
@@ -306,14 +309,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Authentication\LoginPage.cshtml" />
     <Content Include="Views\Authentication\RegistrationPage.cshtml" />
     <Content Include="Views\Common\AccessDenied.cshtml" />
     <Content Include="Views\Common\Index.cshtml" />
-    <Content Include="Views\Manager\ManagerView.cshtml" />
     <Content Include="Views\Authentication\RoleSelectionPage.cshtml" />
     <Content Include="Views\User\EmployeeView.cshtml" />
     <Content Include="Views\User\AdminView.cshtml" />
@@ -330,13 +329,12 @@
     <Content Include="Views\ErrorHandler\NotFound.cshtml" />
     <Content Include="Views\ErrorHandler\SessionTimeOut.cshtml" />
     <Content Include="Views\ErrorHandler\AuthorizationError.cshtml" />
+    <Content Include="Views\Authentication\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="BusinessLayer\Others\" />
     <Folder Include="Storage\" />
-    <Folder Include="Views\Department\" />
-    <Folder Include="Views\Enrolment\" />
     <Folder Include="Views\Training\" />
   </ItemGroup>
   <ItemGroup>

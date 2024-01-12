@@ -32,8 +32,9 @@ async function login() {
                     window.location = responseData.url;
                     console.log(responseData.user);
                 } else {
-                    alert(responseData.message);
-                    window.location = responseData.url;
+                    //alert(responseData.message);
+                    console.log(responseData.error)
+                    //window.location = responseData.url;
                 }
             } else {
                 console.error("Failed to fetch:", response);

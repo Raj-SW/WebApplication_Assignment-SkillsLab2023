@@ -13,7 +13,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         private readonly IDepartmentBL _departmentBL;
         public DepartmentController(IDepartmentBL departmentBL) 
         {
-        _departmentBL=departmentBL;
+         _departmentBL=departmentBL;
         }
 
         public async Task<ActionResult> GetAllDepartmentsAsync()

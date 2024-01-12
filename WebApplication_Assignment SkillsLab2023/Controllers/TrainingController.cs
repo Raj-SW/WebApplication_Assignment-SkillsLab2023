@@ -50,7 +50,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
                 return HttpNotFound();
             }
         }
-
         #endregion
 
         #region Insert
