@@ -263,6 +263,8 @@
     <Content Include="Content\Styling\ManagerViewUpdateEnrolmentsPartialViewStyling.css" />
     <Content Include="Content\Styling\RegistrationPageStyling.css" />
     <Content Include="Content\Styling\RoleSelectionPage.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -273,6 +275,8 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\GetTrainingData\FetchPrerequisiteScript.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -285,6 +289,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\ModalManipulation\ModalManipulationscript1.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\UserRoleManagement\RedirectToUserRoleScript.js" />
     <Content Include="Scripts\TrainingEnrollment\TrainingHandlerScript.js" />
     <Content Include="Scripts\TrainingRegistrationScripts\TrainingDetailsAndEnrolmentByModal.js" />

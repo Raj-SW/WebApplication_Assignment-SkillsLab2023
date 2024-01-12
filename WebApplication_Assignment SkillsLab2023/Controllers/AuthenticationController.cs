@@ -11,7 +11,7 @@ using WebApplication_Assignment_SkillsLab2023.Models;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
-    //[CustomServerSideValidation]
+    [CustomServerSideValidation]
     public class AuthenticationController : Controller
     {
         private readonly IAuthenticationBL _authenticationBL;
@@ -56,8 +56,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public async Task<ActionResult> LoginUserAsync(CredentialModel model)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
 
             DataModelResult<UserModel> UserDataModelResult = await _authenticationBL.LoginUserAsync(model);
 
@@ -69,13 +69,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
                 return Json(new { result = true, url = Url.Action("RoleSelectionPage", "Authentication"), user = UserDataModelResult.ResultObject, message = UserDataModelResult.ResultTask.GetAllResultMessageAsString() });
             }
             return Json(new { result = true, url = Url.Action("LoginPage", "Authentication"), message = UserDataModelResult.ResultTask.GetAllResultMessageAsString() });
-            }
-            var errors = ModelState.ToDictionary(
-             attribute => attribute.Key,
-             attribute => attribute.Value.Errors.Select(error => error.ErrorMessage).ToArray());
-            return Json(new { result = false, error = errors });
-
-
+            //}
+            //var errors = ModelState.ToDictionary(
+            // attribute => attribute.Key,
+            // attribute => attribute.Value.Errors.Select(error => error.ErrorMessage).ToArray());
+            //return Json(new { result = false, error = errors });
         }
         [HttpPost]
         public async Task<ActionResult> RegisterUserAsync(UserAndCredentialDTO model)

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace WebApplication_Assignment_SkillsLab2023.CustomeServerSideValidations
@@ -13,22 +10,34 @@ namespace WebApplication_Assignment_SkillsLab2023.CustomeServerSideValidations
         {
             if (!filterContext.Controller.ViewData.ModelState.IsValid)
             {
-                var model = filterContext.Controller.ViewData.ModelState;
-                var error = GetErrors(model);
-                //filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var modelState = filterContext.Controller.ViewData.ModelState;
+                var globalErrors = GetGlobalErrors(modelState);
+                var fieldErrors = GetFieldErrors(modelState);
+
                 filterContext.Result = new JsonResult
                 {
                     Data = new
                     {
-                        Errors = error
+                        GlobalErrors = globalErrors,
+                        FieldErrors = fieldErrors
                     },
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 };
             }
         }
-        private static object GetErrors(ModelStateDictionary modelState)
+
+        private static List<string> GetGlobalErrors(ModelStateDictionary modelState)
+        {
+            return modelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+        }
+
+        private static Dictionary<string, List<string>> GetFieldErrors(ModelStateDictionary modelState)
         {
             var errors = new Dictionary<string, List<string>>();
+
             foreach (var entry in modelState)
             {
                 var key = entry.Key;
@@ -41,6 +50,7 @@ namespace WebApplication_Assignment_SkillsLab2023.CustomeServerSideValidations
                     errors.Add(key, errorMessages);
                 }
             }
+
             return errors;
         }
     }
