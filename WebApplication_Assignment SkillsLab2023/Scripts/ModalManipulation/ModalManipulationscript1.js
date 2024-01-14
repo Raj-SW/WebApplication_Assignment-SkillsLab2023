@@ -3,6 +3,7 @@
     var modalBody = document.getElementById("modalBody");
     var preReqList = await getTrainingPrerequisite(training);
     var prereqCount = preReqList.length;
+    var trainingStatus = training.TrainingStatus;
     modalBody.innerHTML = "";
     var registrationDeadline = new Date(parseInt(training.TrainingRegistrationDeadline.substr(6)));
     var formattedDeadline = registrationDeadline.toLocaleString();
@@ -12,10 +13,17 @@
         "<p><strong>Description:</strong> " + training.TrainingDescription + "</p>" +
         "<p><strong>Status:</strong> " + training.TrainingStatus + "</p>" +
         "<p><strong>Deadline:</strong> " + formattedDeadline + "</p>";
+    if (trainingStatus != 'Open') {
+        var enrolledMessageContainer = document.createElement("div");
+        enrolledMessageContainer.innerHTML = "<p>Unfortunately training is not open.</p>";
+        modalBody.appendChild(enrolledMessageContainer);
+        return false;
+    }
     if (isEnrolled) {
         var enrolledMessageContainer = document.createElement("div");
         enrolledMessageContainer.innerHTML = "<p>You are already enrolled in this training.</p>";
         modalBody.appendChild(enrolledMessageContainer);
+        return false;
     } 
     else {
     var preRequisiteContainer = document.createElement("div");

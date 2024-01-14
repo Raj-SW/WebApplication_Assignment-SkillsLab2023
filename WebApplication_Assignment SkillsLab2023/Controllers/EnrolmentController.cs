@@ -22,6 +22,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public async Task<ActionResult> EnrolEmployeeIntoTrainingAsync() 
         {
+            //TODO: If the training is closde, do not accept enrolment
             var userId = byte.Parse(HttpContext.Request.Form["userId"]);
             var trainingId = byte.Parse(HttpContext.Request.Form["trainingId"]);
             var isAlreadyEnrolled= await _enrolmentBL.isUserAlreadyRegisteredInTrainingAsync(trainingId, userId);
