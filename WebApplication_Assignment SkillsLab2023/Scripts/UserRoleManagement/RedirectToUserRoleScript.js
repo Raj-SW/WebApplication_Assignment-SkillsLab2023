@@ -4,6 +4,10 @@
     form.addEventListener('submit', (e) => {
         e.preventDefault();
     });
+    if (selectedRoleId == null) {
+        toastr.error("Please Select a role");
+        return false;
+    }
     if (selectedRoleId) {
         var roleId = selectedRoleId.value;
 
@@ -33,6 +37,6 @@
                 toastr.error("An error occurred. Please try again.");
             });
     } else {
-        toastr.warning('Please select a role before submitting.');
+        toastr.error('Please select a role before submitting.');
     }
 }

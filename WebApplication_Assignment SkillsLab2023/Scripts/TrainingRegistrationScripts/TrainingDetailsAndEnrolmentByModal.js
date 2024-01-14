@@ -1,7 +1,4 @@
-﻿// jsfile.js
-
-function showTrainingDetails(trainingId) {
-    // Assuming there is a global variable or function to fetch training details based on ID
+﻿function showTrainingDetails(trainingId) {
     var trainingDetails = getTrainingDetails(trainingId);
 
     // Update modal content based on training details
@@ -29,21 +26,5 @@ function showTrainingDetails(trainingId) {
         $('#prerequisites').append(listItem);
     }
     $('#trainingModal').modal('show');
-}
-
-// Example function to fetch training details (replace with your implementation)
-function getTrainingDetails(trainingId) {
-    return {
-        name: 'Training ' + trainingId,
-        description: 'Description for Training ' + trainingId,
-        prerequisites: [
-            { name: 'Prerequisite 1' },
-            { name: 'Prerequisite 2' },
-        ]
-    };
-}
-function closeModal() {
-    console.log("Closing modal");
-    $('#closeButton').modal('hide');
 }
 

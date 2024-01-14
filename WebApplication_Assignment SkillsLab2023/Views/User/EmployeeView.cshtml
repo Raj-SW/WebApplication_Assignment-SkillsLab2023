@@ -3,6 +3,9 @@
     ViewBag.Title = "Employee View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<head>
+    <link href="~/Content/toastr.css" rel="stylesheet"/>
+    <script src="~/Scripts/toastr.js"></script>
+</head>
 <h2>Employee View</h2>
 @Html.Partial("_EmployeeViewTrainingPartialView", new ViewDataDictionary { { "ListOfTrainings", ViewBag.ListOfTrainings } })

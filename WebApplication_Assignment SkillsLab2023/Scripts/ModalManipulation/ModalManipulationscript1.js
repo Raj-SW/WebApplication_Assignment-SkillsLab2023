@@ -2,7 +2,7 @@
     var isEnrolled = await isUserAlreadyEnrolled(userId, training);
     var modalBody = document.getElementById("modalBody");
     var preReqList = await getTrainingPrerequisite(training);
-    var prereqCount = preReqList.Count;
+    var prereqCount = preReqList.length;
     modalBody.innerHTML = "";
     var registrationDeadline = new Date(parseInt(training.TrainingRegistrationDeadline.substr(6)));
     var formattedDeadline = registrationDeadline.toLocaleString();
@@ -18,7 +18,6 @@
         modalBody.appendChild(enrolledMessageContainer);
     } 
     else {
-
     var preRequisiteContainer = document.createElement("div");
     if (preReqList && Array.isArray(preReqList)) {
         preReqList.forEach(preReq => {
@@ -48,15 +47,14 @@ async function isUserAlreadyEnrolled(userId, training) {
                 userId: userId
             })
         });
-
         if (result.ok) {
             var data = await result.json();
-            console.log(data);
             return data.result;
         } else {
-            throw new Error("Error: " + result.status);
+            toastr.error("Error in checking user enrolment");
         }
     } catch (error) {
+        toastr.error("Sorry internal server");
         throw error;
     }
 }
