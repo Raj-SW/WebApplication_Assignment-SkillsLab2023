@@ -25,5 +25,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         {
             return View();
         }
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

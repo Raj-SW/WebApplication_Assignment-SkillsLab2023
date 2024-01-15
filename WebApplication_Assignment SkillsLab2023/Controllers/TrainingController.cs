@@ -6,9 +6,12 @@ using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.Models;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using System.Web;
+using WebApplication_Assignment_SkillsLab2023.CustomeServerSideValidations;
+using WebApplication_Assignment_SkillsLab2023.SessionManagement;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
+    [CustomServerSideValidation]
     public class TrainingController : Controller
     {
         private readonly ITrainingBL _trainingBl;
@@ -20,20 +23,21 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
 
         #region Get Model
 
+        [RoleAuthorisation("Admin")]
         public async Task<ActionResult> GetAllTrainingAsync()
         {
             var listOfTraining = await _trainingBl.GetAllTrainingModelsAsync();
             ViewBag.ListOfTraining = listOfTraining;
             return Json(new { result = true, listOfTraining });
         }
-
+        [RoleAuthorisation("Employee,Manager,Admin")]
         [HttpPost]
         public async Task<JsonResult> GetTrainingPrerequisitebyTrainingIdAsync(int trainingId)
         {
             List<PrerequisitesModel> trainingPrerequisiteModelListById = await _trainingBl.GetTrainingPrerequisitesByIdAsync(trainingId);
             return Json(new { result = true, preReqList = trainingPrerequisiteModelListById });
         }
-
+        [RoleAuthorisation("Manager")]
         public ActionResult GetFile(string filePath)
         {
             var fullPath = Path.Combine(Server.MapPath("~/"), filePath);
@@ -54,6 +58,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
 
         #region Insert
 
+        [RoleAuthorisation("Admin")]
         [HttpPost]
         public async Task<ActionResult> CreateTrainingAsync(CreateTrainingDTO createTrainingDTO)
         {
@@ -64,7 +69,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "Training Failed to create" });
         }
-
+        [RoleAuthorisation("Admin")]
         [HttpPost]
         public async Task<ActionResult> AddPrerequisiteToTrainingAsync(TrainingPrerequisiteModel trainingPrerequisiteModel)
         {
@@ -75,7 +80,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "Training Prerequisite not being added" });
         }
-
+        [RoleAuthorisation("Admin")]
         [HttpPost]
         public async Task<ActionResult> CreatePrerequisitesAsync(string prerequisiteDescription)
         {
@@ -86,6 +91,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         #endregion
 
         #region Update
+
+        [RoleAuthorisation("Admin")]
         [HttpPost]
         public async Task<ActionResult> UpdateTrainingAsync(UpdateTrainingDTO updateTrainingDTO)
         {
@@ -96,10 +103,12 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "Training Update Unsuccessful" });
         }
+
         #endregion
 
         #region Delete
 
+        [RoleAuthorisation("Admin")]
         [HttpPost]
         public async Task<ActionResult> DeleteTrainingAsync(byte trainingId)
         {

@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
+using WebApplication_Assignment_SkillsLab2023.CustomeServerSideValidations;
+using WebApplication_Assignment_SkillsLab2023.SessionManagement;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
+    [CustomServerSideValidation]
     public class DepartmentController : Controller
     {
         private readonly IDepartmentBL _departmentBL;
@@ -15,7 +18,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         {
          _departmentBL=departmentBL;
         }
-
+        [RoleAuthorisation("Admin")]
         public async Task<ActionResult> GetAllDepartmentsAsync()
         {
             var ListOfDepartment = await _departmentBL.GetAllDepartmentsAsync();

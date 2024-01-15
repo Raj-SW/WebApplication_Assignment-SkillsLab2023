@@ -1,8 +1,9 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "SessionTimeOut";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>SessionTimeOut</h2>
-
+<div class="jumbotron text-center">
+    <h1 class="display-4">Session Timeout</h1>
+    <p class="lead">Your session has expired. Please <a href="@Url.Action("LoginPage", "Authentication")">log in again</a>.</p>
+</div>

@@ -26,10 +26,30 @@
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li><a href="#" class="nav-link" id="logout-link">Logout</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Attach click event to the "Logout" link
+            $("#logout-link").click(function () {
+                // Make an AJAX call to the LogoutUser action method
+                $.ajax({
+                    type: "POST",
+                    url: "/Authentication/LogoutUser",
+                    success: function (data) {
+                        // Redirect to the login page after successful logout
+                        window.location.href = data.url;
+                    },
+                    error: function (error) {
+                        // Handle any error if necessary
+                    }
+                });
+            });
+        });
+    </script>
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -37,7 +57,6 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

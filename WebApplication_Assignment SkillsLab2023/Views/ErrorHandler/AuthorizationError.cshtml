@@ -1,8 +1,17 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "AuthorizationError";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>AuthorizationError</h2>
-
+<div class="container mt-5">
+    <div class="jumbotron">
+        <h1 class="display-4">Authorization Error</h1>
+        <p class="lead">You do not have the required authorization to access this page.</p>
+        <hr class="my-4">
+        <p>If you believe you should have access, please log in again.</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="/Authentication/LoginPage" role="button">Log In Again</a>
+            <a class="btn btn-secondary btn-lg" href="javascript:history.back()" role="button">Go Back</a>
+        </p>
+    </div>
+</div>

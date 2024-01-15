@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
+using WebApplication_Assignment_SkillsLab2023.CustomeServerSideValidations;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
 using WebApplication_Assignment_SkillsLab2023.Models.Others;
@@ -13,6 +14,7 @@ using WebApplication_Assignment_SkillsLab2023.SessionManagement;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
+    [CustomServerSideValidation]
     public class UserController : Controller
     {
         private readonly ITrainingBL _itrainingbl;
@@ -35,6 +37,23 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             ViewBag.ListOfTrainings = ListOfTrainings;
             return View();
         }
+        [RoleAuthorisation("Manager")]
+        public async Task<ActionResult> ManagerView()
+        {
+            //TODO:
+            //DATA REQUIRED; TRAINING DETAILS, TRAINING PREREQUISITES, ENROLMENT, ENROLMENT-PREREQUISITE, EMPLOYEE DETAILS
+            //SEE TRAININGS
+            //SEE HIS EMPLOYEES HIERARCHY
+
+            //REVIEW HIS EMLOYEES ENROLMENT AND PERFORM ACTIONS
+            //ON VIEW DETAILS EXPAND ENROLMENT DETAILS 
+            //A WAY TO VIEW OR OPEN THE ATTACHMENTS
+            //ENROL OR REJECT OR KEEP PENDING OR GIVE A FEEDBACK ON DOCUMENT ETC..
+            byte ManagerId = (byte) Session["CurrentUserId"];
+            var listOfEmployeesEnrolment =await _enrolmentBL.GetEmployeesPendingEnrolmentByManagerIdAsync(ManagerId);
+            ViewBag.ListOfEmployeeEnrolment = listOfEmployeesEnrolment;
+            return View();
+        }
         [RoleAuthorisation("Admin")]
         public async Task<ActionResult> AdminView()
         {
@@ -54,37 +73,23 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             ViewBag.ListOfUserModelsAndTheirRoles=await _userBL.GetAllUsersAndTheirRolesAsync();
             return View();
         }
-        [RoleAuthorisation("Manager")]
-        public async Task<ActionResult> ManagerView()
-        {
-            //TODO:
-            //DATA REQUIRED; TRAINING DETAILS, TRAINING PREREQUISITES, ENROLMENT, ENROLMENT-PREREQUISITE, EMPLOYEE DETAILS
-            //SEE TRAININGS
-            //SEE HIS EMPLOYEES HIERARCHY
-
-            //REVIEW HIS EMLOYEES ENROLMENT AND PERFORM ACTIONS
-            //ON VIEW DETAILS EXPAND ENROLMENT DETAILS 
-            //A WAY TO VIEW OR OPEN THE ATTACHMENTS
-            //ENROL OR REJECT OR KEEP PENDING OR GIVE A FEEDBACK ON DOCUMENT ETC..
-            byte ManagerId = (byte) Session["CurrentUserId"];
-            var listOfEmployeesEnrolment =await _enrolmentBL.GetEmployeesPendingEnrolmentByManagerIdAsync(ManagerId);
-            ViewBag.ListOfEmployeeEnrolment = listOfEmployeesEnrolment;
-            return View();
-        }
 
         #endregion
 
         #region Get Model
+        [RoleAuthorisation("Admin")]
         public async Task<ActionResult> GetAllManagersAsync()
         {
             var ListOfManagers=await _userBL.GetAllManagersAsync();
             return Json(new {result = true, ListOfManagers=ListOfManagers});
         }
+        [RoleAuthorisation("Admin")]
         [HttpPost]
         public async Task<ActionResult> GetAllManagersByDepartmentIdAsync(byte departmentId) {
             var ManagersListByDepartments =await _userBL.GetAllManagersByDepartmentIdAsync(departmentId);
             return Json(new { result = true, managers = ManagersListByDepartments });
         }
+        [RoleAuthorisation("Manager")]
         public async Task<ActionResult> GetAllPendingUserModelsAsync()
         {
             var ListOfPendingUserModels =await _userBL.GetAllPendingUserModelsAsync();
@@ -102,6 +107,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         #endregion
 
         #region Update
+        [RoleAuthorisation("Admin")]
         [HttpPost]
         public async Task<ActionResult> ActivatePendingAccountAsync(ActivationDTO activationDTO)
         {
@@ -112,6 +118,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "User Activation Failed" });
         }
+        [RoleAuthorisation("Admin")]
         [HttpPost]
         public async Task<ActionResult> UpdateUserAndRolesAsync(UserAndRolesDTO dto) 
         {

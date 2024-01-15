@@ -26,12 +26,12 @@ namespace WebApplication_Assignment_SkillsLab2023.SessionManagement
                  currentRole= dfController.Session["CurrentRole"] as string;
                 if (!AuthorizedRoles.Contains(currentRole))
                 {
-                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Authentication", action = "LoginPage" }));
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "ErrorHandler", action = "AuthorizationError" }));
                 }
             }
             else 
             {
-                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Authentication", action = $"{currentRole}View" }));
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "User", action = $"{currentRole}View" }));
             }
         }
     }

@@ -6,10 +6,14 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
+using WebApplication_Assignment_SkillsLab2023.CustomeServerSideValidations;
 using WebApplication_Assignment_SkillsLab2023.DAL;
+using WebApplication_Assignment_SkillsLab2023.SessionManagement;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
+
+    [CustomServerSideValidation]
     public class EnrolmentController : Controller
     {
         private readonly IEnrolmentBL _enrolmentBL;
@@ -19,10 +23,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             _enrolmentBL = enrolmentBL;
             _trainingBL = trainingBL;
         }
+        [RoleAuthorisation("Employee")]
         [HttpPost]
         public async Task<ActionResult> EnrolEmployeeIntoTrainingAsync() 
         {
-            //TODO: If the training is closde, do not accept enrolment
+            //TODO: If the training is closeed, do not accept enrolment
             var userId = byte.Parse(HttpContext.Request.Form["userId"]);
             var trainingId = byte.Parse(HttpContext.Request.Form["trainingId"]);
             var isAlreadyEnrolled= await _enrolmentBL.isUserAlreadyRegisteredInTrainingAsync(trainingId, userId);
@@ -42,12 +47,14 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "Enrolment failed. Make sure you have submitted all files required" });
         }
+        [RoleAuthorisation("Employee,Manager,Admin")]
         [HttpPost]
         public async Task<ActionResult> GetEnrolmentPrerequisitesByIdAsync(byte enrolmentId)
         {
             var enrolmentPrerequisites = await  _enrolmentBL.GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(enrolmentId);
             return Json(new { result = true, message = "Successfully retrieved prerequisites", EnrolmentPrerequisites = enrolmentPrerequisites });
         }
+        [RoleAuthorisation("Employee")]
         [HttpPost]
         public async Task<ActionResult> isUserAlreadyRegisteredForTrainingAsync(byte trainingId, byte userId)
         {
@@ -59,6 +66,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             return Json(new { result = false, message = "" });
 
         }
+        [RoleAuthorisation("Manager")]
         [HttpPost]
         public async Task<ActionResult> ManagerApproveEnrolmentAsync(byte enrolmentId, byte userId, byte trainingId)
         {
@@ -69,6 +77,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "There has been an error" });
         }
+        [RoleAuthorisation("Manager")]
         [HttpPost]
         public async Task<ActionResult> ManagerRejectEnrolmentAsync(byte enrolmentId,string remarks,byte trainingId, byte userId)
         {
@@ -84,6 +93,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         {
             return Json(new { });
         }
+        [RoleAuthorisation("Admin")]
         [HttpPost]
         public async Task<ActionResult> AutomaticEnrolmentProcessingForAllTrainingAsync()
         {

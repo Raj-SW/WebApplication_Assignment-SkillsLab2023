@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="~/Content/Styling/AdminCreateTrainingStyling.css">
 
+
 <div class="create-training-container">
     <h3>Create Training</h3>
     <form id="createTrainingForm" class="createTrainingForm">
@@ -12,18 +13,18 @@
         <div class="row">
             <div class="training-name-inputs col-md-6">
                 <label for="trainingName">Training Name:</label>
-                <input type="text" id="trainingName" >
+                <input type="text" id="trainingName">
             </div>
             <div class="training-description-inputs col-md-6">
                 <label for="trainingDescription">Training Description:</label>
-                <textarea id="trainingDescription" ></textarea>
+                <textarea id="trainingDescription"></textarea>
             </div>
         </div>
         <div class="row">
             <div class="training-status-inputs col-md-6">
                 <label for="trainingStatus">Training Status:</label>
                 <!-- Populate the dropdown with the list of training statuses -->
-                <select id="trainingStatus" >
+                <select id="trainingStatus">
                     @foreach (var status in ViewBag.ListOfTrainingStatus)
                     {
                         <option value="@status">@status</option>
@@ -33,7 +34,7 @@
             <div class="department-priority-inputs col-md-6">
                 <label for="departmentPriority">Department Priority:</label>
                 <!-- Populate the dropdown with the list of departments -->
-                <select id="departmentPriority" >
+                <select id="departmentPriority">
                     @foreach (var department in ViewBag.ListOfDepartments)
                     {
                         <option value="@department.DepartmentId">@department.DepartmentName</option>
@@ -44,17 +45,17 @@
         <div class="row">
             <div class="seats-total-inputs col-md-6">
                 <label for="seatsTotal">Seats Total:</label>
-                <input type="number" id="seatsTotal" >
+                <input type="number" id="seatsTotal" min="1">
             </div>
             <div class="registration-deadline-inputs col-md-6">
                 <label for="registrationDeadline">Registration Deadline:</label>
-                <input type="date" id="registrationDeadline" >
+                <input type="date" id="registrationDeadline">
             </div>
         </div>
         <div class="row">
             <div class="coach-inputs col-md-6">
                 <label for="coach">Coach:</label>
-                <select id="coach" >
+                <select id="coach">
                     @foreach (var manager in ViewBag.ListOfManagers)
                     {
                         <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
@@ -64,8 +65,8 @@
         </div>
         <div class="col-md-6 button-container">
             <div class=" inner-button-container">
-                <button class="btn btn-primary col-md-5" type="button" id="addPrerequisite">Add Prerequisite</button>
-            </div>
+                    <button class="btn btn-primary col-md-5" type="button" id="addPrerequisite">Add Prerequisite</button>
+                </div>
             <div class="">
                 <button class="btn btn-primary col-md-5" type="submit">Create Training</button>
             </div>

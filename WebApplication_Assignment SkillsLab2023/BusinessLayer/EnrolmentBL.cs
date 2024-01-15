@@ -54,7 +54,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public async Task<bool> EnrolEmployeeIntoTrainingAsync(byte userId, byte trainingId, HttpFileCollectionBase FileCollection)
         {
             TaskResult uploadTaskResult = new TaskResult();
-            //check if training requires prerequisite and if user uploaded
             if (FileCollection != null && FileCollection.Count > 0)
             {
                 uploadTaskResult = _iFileHandlerService.FileUpload(userId, trainingId, FileCollection);

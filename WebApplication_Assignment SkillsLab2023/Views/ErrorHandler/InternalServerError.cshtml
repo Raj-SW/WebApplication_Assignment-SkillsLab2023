@@ -1,8 +1,17 @@
-﻿
-@{
-    ViewBag.Title = "InternalServerError";
+﻿@{
+    ViewBag.Title = "Internal Server Error";
     Layout = null;
 }
 
-<h2>InternalServerError</h2>
-
+<div class="container mt-5">
+    <div class="jumbotron">
+        <h1 class="display-4">500 - Internal Server Error</h1>
+        <p class="lead">An internal server error occurred while processing your request.</p>
+        <hr class="my-4">
+        <p>Please try again later. If the issue persists, contact support.</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="/Authentication/LoginPage" role="button">Log In Again</a>
+            <a class="btn btn-secondary btn-lg" href="javascript:history.back()" role="button">Go Back</a>
+        </p>
+    </div>
+</div>

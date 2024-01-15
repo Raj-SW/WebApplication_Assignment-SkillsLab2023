@@ -21,7 +21,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             _authenticationBL = authenticationBL;
             _userBL = userBL;
         }
+
         #region Views
+        
         public ActionResult LoginPage()
         {
             return View();
@@ -35,6 +37,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             var listOfRoles = Session["UserRoles"] as List<UserRolesModel>;
             return View(listOfRoles);
         }
+        
         #endregion
 
         [HttpPost]
@@ -75,6 +78,14 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
                 return Json(new { result = taskresult.isSuccess, url = "/Authentication/LoginPage", message = taskresult.GetAllResultMessageAsString() });
             }
             return Json(new { result = taskresult.isSuccess, url = "/Authentication/RegistrationPage", message = taskresult.GetAllResultMessageAsString() });
+        }
+        [HttpPost]
+        public ActionResult LogoutUser()
+        {
+            Session.Clear();
+            Session.Abandon();
+            string loginPageUrl = Url.Action("LoginPage", "Authentication");
+            return Json(new { result = true, message = "Logout Successful", url = loginPageUrl });
         }
     }
 }
