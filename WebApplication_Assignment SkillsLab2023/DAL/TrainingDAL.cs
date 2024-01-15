@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer;
 using WebApplication_Assignment_SkillsLab2023.DAL.Common;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
@@ -122,9 +123,9 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         #endregion
 
         #region Update
-        public async Task<bool> UpdateTrainingAsync(TrainingModel trainingmodel)
+        public async Task<bool> UpdateTrainingAsync(UpdateTrainingDTO updatetrainingdto)
         {
-            const string UPDATE_TRAINING_QUERY = @"
+            string UPDATE_TRAINING_QUERY = @"
                 UPDATE Training
                 SET
                     TrainingName = @UpdatedTrainingName,
@@ -137,14 +138,27 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 WHERE
                     TrainingId = @TrainingId; ";
             List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@UpdatedTrainingName", trainingmodel.TrainingName));
-            parameters.Add(new SqlParameter("@UpdatedStatus", trainingmodel.TrainingStatus));
-            parameters.Add(new SqlParameter("@UpdatedPriority", trainingmodel.DepartmentPriority));
-            parameters.Add(new SqlParameter("@UpdatedSeatsTotal", trainingmodel.SeatsTotal));
-            parameters.Add(new SqlParameter("@UpdatedCoachId", trainingmodel.CoachId));
-            parameters.Add(new SqlParameter("@UpdatedDeadline", trainingmodel.TrainingRegistrationDeadline));
-            parameters.Add(new SqlParameter("@UpdatedDescription", trainingmodel.TrainingDescription));
-            parameters.Add(new SqlParameter("@TrainingId", trainingmodel.TrainingId));
+            parameters.Add(new SqlParameter("@UpdatedTrainingName", updatetrainingdto.TrainingName));
+            parameters.Add(new SqlParameter("@UpdatedStatus", updatetrainingdto.TrainingStatus));
+            parameters.Add(new SqlParameter("@UpdatedPriority", updatetrainingdto.DepartmentPriority));
+            parameters.Add(new SqlParameter("@UpdatedDescription", updatetrainingdto.TrainingDescription));
+            parameters.Add(new SqlParameter("@UpdatedSeatsTotal", updatetrainingdto.SeatsTotal));
+            parameters.Add(new SqlParameter("@UpdatedCoachId", updatetrainingdto.CoachId));
+            parameters.Add(new SqlParameter("@UpdatedDeadline", updatetrainingdto.TrainingRegistrationDeadline));
+            parameters.Add(new SqlParameter("@TrainingId", updatetrainingdto.TrainingId));
+            if(updatetrainingdto.PrerequisiteIdList.Count == 0)
+            {
+                UPDATE_TRAINING_QUERY += "DELETE FROM TrainingPrerequisite WHERE TrainingId=@TrainingId;";
+            }
+            if (updatetrainingdto.PrerequisiteIdList.Count > 0)
+            {
+                var index = 0;
+                foreach (byte prereqId in updatetrainingdto.PrerequisiteIdList) {
+                    UPDATE_TRAINING_QUERY += $"INSERT INTO TrainingPrerequisite (TrainingId,PrerequisiteId) VALUES (@TrainingId,@PrerequisiteId{index});";
+                    parameters.Add(new SqlParameter($"@PrerequisiteId{index}", prereqId));
+                    index++;
+                }
+            }
             return await _command.InsertUpdateDataAsync(UPDATE_TRAINING_QUERY, parameters);
         }
         public async Task<bool> UpdateTrainingPrerequisiteAsync(byte TrainingId, List<byte> Prerequisites)

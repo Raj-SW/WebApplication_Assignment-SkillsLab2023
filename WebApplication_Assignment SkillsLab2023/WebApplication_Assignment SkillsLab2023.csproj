@@ -203,6 +203,7 @@
     <Compile Include="DataTransferObjects\CreateTrainingDTO.cs" />
     <Compile Include="DataTransferObjects\EnrolmentDTO.cs" />
     <Compile Include="DataTransferObjects\ManagerDTO.cs" />
+    <Compile Include="DataTransferObjects\UpdateTrainingDTO.cs" />
     <Compile Include="DataTransferObjects\UserAndRolesDTO.cs" />
     <Compile Include="ExceptionHandling\CustomGlobalExceptionHandling.cs" />
     <Compile Include="Global.asax.cs">

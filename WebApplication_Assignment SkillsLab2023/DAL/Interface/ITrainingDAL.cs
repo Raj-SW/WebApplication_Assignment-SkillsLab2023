@@ -23,7 +23,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         #endregion
 
         #region Update
-        Task<bool> UpdateTrainingAsync(TrainingModel trainingmodel);
+        Task<bool> UpdateTrainingAsync(UpdateTrainingDTO updatetrainingmodel);
         Task<bool> UpdateTrainingPrerequisiteAsync(byte TrainingId, List<byte> Prerequisites);
         #endregion
 

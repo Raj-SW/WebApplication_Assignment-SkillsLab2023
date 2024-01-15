@@ -27,7 +27,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         #endregion
 
         #region Update Models
-        Task<bool> UpdateTrainingAsync(TrainingModel trainingmodel);
+        Task<bool> UpdateTrainingAsync(UpdateTrainingDTO trainingmodel);
         Task<bool> UpdateTrainingPrerequisiteAsync(byte TrainingId, List<byte> Prerequisites);
         #endregion
 

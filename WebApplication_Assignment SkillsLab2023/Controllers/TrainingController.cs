@@ -88,9 +88,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         #region Update
 
         [HttpPost]
-        public async Task<ActionResult> UpdateTrainingAsync(TrainingModel trainingModel)
+        public async Task<ActionResult> UpdateTrainingAsync(UpdateTrainingDTO updateTrainingDTO)
         {
-            var isSuccess = await _trainingBl.UpdateTrainingAsync(trainingModel);
+            var isSuccess = await _trainingBl.UpdateTrainingAsync(updateTrainingDTO);
             if (isSuccess)
             {
                 return Json(new { result = true, message = "Training Updated Successfully" });

@@ -80,9 +80,9 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         #endregion
 
         #region Update Models
-        public async Task<bool> UpdateTrainingAsync(TrainingModel trainingmodel)
+        public async Task<bool> UpdateTrainingAsync(UpdateTrainingDTO updatetrainingmodel)
         {
-            return await _itrainingDAL.UpdateTrainingAsync(trainingmodel);
+            return await _itrainingDAL.UpdateTrainingAsync(updatetrainingmodel);
         }
         public async Task<bool> UpdateTrainingPrerequisiteAsync(byte TrainingId, List<byte> Prerequisites)
         {

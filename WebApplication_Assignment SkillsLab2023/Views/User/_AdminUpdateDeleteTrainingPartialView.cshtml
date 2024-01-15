@@ -1,9 +1,19 @@
-﻿@{ 
+﻿@{
 }
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/Content/Styling/AdminUpdateDeletePartialViewStyling.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 </head>
+<style>
+    .scrollable-prerequisites {
+        max-height:270px;
+        max-width: 300px; 
+        overflow-y: auto; 
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+</style>
+
 <h3>Update Training</h3>
 <button class="btn btn-primary" id="launchButton">
     Launch Automatic Enrolment Process
@@ -123,11 +133,6 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="btn-container">
-                                                    <button class="btn btn-primary" type="button" onclick="saveTrainingChanges(@training.TrainingId)">
-                                                        Save Changes
-                                                    </button>
-                                                </div>
                                             </form>
                                         </div>
                                         <div class="training-prerequisite-update-container col-md-4" id="training-prerequisite-update-container_@training.TrainingId">
@@ -144,7 +149,7 @@
                                                         }
                                                     }
                                                     <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="prerequisite-checkbox_@(training.TrainingId)_@(prerequisite.PrerequisiteId)"
+                                                        <input type="checkbox" class="form-check-input prerequisite-checkbox_@training.TrainingId" id="prerequisite-checkbox_@(training.TrainingId)"
                                                                value="@prerequisite.PrerequisiteId" @(isPrerequisiteSelected ? "checked" : "")>
                                                         <label class="form-check-label" for="prerequisite-checkbox_@(training.TrainingId)_@(prerequisite.PrerequisiteId)">
                                                             @prerequisite.PrerequisiteDescription
@@ -152,10 +157,12 @@
                                                     </div>
                                                 }
                                             </div>
-                                            <button class="btn btn-primary" type="button" onclick='savePrerequisites(@training.TrainingId)'>
-                                                Save Prerequisites
-                                            </button>
                                         </div>
+                                    </div>
+                                    <div class="">
+                                        <button class="btn btn-primary" type="button" onclick='updateTraining(@training.TrainingId)'>
+                                            Save Changes
+                                        </button>
                                     </div>
                                 </div>
                             </td>
@@ -166,8 +173,7 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 <script>
     function savePrerequisites(trainingId) {
         // Collect the checked checkboxes' values
@@ -195,9 +201,11 @@
                 console.error('Error during fetch:', error);
             });
     }
-
-    function saveTrainingChanges(trainingId) {
-        // Gather data from the form
+    function updateTraining(trainingId) {
+        const selectedPrerequisites = [];
+        $(`#training-prerequisite-update-container_${trainingId} input[type="checkbox"]:checked`).each(function () {
+            selectedPrerequisites.push($(this).val());
+        });
         const trainingData = {
             TrainingId: trainingId,
             TrainingName: document.getElementById(`TrainingNameInput_${trainingId}`).value,
@@ -206,10 +214,9 @@
             DepartmentPriority: document.getElementById(`departmentpriority_${trainingId}`).value,
             SeatsTotal: document.getElementById(`input-training-seats_${trainingId}`).value,
             CoachId: document.getElementById(`coach-input_${trainingId}`).value,
-            TrainingRegistrationDeadline: document.getElementById(`input-training-registration-deadline_${trainingId}`).value
+            TrainingRegistrationDeadline: document.getElementById(`input-training-registration-deadline_${trainingId}`).value,
+            PrerequisiteIdList: selectedPrerequisites
         };
-
-        // Make a fetch request to the server
         fetch('/Training/UpdateTrainingAsync', {
             method: 'POST',
             headers: {
@@ -256,7 +263,6 @@
                 console.error('Error during fetch:', error);
             });
     }
-
     function toggleButtonText(button) {
         const buttonText = button.innerHTML.trim();
 
@@ -266,7 +272,6 @@
             button.innerHTML = 'Edit';
         }
     }
-
     document.getElementById('launchButton').addEventListener('click', function () {
         // Make a fetch call to the specified URL
         fetch('/Enrolment/AutomaticEnrolmentProcessingForAllTrainingAsync', {
