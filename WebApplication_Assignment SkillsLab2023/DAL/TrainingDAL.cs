@@ -191,8 +191,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         {
             const string SELECT_ENROLMENTS_QUERY = @"SELECT * FROM Enrolment WHERE TrainingId = @TrainingId;";
             List<SqlParameter> parameters = new List<SqlParameter>() {new SqlParameter("@TrainingId",trainingId) };
-            var dt = await _command.GetDataWithConditionsAsync<bool>(SELECT_ENROLMENTS_QUERY, parameters);
-            return dt.FirstOrDefault();
+            var result = await _command.IsRowExistsAsync(SELECT_ENROLMENTS_QUERY, parameters);
+            return result;
         }
         #endregion
     }

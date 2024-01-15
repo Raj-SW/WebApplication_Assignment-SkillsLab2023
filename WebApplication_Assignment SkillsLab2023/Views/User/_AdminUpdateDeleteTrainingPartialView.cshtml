@@ -175,32 +175,6 @@
 </div>
 
 <script>
-    function savePrerequisites(trainingId) {
-        // Collect the checked checkboxes' values
-        const selectedPrerequisites = [];
-        $(`#training-prerequisite-update-container_${trainingId} input[type="checkbox"]:checked`).each(function () {
-            selectedPrerequisites.push($(this).val());
-        });
-
-        // Make a fetch call to your action method
-        fetch('/Training/UpdatePrerequisiteInTrainingAsync', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ trainingId: trainingId, prerequisites: selectedPrerequisites }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Handle success response
-                alert('Prerequisites saved successfully');
-            })
-            .catch(error => {
-                // Handle error response
-                alert('Error saving prerequisites');
-                console.error('Error during fetch:', error);
-            });
-    }
     function updateTraining(trainingId) {
         const selectedPrerequisites = [];
         $(`#training-prerequisite-update-container_${trainingId} input[type="checkbox"]:checked`).each(function () {
@@ -227,17 +201,22 @@
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    alert(data.message);
+                    toastr.success(data.message, '', { timeOut: 1000, });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                    return true;
                 } else {
-                    alert(data.message);
+                    toastr.error(data.message, '', { timeOut: 1000, });
+                    return false;
                 }
             })
             .catch(error => {
-                console.error('Error during fetch:', error);
+                toastr.error("nternal server error" + error , '', { timeOut: 1000, });
+                return false;
             });
     }
     function deleteTraining(trainingId) {
-        // Make a fetch call to your delete action method
         fetch('/Training/DeleteTrainingAsync', {
             method: 'POST',
             headers: {
@@ -248,19 +227,19 @@
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    // Handle success response
-                    alert(data.message);
-                    location.reload();
-                    // Optionally, you can perform additional actions after successful deletion
+                    toastr.success(data.message, '', { timeOut: 1000, });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                    return true;
                 } else {
-                    // Handle failure response
-                    alert(data.message);
+                    toastr.error(data.message, '', { timeOut: 1000, });
+                    return false;
                 }
             })
             .catch(error => {
-                // Handle error response
-                alert('Error deleting training');
-                console.error('Error during fetch:', error);
+                toastr.error("Internal server error " + error, '', { timeOut: 1000, });
+                return false;
             });
     }
     function toggleButtonText(button) {

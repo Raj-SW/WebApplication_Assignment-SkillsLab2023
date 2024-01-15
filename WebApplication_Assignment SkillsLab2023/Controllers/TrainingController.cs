@@ -86,7 +86,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         #endregion
 
         #region Update
-
         [HttpPost]
         public async Task<ActionResult> UpdateTrainingAsync(UpdateTrainingDTO updateTrainingDTO)
         {
@@ -97,18 +96,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "Training Update Unsuccessful" });
         }
-
-        [HttpPost]
-        public async Task<ActionResult> UpdatePrerequisiteInTrainingAsync(byte TrainingId, List<byte> Prerequisites)
-        {
-            var isSuccess = await _trainingBl.UpdateTrainingPrerequisiteAsync(TrainingId, Prerequisites);
-            if (isSuccess)
-            {
-                return Json(new { result = true, message = "Training Prerequisite successfully updated" });
-            }
-            return Json(new { result = false, message = "Training Prerequisite update unsuccessful" });
-        }
-
         #endregion
 
         #region Delete

@@ -93,7 +93,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         #region Delete Models
         public async Task<bool> DeleteTrainingAsync(byte TrainingId)
         {
-            if (await isTrainingDeletableAsync(TrainingId))
+            if (!await isTrainingDeletableAsync(TrainingId))
             {
                 return await _itrainingDAL.DeleteTrainingAsync(TrainingId);
             }
