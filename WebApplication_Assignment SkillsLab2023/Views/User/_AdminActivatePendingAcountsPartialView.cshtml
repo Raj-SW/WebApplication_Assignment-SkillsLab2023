@@ -1,9 +1,9 @@
-﻿
-<head>
+﻿<head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/Content/Styling/AdminPendingAccountPartialViewStyling.css">
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    <script src="~/Scripts/toastr.js"></script>
 </head>
-
 <div class="activate-pending-account-container">
     <h3>Unactivated Users</h3>
     <div class="pending-user-accounts-container">
@@ -64,7 +64,6 @@
         </table>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
@@ -111,26 +110,20 @@
         });
     }
     function ActivatePendingAccount(userId) {
-        console.log("user id ", userId);
         var departmentId = document.getElementById("departmentDropdown_" + userId).value;
         var managerId = document.getElementById("managerDropdown_" + userId).value;
         var roleId = document.getElementById("roleDropdown_" + userId).value;
-
-        if (!departmentId || !managerId || !roleId) {
-            console.log("Please select all required values");
-            return;
+        if (!departmentId && !managerId && !roleId) {
+            toastr.error("Please select all required values");
+            return false;
         }
-
-        // Prepare data to send to the server
         var ActivationDTO = {
             UserId: userId,
             DepartmentId: departmentId,
             ManagerId: managerId,
             RoleId: roleId
         };
-
         console.log("ActivationDTO", ActivationDTO);
-
         fetch('/User/ActivatePendingAccountAsync', {
             method: 'POST',
             headers: {
@@ -142,18 +135,25 @@
                 if (response.ok) {
                     return response.json();
                 } else {
+                    toastr.error("Internal server error");
+                    return false;
                 }
             })
             .then(data => {
                 if (data.result) {
-                    console.log("response data ", data.message);
-                    location.reload();
+                    toastr.success(data.message, '', { timeOut: 1000, });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                    return true;
                 } else {
-                    console.log("Error in data ", data.message);
+                    toastr.error(data.message, '', { timeOut: 1000, });
+                    return false;
                 }
             })
             .catch(error => {
-                console.error("Fetch error: ", error);
+                toastr.error("Internal server error " + error, '', { timeOut: 1000, });
+                return false;
             });
     }
 </script>

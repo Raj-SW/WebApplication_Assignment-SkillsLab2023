@@ -12,18 +12,18 @@
         <div class="row">
             <div class="training-name-inputs col-md-6">
                 <label for="trainingName">Training Name:</label>
-                <input type="text" id="trainingName" required>
+                <input type="text" id="trainingName" >
             </div>
             <div class="training-description-inputs col-md-6">
                 <label for="trainingDescription">Training Description:</label>
-                <textarea id="trainingDescription" required></textarea>
+                <textarea id="trainingDescription" ></textarea>
             </div>
         </div>
         <div class="row">
             <div class="training-status-inputs col-md-6">
                 <label for="trainingStatus">Training Status:</label>
                 <!-- Populate the dropdown with the list of training statuses -->
-                <select id="trainingStatus" required>
+                <select id="trainingStatus" >
                     @foreach (var status in ViewBag.ListOfTrainingStatus)
                     {
                         <option value="@status">@status</option>
@@ -33,7 +33,7 @@
             <div class="department-priority-inputs col-md-6">
                 <label for="departmentPriority">Department Priority:</label>
                 <!-- Populate the dropdown with the list of departments -->
-                <select id="departmentPriority" required>
+                <select id="departmentPriority" >
                     @foreach (var department in ViewBag.ListOfDepartments)
                     {
                         <option value="@department.DepartmentId">@department.DepartmentName</option>
@@ -44,17 +44,17 @@
         <div class="row">
             <div class="seats-total-inputs col-md-6">
                 <label for="seatsTotal">Seats Total:</label>
-                <input type="number" id="seatsTotal" required>
+                <input type="number" id="seatsTotal" >
             </div>
             <div class="registration-deadline-inputs col-md-6">
                 <label for="registrationDeadline">Registration Deadline:</label>
-                <input type="date" id="registrationDeadline" required>
+                <input type="date" id="registrationDeadline" >
             </div>
         </div>
         <div class="row">
             <div class="coach-inputs col-md-6">
                 <label for="coach">Coach:</label>
-                <select id="coach" required>
+                <select id="coach" >
                     @foreach (var manager in ViewBag.ListOfManagers)
                     {
                         <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
@@ -77,38 +77,26 @@
     document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('createTrainingForm');
     const addPrerequisiteBtn = document.getElementById('addPrerequisite');
-
     let prerequisiteCount = 0;
-
-    // Assuming you are passing the ListOfPrerequisites from ViewBag to the script
     const listOfPrerequisites = @Html.Raw(Json.Encode(ViewBag.ListOfPrerequisites));
-
     addPrerequisiteBtn.addEventListener('click', function () {
         prerequisiteCount++;
-
-        // Check if the prerequisite container exists, if not, create it
         let prerequisiteContainer = document.querySelector('.prerequisite-container');
         if (!prerequisiteContainer) {
             prerequisiteContainer = document.createElement('div');
             prerequisiteContainer.className = 'row add-prerequisite col-md-6';
             form.insertBefore(prerequisiteContainer, form.lastElementChild);
         }
-
-        // Create the prerequisite dropdown
         const select = document.createElement('select');
         select.id = `prerequisiteDropdown${prerequisiteCount}`;
         select.className = 'prerequisite-dropdown';
         prerequisiteContainer.appendChild(select);
-
-        // Populate the dropdown with options from the data passed from ViewBag
         listOfPrerequisites.forEach(prerequisite => {
             const option = document.createElement('option');
             option.value = prerequisite.PrerequisiteId;
             option.innerText = prerequisite.PrerequisiteDescription;
             select.appendChild(option);
         });
-
-        // Create the "Remove Prerequisite" button
         const removePrerequisiteBtn = document.createElement('button');
         removePrerequisiteBtn.innerText = 'Remove Prerequisite';
         removePrerequisiteBtn.className = 'btn btn-danger ';
@@ -119,16 +107,17 @@
         });
         prerequisiteContainer.appendChild(removePrerequisiteBtn);
     });
-
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        // Gather all the selected values from the dynamically created dropdowns
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Validate form fields
+            if (!validateForm()) {
+                return;
+            }
+        // Gather all the selected values from the dynamically created dropdowns1
         const selectedPrerequisites = [];
         document.querySelectorAll('.prerequisite-dropdown').forEach(dropdown => {
             selectedPrerequisites.push(dropdown.value);
         });
-
         // Your existing form data
         const trainingData = {
             trainingName: document.getElementById('trainingName').value,
@@ -140,7 +129,6 @@
             coach: document.getElementById('coach').value,
             prerequisites: selectedPrerequisites,
         };
-
         console.log(trainingData);
         fetch('/Training/CreateTrainingAsync', {
             method: 'POST',
@@ -151,14 +139,24 @@
         })
             .then(response => response.json())
             .then(data => {
-                // Handle the response data if needed
                 console.log(data);
             })
             .catch(error => {
                 console.error('Error:', error);
             });
-        // Your fetch and submission code...
     });
-});
+    });
+    function validateForm() {
+        let isValid = true;
+        const requiredFields = ['trainingName', 'trainingDescription', 'trainingStatus', 'departmentPriority', 'seatsTotal', 'registrationDeadline', 'coach'];
+        requiredFields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value.trim()) {
+                toastr.error(`Please enter ${field.replace(/([A-Z])/g, ' $1').trim()}`);
+                isValid = false;
+            }
+        });
 
+        return isValid;
+    }
 </script>
