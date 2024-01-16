@@ -77,6 +77,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return await _itrainingDAL.GetPrerequisiteCountOfATraining(trainingId);
         }
+        public async Task<bool> IsTrainingOpenAsync(byte trainingId)
+        {
+            return await _itrainingDAL.IsTrainingOpenAsync(trainingId);
+        }
         #endregion
 
         #region Update Models
@@ -116,6 +120,8 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 
             return "";
         }
+
+     
         #endregion
     }
 }

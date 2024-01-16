@@ -15,7 +15,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
     public class TrainingController : Controller
     {
         private readonly ITrainingBL _trainingBl;
-
         public TrainingController(ITrainingBL trainingBl)
         {
             _trainingBl = trainingBl;
@@ -119,6 +118,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             }
             return Json(new { result = false, message = "Training deletion unsuccessful. There might be enrolments" });
         }
+
         #endregion
     }
 }

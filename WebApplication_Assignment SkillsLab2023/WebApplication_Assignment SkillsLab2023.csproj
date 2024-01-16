@@ -180,7 +180,6 @@
     <Compile Include="BusinessLayer\TrainingBL.cs" />
     <Compile Include="BusinessLayer\UserBL.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TrainingController.cs" />
     <Compile Include="Custom\CustomAuthorizationAttribute.cs" />
     <Compile Include="Custom\UserSessionAttribute.cs" />

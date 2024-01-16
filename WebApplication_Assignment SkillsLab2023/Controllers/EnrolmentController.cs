@@ -27,9 +27,13 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public async Task<ActionResult> EnrolEmployeeIntoTrainingAsync() 
         {
-            //TODO: If the training is closeed, do not accept enrolment
             var userId = byte.Parse(HttpContext.Request.Form["userId"]);
             var trainingId = byte.Parse(HttpContext.Request.Form["trainingId"]);
+            var isTrainingOpen = await _trainingBL.IsTrainingOpenAsync(trainingId);
+            if (!isTrainingOpen)
+            {
+                return Json(new { result = false, message = "You cannot enrol in a closed training." });
+            }
             var isAlreadyEnrolled= await _enrolmentBL.isUserAlreadyRegisteredInTrainingAsync(trainingId, userId);
             if (isAlreadyEnrolled)
             {
@@ -52,6 +56,10 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         public async Task<ActionResult> GetEnrolmentPrerequisitesByIdAsync(byte enrolmentId)
         {
             var enrolmentPrerequisites = await  _enrolmentBL.GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(enrolmentId);
+            if (!enrolmentPrerequisites.Any())
+            {
+                return Json(new { result = false, message = "Internal Server Error! Could not fetch retrieved prerequisites"});
+            }
             return Json(new { result = true, message = "Successfully retrieved prerequisites", EnrolmentPrerequisites = enrolmentPrerequisites });
         }
         [RoleAuthorisation("Employee")]

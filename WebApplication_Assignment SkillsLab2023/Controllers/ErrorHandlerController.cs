@@ -8,7 +8,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
     public class ErrorHandlerController : Controller
     {
-        // GET: ErrorHandler
         public ActionResult InternalServerError()
         {
             return View();

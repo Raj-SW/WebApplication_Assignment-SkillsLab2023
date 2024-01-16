@@ -72,6 +72,12 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             var result = await _command.GetDataWithConditionsAsync<int>(GET_PREREQUISITE_COUNT_OF_A_TRAINING, parameters);
             return result.FirstOrDefault();
         }
+        public async Task<bool> IsTrainingOpenAsync(byte trainingId)
+        {
+            const string IS_TRAINING_OPEN_QUERY = "SELECT TOP(1) FROM Training WHERE TrainingId = @TrainingId AND TrainingStatus = 'Open'";
+            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@TrainingId",trainingId)};
+            return await _command.IsRowExistsAsync(IS_TRAINING_OPEN_QUERY,parameters);
+        }
         #endregion
 
         #region Insert

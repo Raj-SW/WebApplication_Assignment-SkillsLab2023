@@ -125,9 +125,9 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             var result = await _userBL.UpdateUserAndRolesAsync(dto);
             if (result)
             {
-                return Json(new { result = true, message = "User Updated Successfully" }); ;
+                return Json(new { result = true, message = "User Updated Successfully" });
             }
-            return Json(new { result = false, message = "User Failed to Update" }); ;
+            return Json(new { result = false, message = "User Failed to Update" });
         }
         #endregion
 

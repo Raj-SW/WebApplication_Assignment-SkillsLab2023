@@ -23,6 +23,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         Task<List<PrerequisitesModel>> GetAllPrerequisitesAsync();
         Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId);
         Task<bool> DoesTrainingHavePrerequisitesAsync(byte trainingId);
+        Task<bool> IsTrainingOpenAsync(byte trainingId);
 
         #endregion
 
