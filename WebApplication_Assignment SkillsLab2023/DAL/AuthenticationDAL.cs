@@ -80,7 +80,9 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             {
                 result.ResultTask.isSuccess = true;
                 result.ResultObject = credentialList[0];
+              return result;
             }
+            result.ResultTask.isSuccess = false;
             return result;
         }
         public async Task<List<UserRolesModel>> GetUserRolesByUserIdAsync(int UserId)

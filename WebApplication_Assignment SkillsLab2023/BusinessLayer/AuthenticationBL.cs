@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DAL;
 using WebApplication_Assignment_SkillsLab2023.Models;
+using WebApplication_Assignment_SkillsLab2023.Services;
 
 namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 {
@@ -15,25 +16,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         private readonly IAuthenticationDAL _authenticationDAL;
         public AuthenticationBL(IAuthenticationDAL authenticationDAL) {
             _authenticationDAL = authenticationDAL;
-        }
-        public async Task<TaskResult> RegisterUserAsync(UserAndCredentialDTO dto)
-        {
-            TaskResult result = await IsUserModelUniqueAsync(dto);
-            if (result.isSuccess)
-            {
-                dto.credentialModel.Salt = GenerateTimestampSalt();
-                dto.credentialModel.Password = HashPassword(dto.credentialModel.RawPassword, dto.credentialModel.Salt);
-                result.isSuccess = await _authenticationDAL.InsertUserModelCredentialModelAsync(dto.userModel, dto.credentialModel);
-                if (result.isSuccess)
-                {
-                    result.AddResultMessage("Successful Registration. Wait For Admin to Activate your Account");
-                }
-                else
-                {
-                    result.AddResultMessage("Internal Server Error. We'll get back to you soon");
-                }
-            }
-            return result;
         }
         public async Task<DataModelResult<UserModel>> LoginUserAsync(CredentialModel model)
         {
@@ -53,7 +35,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             }
             else
             {
-                model.Password = HashPassword(model.RawPassword, retrieveCredentialModelByEmailResult.ResultObject.Salt);
+                model.Password = PasswordHashing.HashPassword(model.RawPassword, retrieveCredentialModelByEmailResult.ResultObject.Salt);
                 if (model.Password.SequenceEqual(retrieveCredentialModelByEmailResult.ResultObject.Password))
                 {
                     UserDataModelResult.ResultObject = await GetUserModelByIDAsync(retrieveCredentialModelByEmailResult.ResultObject.UserId);
@@ -67,6 +49,25 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
                 }
             }
             return UserDataModelResult;
+        }
+        public async Task<TaskResult> RegisterUserAsync(UserAndCredentialDTO dto)
+        {
+            TaskResult result = await IsUserModelUniqueAsync(dto);
+            if (result.isSuccess)
+            {
+                dto.credentialModel.Salt = PasswordHashing.GenerateTimestampSalt();
+                dto.credentialModel.Password = PasswordHashing.HashPassword(dto.credentialModel.RawPassword, dto.credentialModel.Salt);
+                result.isSuccess = await _authenticationDAL.InsertUserModelCredentialModelAsync(dto.userModel, dto.credentialModel);
+                if (result.isSuccess)
+                {
+                    result.AddResultMessage("Successful Registration. Wait For Admin to Activate your Account");
+                }
+                else
+                {
+                    result.AddResultMessage("Internal Server Error. We'll get back to you soon");
+                }
+            }
+            return result;
         }
         public void Logout()
         {
@@ -113,7 +114,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return await _authenticationDAL.isMobileNumUniqueAsync(dto);
         }
-        public async Task<UserModel> GetUserModelByIDAsync(int id)
+        public async Task<UserModel> GetUserModelByIDAsync(byte id)
         {
             return await _authenticationDAL.GetUserModelByIDAsync(id);
         }
@@ -122,67 +123,9 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             DataModelResult<CredentialModel> result = await _authenticationDAL.GetCredentialModelByEmailAsync(model);
            return result;
         }
-        public byte[] HashPassword(string rawpassword, byte[] salt)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(rawpassword + salt);
-                byte[] hashedBytes = sha256.ComputeHash(passwordBytes);
-                return hashedBytes;
-            }
-        }
-        public byte[] GenerateTimestampSalt()
-        {
-            long ticks = DateTime.UtcNow.Ticks;
-            byte[] saltBytes = BitConverter.GetBytes(ticks);
-            return saltBytes;
-        }
         public async Task<List<RoleModel>> GetAllRolesAsync()
         {
             return await _authenticationDAL.GetAllRolesAsync();
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//public UserModel Login(CredentialModel model)
-//{
-//    UserModel requestUserModel;
-//    GenericDAL<CredentialModel> credentialDAL = new GenericDAL<CredentialModel>();
-//    var requestModel = credentialDAL.GetByID(model.UserId);
-//    if (requestModel != null)
-//    {
-//        GenericDAL<UserModel> UserModelDAL = new GenericDAL<UserModel>();
-//        requestUserModel = UserModelDAL.GetByID(requestModel.UserId);
-//        return requestUserModel;
-//    }
-//    throw new Exception();
-//}

@@ -16,8 +16,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         Task<bool> isNicUniqueAsync(UserAndCredentialDTO dto);
         Task<bool> isMobileNumUniqueAsync(UserAndCredentialDTO dto);
         Task<DataModelResult<CredentialModel>> GetCredentialModelByEmailAsync(CredentialModel model);
-        byte[] HashPassword(string password, byte[] salt);
-        byte[] GenerateTimestampSalt();
         Task<List<RoleModel>> GetAllRolesAsync();
+        Task<UserModel> GetUserModelByIDAsync(byte id);
     }
 }

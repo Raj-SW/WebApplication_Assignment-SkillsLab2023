@@ -231,6 +231,7 @@
     <Compile Include="Services\Interfaces\IFileHandlerService.cs" />
     <Compile Include="Services\Interfaces\INotificationServices.cs" />
     <Compile Include="Services\LocalFileHandlerService.cs" />
+    <Compile Include="Services\PasswordHashing.cs" />
     <Compile Include="SessionManagement\RoleAuthorisation.cs" />
   </ItemGroup>
   <ItemGroup>
