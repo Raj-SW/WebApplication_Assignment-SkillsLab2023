@@ -74,9 +74,15 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
         }
         public async Task<bool> IsTrainingOpenAsync(byte trainingId)
         {
-            const string IS_TRAINING_OPEN_QUERY = "SELECT TOP(1) FROM Training WHERE TrainingId = @TrainingId AND TrainingStatus = 'Open'";
+            const string IS_TRAINING_OPEN_QUERY = "SELECT TOP(1) * FROM Training WHERE TrainingId = @TrainingId AND TrainingStatus = 'Open'";
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@TrainingId",trainingId)};
             return await _command.IsRowExistsAsync(IS_TRAINING_OPEN_QUERY,parameters);
+        }
+        public async Task<bool> IsTrainingUniqueCheckByTrainingName(string trainingName)
+        {
+            const string IS_TRAINING_UNIQUE_QUERY = "SELECT TOP(1) * FROM Training WHERE TrainingName = @TrainingName";
+            List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@TrainingName", trainingName) };
+            return await _command.IsRowExistsAsync(IS_TRAINING_UNIQUE_QUERY, parameters);
         }
         #endregion
 

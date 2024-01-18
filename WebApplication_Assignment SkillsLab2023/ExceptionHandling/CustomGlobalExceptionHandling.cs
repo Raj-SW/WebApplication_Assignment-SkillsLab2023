@@ -19,7 +19,7 @@ namespace WebApplication_Assignment_SkillsLab2023.ExceptionHandling
             base.OnException(filterContext);
             _logger.LogError(filterContext.Exception);
             filterContext.ExceptionHandled = true;
-            filterContext.HttpContext.Response.StatusCode = 500;
+            //filterContext.HttpContext.Response.StatusCode = 500;
             filterContext.Result = new ViewResult()
             {
                 ViewName = "Error",

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using WebApplication_Assignment_SkillsLab2023.Models;
+using WebApplication_Assignment_SkillsLab2023.Services;
 
 namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
 {
@@ -34,24 +35,26 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         #region User Model Manipulations
         public async Task<bool> ActivatePendingUserAsync(ActivationDTO activationDTO)
         {
-            return await _userDAL.ActivatePendingUserAsync(activationDTO);
+            if(await _userDAL.ActivatePendingUserAsync(activationDTO))
+            {
+                var employeeEmail = await _userDAL.GetManagerEmailThroughEmployeeUserIdAsync(activationDTO.UserId);
+                await EmailSender.SendEmailAsync("Account Activation", "Your account has been successfully activated. You may now log into the system", employeeEmail);
+                return true;
+            }
+            return false ;
         }
-
         public async Task<List<UserModel>> GetAllPendingUserModelsAsync()
         {
             return await _userDAL.GetAllPendingUserModelsAsync();
         }
-
         public async Task DeactivatePendingUserAsync(byte UserID)
         {
             await _userDAL.DeactivatePendingUserAsync(UserID);
         }
-
         public async Task<bool> UpdateUserAndRolesAsync(UserAndRolesDTO userAndRolesDTO)
         {
             return await _userDAL.UpdateUserAndRolesAsync(userAndRolesDTO);
         }
-
         public async Task<List<UserAndRolesDTO>> GetAllUsersAndTheirRolesAsync()
         {
             return await _userDAL.GetAllUsersAndTheirRolesAsync();

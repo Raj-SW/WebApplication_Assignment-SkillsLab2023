@@ -81,6 +81,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return await _itrainingDAL.IsTrainingOpenAsync(trainingId);
         }
+        public async Task<bool> IsTrainingUnique(string trainingName)
+        {
+            return await _itrainingDAL.IsTrainingUniqueCheckByTrainingName(trainingName);
+        }
         #endregion
 
         #region Update Models

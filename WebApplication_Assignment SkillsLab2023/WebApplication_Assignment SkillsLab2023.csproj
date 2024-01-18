@@ -259,6 +259,8 @@
     <Content Include="Content\Styling\AdminUpdateEmployeePartialViewStyling.css" />
     <Content Include="Content\Styling\AdminViewStyling.css" />
     <Content Include="Content\Styling\BaseDashboardStyling.css" />
+    <Content Include="Content\Styling\EmployeeViewStyling.css" />
+    <Content Include="Content\Styling\EmployeeViewTrainingPartialviewStyling.css" />
     <Content Include="Content\Styling\LoginPageStyling.css" />
     <Content Include="Content\Styling\ManagerViewStyling.css" />
     <Content Include="Content\Styling\ManagerViewUpdateEnrolmentsPartialViewStyling.css" />

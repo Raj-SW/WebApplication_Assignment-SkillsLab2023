@@ -8,6 +8,8 @@ using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
 using System.Web;
 using WebApplication_Assignment_SkillsLab2023.CustomeServerSideValidations;
 using WebApplication_Assignment_SkillsLab2023.SessionManagement;
+using System;
+using System.Linq;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
@@ -61,6 +63,19 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateTrainingAsync(CreateTrainingDTO createTrainingDTO)
         {
+            var isTrainingExistedAlready = await _trainingBl.IsTrainingUnique(createTrainingDTO.TrainingName);
+            if (isTrainingExistedAlready)
+            {
+                return Json(new { result = false, message = "There is already a training of that Name created" });
+            }
+            var repeatedElements = createTrainingDTO.Prerequisites.GroupBy(x => x)
+                                            .Where(group => group.Count() > 1)
+                                            .Select(group => group.Key)
+                                            .ToList();
+            if (repeatedElements.Any())
+            {
+                return Json(new { result = false, message = "The same prerequisites are added twice" });
+            }
             var isSuccess = await _trainingBl.CreateTrainingAsync(createTrainingDTO);
             if (isSuccess)
             {

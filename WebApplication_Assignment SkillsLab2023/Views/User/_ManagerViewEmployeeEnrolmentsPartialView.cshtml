@@ -153,8 +153,9 @@
     function populatePrerequisites(prerequisites, enrolmentId) {
         var prerequisitesContainer = document.getElementById("view-prerequisites-list_" + enrolmentId);
         prerequisitesContainer.innerHTML = ''; // Clear previous content
-        if (prerequisites.length == 0) {
+        if (!prerequisites || prerequisites.length === 0) {
             prerequisitesContainer.innerHTML = 'No prerequisites required for this training';
+            return;
         }
         prerequisites.forEach((prerequisite, index) => {
             var div = document.createElement("div");

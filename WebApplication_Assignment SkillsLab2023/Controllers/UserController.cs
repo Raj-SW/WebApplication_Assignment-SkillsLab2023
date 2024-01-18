@@ -40,15 +40,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [RoleAuthorisation("Manager")]
         public async Task<ActionResult> ManagerView()
         {
-            //TODO:
-            //DATA REQUIRED; TRAINING DETAILS, TRAINING PREREQUISITES, ENROLMENT, ENROLMENT-PREREQUISITE, EMPLOYEE DETAILS
-            //SEE TRAININGS
-            //SEE HIS EMPLOYEES HIERARCHY
-
-            //REVIEW HIS EMLOYEES ENROLMENT AND PERFORM ACTIONS
-            //ON VIEW DETAILS EXPAND ENROLMENT DETAILS 
-            //A WAY TO VIEW OR OPEN THE ATTACHMENTS
-            //ENROL OR REJECT OR KEEP PENDING OR GIVE A FEEDBACK ON DOCUMENT ETC..
             byte ManagerId = (byte) Session["CurrentUserId"];
             var listOfEmployeesEnrolment =await _enrolmentBL.GetEmployeesPendingEnrolmentByManagerIdAsync(ManagerId);
             ViewBag.ListOfEmployeeEnrolment = listOfEmployeesEnrolment;

@@ -29,27 +29,12 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         {
             var userId = byte.Parse(HttpContext.Request.Form["userId"]);
             var trainingId = byte.Parse(HttpContext.Request.Form["trainingId"]);
-            var isTrainingOpen = await _trainingBL.IsTrainingOpenAsync(trainingId);
-            if (!isTrainingOpen)
-            {
-                return Json(new { result = false, message = "You cannot enrol in a closed training." });
-            }
-            var isAlreadyEnrolled= await _enrolmentBL.isUserAlreadyRegisteredInTrainingAsync(trainingId, userId);
-            if (isAlreadyEnrolled)
-            {
-                return Json(new { result = false, message = "You were already enrolled in this training." });
-            }
-            var prereqcount = await _trainingBL.GetTrainingPrerequisitesByIdAsync(trainingId);
-            if (prereqcount.Count> Request.Files.Count)
-            {
-                return Json(new { result = false, message = "Enrolment cancelled. Please Upload All Prerequisite Attachemnts" });
-            }
             var result = await  _enrolmentBL.EnrolEmployeeIntoTrainingAsync(userId, trainingId, Request.Files);
-            if (result)
+            if (result.isSuccess)
             {
                 return Json(new { result = true, message = "Enrolment successful." });
             }
-            return Json(new { result = false, message = "Enrolment failed. Make sure you have submitted all files required" });
+            return Json(new { result = false, message = result.GetAllResultMessageAsString() });
         }
         [RoleAuthorisation("Employee,Manager,Admin")]
         [HttpPost]

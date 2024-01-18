@@ -4,13 +4,14 @@
 }
 
 <link rel="stylesheet" href="~/Content/Styling/AdminCreateTrainingStyling.css">
-
+<link href="~/Content/toastr.css" rel="stylesheet" />
+<script src="~/Scripts/toastr.js"></script>
 
 <div class="create-training-container">
     <form id="createTrainingForm" class="createTrainingForm">
 
         <div class="row">
-    <h3>Create Training</h3>
+            <h3>Create Training</h3>
             <div class="training-name-inputs col-md-6">
                 <label for="trainingName">Training Name:</label>
                 <input type="text" id="trainingName">
@@ -65,8 +66,8 @@
         </div>
         <div class="col-md-6 button-container">
             <div class=" inner-button-container">
-                    <button class="btn btn-primary col-md-5" type="button" id="addPrerequisite">Add Prerequisite</button>
-                </div>
+                <button class="btn btn-primary col-md-5" type="button" id="addPrerequisite">Add Prerequisite</button>
+            </div>
             <div class="">
                 <button class="btn btn-primary col-md-5" type="submit">Create Training</button>
             </div>
@@ -92,6 +93,7 @@
         select.id = `prerequisiteDropdown${prerequisiteCount}`;
         select.className = 'prerequisite-dropdown';
         prerequisiteContainer.appendChild(select);
+
         listOfPrerequisites.forEach(prerequisite => {
             const option = document.createElement('option');
             option.value = prerequisite.PrerequisiteId;
@@ -137,7 +139,16 @@
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                if (data.result) {
+                    toastr.success(data.message, '', { timeOut: 1000, });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                    return true;
+                } else {
+                    toastr.error(data.message, '', { timeOut: 1000, });
+                    return false;
+                }
             })
             .catch(error => {
                 console.error('Error:', error);

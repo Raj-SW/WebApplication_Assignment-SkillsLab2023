@@ -24,7 +24,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         Task<string> GetTrainingNameByTrainingIdAsync(byte trainingId);
         Task<bool> DoesTrainingHavePrerequisitesAsync(byte trainingId);
         Task<bool> IsTrainingOpenAsync(byte trainingId);
-
+        Task<bool> IsTrainingUnique(string trainingName);
         #endregion
 
         #region Update Models

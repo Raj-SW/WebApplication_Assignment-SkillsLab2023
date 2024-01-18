@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 using WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface;
 using WebApplication_Assignment_SkillsLab2023.DAL.Interface;
 using WebApplication_Assignment_SkillsLab2023.DataTransferObjects;
@@ -51,11 +52,33 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         #endregion
 
         #region Insert Models
-        public async Task<bool> EnrolEmployeeIntoTrainingAsync(byte userId, byte trainingId, HttpFileCollectionBase FileCollection)
+        public async Task<TaskResult> EnrolEmployeeIntoTrainingAsync(byte userId, byte trainingId, HttpFileCollectionBase FileCollection)
         {
             TaskResult uploadTaskResult = new TaskResult();
+            var prereqcount = await _trainingBL.GetTrainingPrerequisitesByIdAsync(trainingId);
+
+            if (IsFileTooLarge(FileCollection))
+            {
+                uploadTaskResult.AddResultMessage("Files are too large");
+                return uploadTaskResult;
+            }
+            if (!await _trainingBL.IsTrainingOpenAsync(trainingId))
+            {
+                uploadTaskResult.AddResultMessage("You cannot enroll for a closed training");
+                return uploadTaskResult;
+            }
+            if (await isUserAlreadyRegisteredInTrainingAsync(trainingId, userId))
+            {
+                uploadTaskResult.AddResultMessage("You have already registered for his training");
+                return uploadTaskResult;
+            }
             if (FileCollection != null && FileCollection.Count > 0)
             {
+                if (prereqcount.Count > FileCollection.Count)
+                {
+                    uploadTaskResult.AddResultMessage("Incorrect number of attachments uploaded");
+                    return uploadTaskResult;
+                }
                 uploadTaskResult = _iFileHandlerService.FileUpload(userId, trainingId, FileCollection);
             }
             uploadTaskResult.isSuccess = await _enrolmentDAL.EnrolEmployeeIntoTrainingAsync(userId, trainingId, uploadTaskResult.ResultMessageList);
@@ -66,7 +89,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             uploadTaskResult.isSuccess = await EmailSender.SendEmailAsync($"Enrolment for {trainingName} - DF Learning Hub", $"Your enrolment for {trainingName} has been successfully received.\r\nPlease wait for your manager's approval.\r\n\r\nThis is an auto-generated email. Please do not reply to this email\r\n\r\nKind regards,\r\nDF Learning Hub", userEmail);
             uploadTaskResult.isSuccess = await EmailSender.SendEmailAsync($"Employee Enrolment for {trainingName}", $"Your employee {employeeName} has registered for {trainingName} successfully.\r\nPlease review his documents.\r\n\r\nThis is an auto-generated email. Please do not reply to this email\r\n\r\nKind regards,\r\nDF Learning Hub", managerEmail);
 
-            return uploadTaskResult.isSuccess;
+            return uploadTaskResult;
         }
         #endregion
 
@@ -76,7 +99,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             var isSentEmployee = false;
             var isSentManager = false;
             var isSuccess = await _enrolmentDAL.ManagerApproveEnrolmentAsync(enrolmentId);
-
             if (isSuccess)
             {
                 string employeeEmail = await _userBL.GetEmployeeEmailbyUserIdAsync(userId);
@@ -119,5 +141,21 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             }
         }
         #endregion
+        private bool IsFileTooLarge(HttpFileCollectionBase FileCollection)
+        {
+            int fileSizeLimit = 50 * 1024 * 1024; // 5MB
+            foreach (string key in FileCollection.AllKeys)
+            {
+                HttpPostedFileBase file = FileCollection[key];
+                if (file != null && file.ContentLength > 0)
+                {
+                    if (file.ContentLength > fileSizeLimit)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

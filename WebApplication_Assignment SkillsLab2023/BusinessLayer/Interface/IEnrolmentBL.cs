@@ -16,7 +16,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         #endregion
 
         #region Insert Model
-        Task<bool> EnrolEmployeeIntoTrainingAsync(byte userId, byte trainingId, HttpFileCollectionBase FileCollection);
+        Task<TaskResult> EnrolEmployeeIntoTrainingAsync(byte userId, byte trainingId, HttpFileCollectionBase FileCollection);
         #endregion
 
         #region Update Model

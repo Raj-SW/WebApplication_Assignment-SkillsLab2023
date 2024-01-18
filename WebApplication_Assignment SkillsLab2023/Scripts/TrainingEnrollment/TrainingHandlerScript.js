@@ -4,6 +4,7 @@
         e.preventDefault();
         return false;
     });
+    var fileSizeLimit = 50 * 1024 * 1024;
     var formData = new FormData();
     formData.append('userId', userId);
     formData.append('trainingId', training.TrainingId);
@@ -12,6 +13,16 @@
     fileInputs.forEach(function (fileInput, index) {
         var file = fileInput.files[0];
         if (file) {
+            if (file.size > fileSizeLimit) {
+                toastr.warning(file.name + " exceeds file size limit of 50 mb");
+                return false;
+            }
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+            var allowedExtensions = ['pdf', 'png', 'jpeg', 'jpg', 'doc', 'docx'];
+            if (!allowedExtensions.includes(fileExtension)) {
+                toastr.warning('Invalid file type for ' + file.name + '. Allowed types are: PDF, PNG, JPEG, Word');
+                return false;
+            }
             filesSelected = true;
             console.log("File " + (index + 1) + ": " + file.name);
             formData.append('files' + index, file);

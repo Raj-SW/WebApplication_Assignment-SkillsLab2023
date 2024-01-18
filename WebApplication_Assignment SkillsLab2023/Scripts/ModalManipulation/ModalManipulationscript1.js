@@ -31,7 +31,7 @@
         preReqList.forEach(preReq => {
             var prereqContainer = document.createElement("div");
             prereqContainer.className = 'form-group';
-            prereqContainer.innerHTML = "<label for='fileInput'>" + preReq.PrerequisiteDescription + "</label><input type='file' class='form-control-file' id='fileInput'>";
+            prereqContainer.innerHTML = "<label for='fileInput'>" + preReq.PrerequisiteDescription + "</label><input type='file' class='form-control-file' id='fileInput' accept='.pdf, .png, .jpeg, .jpg, .doc, .docx'>";
             preRequisiteContainer.appendChild(prereqContainer);
         });
     } else {

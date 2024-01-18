@@ -1,45 +1,48 @@
-﻿
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="~/Scripts/GetTrainingData/FetchPrerequisiteScript.js"></script>
-<script src="~/Scripts/ModalManipulation/ModalManipulationscript1.js"></script>
-<script src="~/Scripts/TrainingEnrollment/TrainingHandlerScript.js"></script>
-
-<script src="~/Scripts/toastr.js"></script>
-<link href="~/Content/toastr.css" rel="stylesheet" />
-<h3>Employee UserId: @Session["CurrentUserId"]</h3>
-<div class="row">
-    <div class="col-md">
-        <table cellspacing="10" cellpadding="10">
-            <tr>
-                <th>Status</th>
-                <th>Training Id</th>
-                <th>Training Name</th>
-                <th>Training Description</th>
-                <th>Registration Deadline</th>
-                <th>Total Seats</th>
-                <th>Actions</th>
-            </tr>
-            @{
-                foreach (var training in ViewBag.ListOfTrainings)
-                {
+﻿<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="~/Scripts/GetTrainingData/FetchPrerequisiteScript.js"></script>
+    <script src="~/Scripts/ModalManipulation/ModalManipulationscript1.js"></script>
+    <script src="~/Scripts/TrainingEnrollment/TrainingHandlerScript.js"></script>
+    <link href="~/Content/Styling/EmployeeViewTrainingPartialviewStyling.css" rel="stylesheet" />
+    <script src="~/Scripts/toastr.js"></script>
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+</head>
+<div class="employee-view-training">
+    <div class="row">
+            <h3>Employee Training</h3>
+        <div class="col-md">
+            <table cellspacing="10" cellpadding="10" class="table table-hover employee-view-training">
+                <thead class="thead-dark">
                     <tr>
-                        <td>@training.TrainingStatus</td>
-                        <td>@training.TrainingId</td>
-                        <td>@training.TrainingName</td>
-                        <td>@training.TrainingDescription</td>
-                        <td>@training.TrainingRegistrationDeadline</td>
-                        <td>@training.SeatsTotal</td>
-                        <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registrationModal" onclick='PopulateModal(@Session["CurrentUserId"], @Html.Raw(Json.Encode(training)))'>
-                                Enroll
-                            </button>
-                        </td>
+                        <th>Status</th>
+                        <th>Training Id</th>
+                        <th>Training Name</th>
+                        <th>Training Description</th>
+                        <th>Registration Deadline</th>
+                        <th>Actions</th>
                     </tr>
+                </thead>
+                @{
+                    foreach (var training in ViewBag.ListOfTrainings)
+                    {
+                        <tr>
+                            <td>@training.TrainingStatus</td>
+                            <td>@training.TrainingId</td>
+                            <td>@training.TrainingName</td>
+                            <td>@training.TrainingDescription</td>
+                            <td>@training.TrainingRegistrationDeadline</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registrationModal" onclick='PopulateModal(@Session["CurrentUserId"], @Html.Raw(Json.Encode(training)))'>
+                                    Enroll
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 }
-            }
-        </table>
+            </table>
+        </div>
     </div>
 </div>
 
