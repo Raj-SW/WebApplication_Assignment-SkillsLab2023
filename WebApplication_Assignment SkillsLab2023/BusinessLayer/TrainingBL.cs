@@ -44,13 +44,11 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         }
         public async Task<List<TrainingWithPrerequisitesModel>> GetAllTrainingModelsWithPrerequisitesAsync()
         {
-
             var ListOftrainingModelsWithPrerequisites = await GetAllTrainingModelsAsync();
             foreach (var TrainingModelsWithPrerequisites in ListOftrainingModelsWithPrerequisites)
             {
                 TrainingModelsWithPrerequisites.PrerequisitesList = await GetAllPrerequisiteOfATrainingModelByTrainingIdAsync(TrainingModelsWithPrerequisites.TrainingId);
             }
-
             return ListOftrainingModelsWithPrerequisites;
         }
         public async Task<List<PrerequisitesModel>> GetTrainingPrerequisitesByIdAsync(int trainingId)

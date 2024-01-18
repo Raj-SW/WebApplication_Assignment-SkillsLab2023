@@ -7,11 +7,30 @@
     <link href="~/Content/toastr.css" rel="stylesheet" />
     <script src="~/Scripts/toastr.js"></script>
     <link href="~/Content/Styling/EmployeeViewStyling.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <div class="employee-view-container">
     <div class="user-details-container">
         <span><h4>Employee Dashboard</h4></span>
-        <span><h5>User: User Name + User first name Logged in</h5></span>
+        <span><h5>User:@Session["CurrentUserFullName"] Logged in</h5></span>
     </div>
-    @Html.Partial("_EmployeeViewTrainingPartialView", new ViewDataDictionary { { "ListOfTrainings", ViewBag.ListOfTrainings } })
+    <ul class="nav nav-tabs" id="employeeTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="trainings-tab" data-bs-toggle="tab" data-bs-target="#trainings" type="button" role="tab" aria-controls="trainings" aria-selected="true"><h4>Trainings</h4></button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="enrolments-tab" data-bs-toggle="tab" data-bs-target="#enrolments" type="button" role="tab" aria-controls="enrolments" aria-selected="false"><h4>All Enrolments</h4></button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="employeeTabsContent">
+        <div class="tab-pane fade show active" id="trainings" role="tabpanel" aria-labelledby="trainings-tab">
+            @Html.Partial("_EmployeeViewTrainingPartialView", new ViewDataDictionary { { "ListOfTrainings", ViewBag.ListOfTrainings } })
+        </div>
+        <div class="tab-pane fade" id="enrolments" role="tabpanel" aria-labelledby="enrolments-tab">
+            @Html.Partial("_EmployeeViewAllEnrolmentsPartialView", new ViewDataDictionary { { "ListOfEnrolments", ViewBag.ListOfEnrolments } })
+        </div>
+    </div>
 </div>

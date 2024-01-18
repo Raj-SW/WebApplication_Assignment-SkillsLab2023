@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -33,8 +34,11 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
         [RoleAuthorisation("Employee")]
         public async Task<ActionResult> EmployeeView()
         {
+            byte userId = (byte)Session["CurrentUserId"];
             var ListOfTrainings = await _itrainingbl.GetAllTrainingModelsAsync();
             ViewBag.ListOfTrainings = ListOfTrainings;
+            var ListOfEnrolments = await _enrolmentBL.GetEmployeesEnrolmentHistoryByIdAsync(userId);
+            ViewBag.ListOfEnrolments= ListOfEnrolments;
             return View();
         }
         [RoleAuthorisation("Manager")]
@@ -43,6 +47,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             byte ManagerId = (byte) Session["CurrentUserId"];
             var listOfEmployeesEnrolment =await _enrolmentBL.GetEmployeesPendingEnrolmentByManagerIdAsync(ManagerId);
             ViewBag.ListOfEmployeeEnrolment = listOfEmployeesEnrolment;
+            var listOfEmployeeHistoryEnrolments = await _enrolmentBL.GetAllEmployeesEnrolmentHistoryOfAManagerByIdAsync(ManagerId);
+            ViewBag.ListOfEmployeeHistoryEnrolments =listOfEmployeeHistoryEnrolments;
             return View();
         }
         [RoleAuthorisation("Admin")]

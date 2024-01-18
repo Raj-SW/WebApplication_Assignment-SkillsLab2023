@@ -13,6 +13,8 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         Task<List<UserPrerequisiteModel>> GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(byte enrolmentId);
         Task<List<UserPrerequisiteModel>> GetAllEnrolmentsManagerWiseAsync(byte ManagerId);
         Task<bool> isUserAlreadyRegisteredInTrainingAsync(byte trainingId, byte UserId);
+        Task<List<EmployeeEnrolmentOverviewDTO>> GetAllEmployeesEnrolmentHistoryOfAManagerByIdAsync(byte managerId);
+        Task<List<EmployeeEnrolmentOverviewDTO>> GetEmployeesEnrolmentHistoryByIdAsync(byte userId);
         #endregion
 
         #region Insert Model

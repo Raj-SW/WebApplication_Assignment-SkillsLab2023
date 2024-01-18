@@ -23,6 +23,8 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL.Interface
         Task<bool> ManagerRejectEnrolmentAsync(byte enrolmentId, string remarks);
         Task AutomaticEnrolmentProcessingForTrainingByTrainingIdAsync(byte trainingId);
         Task<List<AutomaticProcessingDTO>> AutomaticEnrolmentProcessingForAllTrainingAsync();
+        Task<List<EmployeeEnrolmentOverviewDTO>> GetAllEmployeesEnrolmentHistoryOfAManagerByIdAsync(byte managerId);
+        Task<List<EmployeeEnrolmentOverviewDTO>> GetEmployeesEnrolmentHistoryByIdAsync(byte userId);
         #endregion
     }
 }

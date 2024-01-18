@@ -12,7 +12,7 @@
 <div class="admin-view-container">
     <div class="user-details-container">
         <span><h4>Admin Dashboard</h4></span>
-        <span><h5>User: User Name + User first name Logged in</h5></span>
+        <span><h5>User: @Session["CurrentUserFullName"] Logged in</h5></span>
     </div>
     @Html.Partial("_AdminActivatePendingAcountsPartialView", new ViewDataDictionary { { "ListOfPendingUserAccounts", ViewBag.ListOfPendingUserAccounts }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfUserRoles", ViewBag.ListOfUserRoles }, { "ListOfManagers", ViewBag.ListOfManagers } })
     @Html.Partial("_AdminCreateTrainingPartvialView", new ViewDataDictionary { { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfTrainingStatus", ViewBag.ListOFTrainingStatus }, { "ListOfPrerequisites", ViewBag.ListOfPrerequisiteModel } })

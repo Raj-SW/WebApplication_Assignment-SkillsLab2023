@@ -34,6 +34,19 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             var result = await _command.GetDataWithConditionsAsync<GetPendingEmployeesEnrolmentOfAMangerDTO>(GET_EMPLOYEES_PENDING_ENROLMENT_BY_MANAGER_ID_QUERY, parameters);
             return result;
         }
+        public async Task<List<EmployeeEnrolmentOverviewDTO>> GetAllEmployeesEnrolmentHistoryOfAManagerByIdAsync(byte managerId)
+        {
+            const string GET_ALL_EMPLOYEES_ENROLMENT_BY_MANAGER_ID_QUERY = @"
+            SELECT e.UserId, e.EnrolmentId, e.EnrolmentDateTime, t.TrainingName, t.TrainingRegistrationDeadline, e.ManagerApproval, e.RegistrationStatus, u.UserFirstName, u.UserLastname
+            FROM Enrolment e 
+            INNER JOIN [User] u ON u.UserId = e.UserId
+            INNER JOIN Training t ON t.TrainingId = e.TrainingId
+            WHERE u.ManagerId = @ManagerId";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@ManagerId", managerId));
+            var result = await _command.GetDataWithConditionsAsync<EmployeeEnrolmentOverviewDTO>(GET_ALL_EMPLOYEES_ENROLMENT_BY_MANAGER_ID_QUERY, parameters);
+            return result;
+        }
         public async Task<List<UserPrerequisiteModel>> GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(byte enrolmentId)
         {
             const string GET_ENROLMENT_PREREQUISITES_OF_A_USER_BY_ENROLMENT_ID = @"
@@ -57,6 +70,19 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
                 new SqlParameter("@UserId",UserId)
             };
             return  await _command.IsRowExistsAsync(CHECK_IF_USER_ALREADY_REGISTERED, parameters);
+        }
+        public async Task<List<EmployeeEnrolmentOverviewDTO>> GetEmployeesEnrolmentHistoryByIdAsync(byte userId)
+        {
+            const string GET_EMPLOYEES_ENROLMENT_HISTORY_QUERY = @"
+            SELECT t.TrainingId, t.TrainingName, t.TrainingDescription, e.ManagerApproval, e.RegistrationStatus, e.EnrolmentDateTime
+            From [Enrolment] e
+            INNER JOIN [Training] t ON e.TrainingId = t.TrainingId
+            INNER JOIN [User] u ON e.UserId = u.UserId
+            WHERE u.ManagerId = @UserId";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@UserId", userId));
+            var result = await _command.GetDataWithConditionsAsync<EmployeeEnrolmentOverviewDTO>(GET_EMPLOYEES_ENROLMENT_HISTORY_QUERY, parameters);
+            return result;
         }
         #endregion
 
@@ -115,6 +141,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             var result = await _command.GetDataAsync<AutomaticProcessingDTO>(EXECUTE_AUTOMATIC_ENROLMENT_PROCESSING_PROC);
             return result;
         }
-        #endregion
+
+       #endregion
     }
 }

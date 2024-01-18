@@ -1,0 +1,34 @@
+﻿
+<div class="employee-view-training">
+    <div class="row">
+        <h3>Employee Training</h3>
+        <div class="col-md">
+            <table cellspacing="10" cellpadding="10" class="table table-hover employee-view-training">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Training Id</th>
+                        <th>Training Name</th>
+                        <th>Training Description</th>
+                        <th>Manager Approval</th>
+                        <th>Registration Status</th>
+                        <th>Date Enrolled</th>
+
+                    </tr>
+                </thead>
+                @{
+                    foreach (var enrolment in ViewBag.ListOfEnrolments)
+                    {
+                    <tr>
+                        <td>@enrolment.TrainingId</td>
+                        <td>@enrolment.TrainingName</td>
+                        <td>@enrolment.TrainingDescription</td>
+                        <td>@enrolment.ManagerApproval</td>
+                        <td>@enrolment.RegistrationStatus</td>
+                        <td>@enrolment.EnrolmentDateTime</td>
+                    </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>

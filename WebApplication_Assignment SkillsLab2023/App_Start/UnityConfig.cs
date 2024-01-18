@@ -16,6 +16,7 @@ namespace WebApplication_Assignment_SkillsLab2023
 {
     public static class UnityConfig
     {
+        public static IUnityContainer Container { get; internal set; }
         public static void RegisterComponents()
         {
 			var container = new UnityContainer();
@@ -37,7 +38,7 @@ namespace WebApplication_Assignment_SkillsLab2023
             container.RegisterType<IEnrolmentDAL, EnrolmentDAL>();
             container.RegisterType<IDepartmentBL, DepartmentBL>();
             container.RegisterType<IDepartmentDAL, DepartmentDAL>();
-
+            Container=container;
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

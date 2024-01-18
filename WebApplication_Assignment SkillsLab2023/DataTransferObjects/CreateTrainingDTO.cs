@@ -14,7 +14,9 @@ namespace WebApplication_Assignment_SkillsLab2023.DataTransferObjects
         public byte DepartmentPriority { get; set; } 
         public byte TotalSeats { get; set; } 
         public DateTime RegistrationDeadline { get; set; } 
+        public DateTime DateCreated { get; set; }
         public byte Coach { get; set; } 
         public List<byte> Prerequisites { get; set; }
+
     }
 }

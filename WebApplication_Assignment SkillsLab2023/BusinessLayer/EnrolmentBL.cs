@@ -34,6 +34,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         {
             return await _enrolmentDAL.GetEmployeesPendingEnrolmentByManagerIdAsync(managerId);
         }
+        public async Task<List<EmployeeEnrolmentOverviewDTO>> GetAllEmployeesEnrolmentHistoryOfAManagerByIdAsync(byte managerId)
+        {
+            return await _enrolmentDAL.GetAllEmployeesEnrolmentHistoryOfAManagerByIdAsync(managerId);
+        }
         public async Task<List<UserPrerequisiteModel>> GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(byte enrolmentId)
         {
             return await _enrolmentDAL.GetEnrolmentPrerequisitesOfAUserByEnrolmentIdAsync(enrolmentId);
@@ -48,6 +52,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         }
         public async Task<int> GetPrerequisiteCountOfATraining(byte trainingId) {
             return await _trainingBL.GetPrerequisiteCountOfATraining(trainingId);
+        }
+        public Task<List<EmployeeEnrolmentOverviewDTO>> GetEmployeesEnrolmentHistoryByIdAsync(byte userId)
+        {
+            return _enrolmentDAL.GetEmployeesEnrolmentHistoryByIdAsync(userId);
         }
         #endregion
 
@@ -157,5 +165,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             }
             return false;
         }
+
+        
     }
 }

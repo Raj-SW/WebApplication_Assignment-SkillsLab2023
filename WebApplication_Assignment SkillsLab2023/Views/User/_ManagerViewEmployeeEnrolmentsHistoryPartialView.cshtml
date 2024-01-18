@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "ViewPendingEnrolments";
+    Layout = null;
+}
+<head>
+    <link rel="stylesheet" href="~/Content/Styling/ManagerViewUpdateEnrolmentsPartialViewStyling.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    <script src="~/Scripts/toastr.js"></script>
+</head>
+<div class="pending-enrolments-container">
+    <h3>Pending Enrolments</h3>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>User ID</th>
+                <th>Enrolment Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Training Name</th>
+                <th>Manager Approval</th>
+                <th>Registration Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var enrolment in ViewBag.ListOfEmployeeHistoryEnrolments)
+            {
+                <tr>
+                    <td>@enrolment.UserId</td>
+                    <td>@enrolment.EnrolmentId</td>
+                    <td>@enrolment.UserFirstName</td>
+                    <td>@enrolment.UserLastName</td>
+                    <td>@enrolment.TrainingName</td>
+                    <td>@enrolment.ManagerApproval</td>
+                    <td>@enrolment.RegistrationStatus</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

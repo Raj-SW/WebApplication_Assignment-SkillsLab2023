@@ -63,8 +63,8 @@ namespace WebApplication_Assignment_SkillsLab2023.Controllers
             if (UserDataModelResult.ResultTask.isSuccess)
             {
                 Session["CurrentUserId"] = UserDataModelResult.ResultObject.UserId;
+                Session["CurrentUserFullName"] = UserDataModelResult.ResultObject.UserFirstName + " " + UserDataModelResult.ResultObject.UserLastName;
                 Session["UserRoles"] = await _userBL.GetAllUserRolesModelByUserIdAsync(UserDataModelResult.ResultObject.UserId);
-
                 return Json(new { result = true, url = Url.Action("RoleSelectionPage", "Authentication"), user = UserDataModelResult.ResultObject, message = UserDataModelResult.ResultTask.GetAllResultMessageAsString() });
             }
             return Json(new { result = true, url = Url.Action("LoginPage", "Authentication"), message = UserDataModelResult.ResultTask.GetAllResultMessageAsString() });
