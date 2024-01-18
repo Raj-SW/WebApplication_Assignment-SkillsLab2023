@@ -158,10 +158,7 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             parameters.Add(new SqlParameter("@UpdatedCoachId", updatetrainingdto.CoachId));
             parameters.Add(new SqlParameter("@UpdatedDeadline", updatetrainingdto.TrainingRegistrationDeadline));
             parameters.Add(new SqlParameter("@TrainingId", updatetrainingdto.TrainingId));
-            if(updatetrainingdto.PrerequisiteIdList.Count == 0)
-            {
-                UPDATE_TRAINING_QUERY += "DELETE FROM TrainingPrerequisite WHERE TrainingId=@TrainingId;";
-            }
+            UPDATE_TRAINING_QUERY += "DELETE FROM TrainingPrerequisite WHERE TrainingId=@TrainingId;";
             if (updatetrainingdto.PrerequisiteIdList.Count > 0)
             {
                 var index = 0;
