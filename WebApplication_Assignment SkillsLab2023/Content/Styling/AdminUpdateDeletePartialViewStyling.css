@@ -8,12 +8,10 @@
     justify-content: space-around;
 }
 .training-update-form {
-    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1); 
     padding: 20px;
 
 }
 .training-prerequisite-update-container {
-    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     display: flex;
     align-items: stretch;
@@ -47,4 +45,13 @@ prerequisite-inputs select {
     flex-direction: column;
     display: flex;
     gap: 10px;
+}
+.accordion-styling {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 0px 8px rgba(0,0,0,0.1);
+    width: 100%;
+    padding: 1rem;
 }

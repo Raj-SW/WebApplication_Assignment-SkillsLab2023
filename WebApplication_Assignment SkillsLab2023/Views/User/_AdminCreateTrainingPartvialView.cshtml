@@ -7,10 +7,10 @@
 
 
 <div class="create-training-container">
-    <h3>Create Training</h3>
     <form id="createTrainingForm" class="createTrainingForm">
 
         <div class="row">
+    <h3>Create Training</h3>
             <div class="training-name-inputs col-md-6">
                 <label for="trainingName">Training Name:</label>
                 <input type="text" id="trainingName">
@@ -110,16 +110,13 @@
     });
         form.addEventListener('submit', function (event) {
             event.preventDefault();
-            // Validate form fields
             if (!validateForm()) {
                 return;
             }
-        // Gather all the selected values from the dynamically created dropdowns1
         const selectedPrerequisites = [];
         document.querySelectorAll('.prerequisite-dropdown').forEach(dropdown => {
             selectedPrerequisites.push(dropdown.value);
         });
-        // Your existing form data
         const trainingData = {
             trainingName: document.getElementById('trainingName').value,
             trainingDescription: document.getElementById('trainingDescription').value,

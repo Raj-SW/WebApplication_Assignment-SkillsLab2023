@@ -57,7 +57,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             {
                 dto.credentialModel.Salt = PasswordHashing.GenerateTimestampSalt();
                 dto.credentialModel.Password = PasswordHashing.HashPassword(dto.credentialModel.RawPassword, dto.credentialModel.Salt);
-                result.isSuccess = await _authenticationDAL.InsertUserModelCredentialModelAsync(dto.userModel, dto.credentialModel);
+                result.isSuccess = await InsertUserModelCredentialModelAsync(dto.userModel, dto.credentialModel);
                 if (result.isSuccess)
                 {
                     result.AddResultMessage("Successful Registration. Wait For Admin to Activate your Account");
@@ -94,14 +94,6 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             }
             return taskResult;
         }
-        public async Task<bool> InsertCredentialModelAsync(CredentialModel model)
-        {
-            return await _authenticationDAL.InsertCredentialModelAsync(model);
-        }
-        public async Task<int> GetUserModelIDbyNICAsync(UserModel model)
-        {
-            return await _authenticationDAL.GetUserModelIDbyNICAsync(model);
-        }
         public async Task<bool> isEmailUniqueAsync(UserAndCredentialDTO dto)
         {
             return await _authenticationDAL.isEmailUniqueAsync(dto);
@@ -113,6 +105,14 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public async Task<bool> isMobileNumUniqueAsync(UserAndCredentialDTO dto)
         {
             return await _authenticationDAL.isMobileNumUniqueAsync(dto);
+        }
+        public async Task<int> GetUserModelIDbyNICAsync(UserModel model)
+        {
+            return await _authenticationDAL.GetUserModelIDbyNICAsync(model);
+        }
+        public async Task<bool> InsertCredentialModelAsync(CredentialModel model)
+        {
+            return await _authenticationDAL.InsertCredentialModelAsync(model);
         }
         public async Task<UserModel> GetUserModelByIDAsync(byte id)
         {
@@ -126,6 +126,10 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
         public async Task<List<RoleModel>> GetAllRolesAsync()
         {
             return await _authenticationDAL.GetAllRolesAsync();
+        }
+        public async Task<bool> InsertUserModelCredentialModelAsync(UserModel userModel, CredentialModel credentialModel)
+        {
+            return await _authenticationDAL.InsertUserModelCredentialModelAsync(userModel,credentialModel);
         }
     }
 }

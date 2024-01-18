@@ -15,6 +15,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer.Interface
         Task<bool> isEmailUniqueAsync(UserAndCredentialDTO dto);
         Task<bool> isNicUniqueAsync(UserAndCredentialDTO dto);
         Task<bool> isMobileNumUniqueAsync(UserAndCredentialDTO dto);
+        Task<bool> InsertUserModelCredentialModelAsync(UserModel userModel, CredentialModel credentialModel);
         Task<DataModelResult<CredentialModel>> GetCredentialModelByEmailAsync(CredentialModel model);
         Task<List<RoleModel>> GetAllRolesAsync();
         Task<UserModel> GetUserModelByIDAsync(byte id);

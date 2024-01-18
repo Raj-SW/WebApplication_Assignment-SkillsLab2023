@@ -1,4 +1,6 @@
-﻿<!-- Assuming you have a view or HTML structure to create a prerequisite -->
+﻿<head>
+    <link rel="stylesheet" href="~/Content/Styling/AdminCreatePrerequisite.css">
+</head>
 <div class="create-prerequisite-container">
     <h3>Create Prerequisite</h3>
     <form id="createPrerequisiteForm" class="createPrerequisiteForm">
@@ -15,12 +17,9 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const createPrerequisiteForm = document.getElementById('createPrerequisiteForm');
-
         createPrerequisiteForm.addEventListener('submit', function (event) {
             event.preventDefault();
-
             const prerequisiteDescription = document.getElementById('prerequisiteDescription').value;
-
             fetch('/Training/CreatePrerequisitesAsync', {
                 method: 'POST',
                 headers: {
@@ -31,21 +30,16 @@
                 }),
             })
             .then(response => response.json())
-            .then(data => {
-                // Handle the response data if needed
-                console.log(data);
-
-                // Assuming you want to show a success message
-                alert(data.message);
-
-                // You may want to clear the form or take other actions after successful creation
-                createPrerequisiteForm.reset();
+                .then(data => {
+                if (data.result) {
+                    toastr.success(data.message);
+                    createPrerequisiteForm.reset();
+                } else {
+                    toastr.error(data.message);
+                }
             })
             .catch(error => {
-                console.error('Error:', error);
-
-                // Handle errors if necessary
-                alert('Error creating prerequisite. Please try again.');
+                toastr.error(data.message);
             });
         });
     });

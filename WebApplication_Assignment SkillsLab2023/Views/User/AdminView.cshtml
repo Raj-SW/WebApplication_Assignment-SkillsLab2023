@@ -2,9 +2,21 @@
     ViewBag.Title = "AdminView";
 }
 <link rel="stylesheet" href="~/Content/Styling/AdminViewStyling.css">
-<h2>Admin View</h2>
-@Html.Partial("_AdminActivatePendingAcountsPartialView", new ViewDataDictionary { { "ListOfPendingUserAccounts", ViewBag.ListOfPendingUserAccounts }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfUserRoles", ViewBag.ListOfUserRoles }, { "ListOfManagers", ViewBag.ListOfManagers } })
-@Html.Partial("_AdminCreateTrainingPartvialView", new ViewDataDictionary { { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfTrainingStatus", ViewBag.ListOFTrainingStatus }, { "ListOfPrerequisites", ViewBag.ListOfPrerequisiteModel } })
-@Html.Partial("_AdminCreatePrerequisitePartialView")
-@Html.Partial("_AdminUpdateDeleteTrainingPartialView", new ViewDataDictionary { { "ListOfTrainingWithPrerequisites", ViewBag.ListOfTrainingWithPrerequisites }, { "ListOfTrainingStatus", ViewBag.ListOFTrainingStatus }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfPrerequisites", ViewBag.ListOfPrerequisiteModel } })
-@Html.Partial("_AdminUpdateEmployee", new ViewDataDictionary { { "ListOfUserModelsAndTheirRoles", ViewBag.ListOfUserModelsAndTheirRoles }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfUserRoles", ViewBag.ListOfUserRoles } })
+<style>
+    .admin-view-container {
+        display:flex;
+        flex-direction:column;
+        gap:1rem;
+    }
+</style>
+<div class="admin-view-container">
+    <div class="user-details-container">
+        <span><h4>Admin Dashboard</h4></span>
+        <span><h5>User: User Name + User first name Logged in</h5></span>
+    </div>
+    @Html.Partial("_AdminActivatePendingAcountsPartialView", new ViewDataDictionary { { "ListOfPendingUserAccounts", ViewBag.ListOfPendingUserAccounts }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfUserRoles", ViewBag.ListOfUserRoles }, { "ListOfManagers", ViewBag.ListOfManagers } })
+    @Html.Partial("_AdminCreateTrainingPartvialView", new ViewDataDictionary { { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfTrainingStatus", ViewBag.ListOFTrainingStatus }, { "ListOfPrerequisites", ViewBag.ListOfPrerequisiteModel } })
+    @Html.Partial("_AdminCreatePrerequisitePartialView")
+    @Html.Partial("_AdminUpdateDeleteTrainingPartialView", new ViewDataDictionary { { "ListOfTrainingWithPrerequisites", ViewBag.ListOfTrainingWithPrerequisites }, { "ListOfTrainingStatus", ViewBag.ListOFTrainingStatus }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfPrerequisites", ViewBag.ListOfPrerequisiteModel } })
+    @Html.Partial("_AdminUpdateEmployee", new ViewDataDictionary { { "ListOfUserModelsAndTheirRoles", ViewBag.ListOfUserModelsAndTheirRoles }, { "ListOfDepartments", ViewBag.ListOfDepartments }, { "ListOfManagers", ViewBag.ListOfManagers }, { "ListOfUserRoles", ViewBag.ListOfUserRoles } })
+</div>

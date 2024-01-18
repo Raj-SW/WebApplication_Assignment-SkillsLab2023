@@ -11,6 +11,7 @@
     <script type="text/javascript" src="~/Scripts/LoginAndRegistrationValidationScripts/ValidatePassword.js"></script>
     <script type="text/javascript" src="~/Scripts/LoginAndRegistrationValidationScripts/ValidateEmail.js"></script>
     <script type="text/javascript" src="~/Scripts/LoginAndRegistrationValidationScripts/LoginValidationScript.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="~/Content/toastr.css" rel="stylesheet" />
     <script src="~/Scripts/toastr.js"></script>
 </head>
@@ -31,7 +32,7 @@
                 <p id="passwordValidation"></p>
             </div>
             <div>
-                <button type="submit" name="loginBtn" value="Login" id="loginBtn" onclick="login()">Login</button>
+                <button class="btn btn-primary col-md-12"  type="submit" name="loginBtn" value="Login" id="loginBtn" onclick="login()">Login</button>
             </div>
         </form>
         <p>

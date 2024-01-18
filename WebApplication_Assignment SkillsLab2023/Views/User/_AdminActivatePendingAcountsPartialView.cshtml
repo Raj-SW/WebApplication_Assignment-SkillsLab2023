@@ -7,8 +7,8 @@
 <div class="activate-pending-account-container">
     <h3>Unactivated Users</h3>
     <div class="pending-user-accounts-container">
-        <table class="table">
-            <thead>
+        <table cellspacing="10" cellpadding="10" class="table-hover table">
+            <thead class="thead-dark">
                 <tr>
                     <th>User ID</th>
                     <th>NIC</th>
@@ -18,49 +18,48 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var user in ViewBag.ListOfPendingUserAccounts)
-                {
-                    <tr>
-                        <td>@user.UserId</td>
-                        <td>@user.NIC</td>
-                        <td>@user.UserFirstName</td>
-                        <td>@user.UserLastName</td>
-                        <td>@user.MobileNum</td>
-                        <td>
-                            <div class="accordion" id="accordionUser_@user.UserId">
-                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUser_@user.UserId" aria-expanded="false" aria-controls="collapseUser_@user.UserId">
-                                    Activate
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="6">
-                            <div id="collapseUser_@user.UserId" class="collapse collapse-row-styling" data-parent="#accordionUser_@user.UserId">
-                                <label for="departmentDropdown_@user.UserId">Department:</label>
-                                <select class="form-control" id="departmentDropdown_@user.UserId" onchange="getManagersByDepartment(this.value, @user.UserId)">
-                                    @foreach (var department in ViewBag.ListOfDepartments)
-                                    {
-                                        <option value="@department.DepartmentId">@department.DepartmentName</option>
-                                    }
-                                </select>
-                                <label for="managerDropdown_@user.UserId">Manager:</label>
-                                <select class="form-control" id="managerDropdown_@user.UserId">
-                                </select>
-                                <label for="roleDropdown_@user.UserId">Role:</label>
-                                <select class="form-control" id="roleDropdown_@user.UserId">
-                                    @foreach (var role in ViewBag.ListOfUserRoles)
-                                    {
-                                        <option value="@role.RoleId">@role.RoleName</option>
-                                    }
-                                </select>
-                                <button class="btn btn-primary" onclick="ActivatePendingAccount('@user.UserId')">Assign</button>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
+
+            @foreach (var user in ViewBag.ListOfPendingUserAccounts)
+            {
+                <tr>
+                    <td>@user.UserId</td>
+                    <td>@user.NIC</td>
+                    <td>@user.UserFirstName</td>
+                    <td>@user.UserLastName</td>
+                    <td>@user.MobileNum</td>
+                    <td>
+                        <div class="accordion" id="accordionUser_@user.UserId">
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUser_@user.UserId" aria-expanded="false" aria-controls="collapseUser_@user.UserId">
+                                Activate
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div id="collapseUser_@user.UserId" class="collapse collapse-row-styling" data-parent="#accordionUser_@user.UserId">
+                            <label for="departmentDropdown_@user.UserId">Department:</label>
+                            <select class="form-control" id="departmentDropdown_@user.UserId" onchange="getManagersByDepartment(this.value, @user.UserId)">
+                                @foreach (var department in ViewBag.ListOfDepartments)
+                                {
+                                    <option value="@department.DepartmentId">@department.DepartmentName</option>
+                                }
+                            </select>
+                            <label for="managerDropdown_@user.UserId">Manager:</label>
+                            <select class="form-control" id="managerDropdown_@user.UserId">
+                            </select>
+                            <label for="roleDropdown_@user.UserId">Role:</label>
+                            <select class="form-control" id="roleDropdown_@user.UserId">
+                                @foreach (var role in ViewBag.ListOfUserRoles)
+                                {
+                                    <option value="@role.RoleId">@role.RoleName</option>
+                                }
+                            </select>
+                            <button class="btn btn-primary" onclick="ActivatePendingAccount('@user.UserId')">Assign</button>
+                        </div>
+                    </td>
+                </tr>
+            }
         </table>
     </div>
 </div>

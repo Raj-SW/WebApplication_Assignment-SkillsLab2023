@@ -14,161 +14,165 @@
     }
 </style>
 
-<h3>Update Training</h3>
-<button class="btn btn-primary" id="launchButton">
-    Launch Automatic Enrolment Process
-</button>
+
 <div class="update-delete-training-container">
     <div class="row">
+        <div class="d-flex justify-content-between p-3">
+            <h3>Update Training</h3>
+            <button class="btn btn-primary" id="launchButton">
+                Launch Automatic Enrolment Process
+            </button>
+        </div>
+        
         <div class="col-md">
-            <table cellspacing="10" cellpadding="10">
-                <tr>
-                    <th>Training Id</th>
-                    <th>Training Name</th>
-                    <th>Training Description</th>
-                    <th>Training Status</th>
-                    <th>Registration Dealine</th>
-                    <th>Seats Total</th>
-                    <th>Actions</th>
-                </tr>
-                @{
-                    foreach (var training in ViewBag.ListOfTrainingWithPrerequisites)
-                    {
-                        <tr>
-                            <td>@training.TrainingId</td>
-                            <td>@training.TrainingName</td>
-                            <td>@training.TrainingDescription</td>
-                            <td>@training.TrainingStatus</td>
-                            <td>@training.TrainingRegistrationDeadline</td>
-                            <td>@training.SeatsTotal</td>
-                            <td colspan="2">
-                                <div class="accordion" id="accordionTraining_@training.TrainingId">
-                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@training.TrainingId" aria-expanded="false" aria-controls="collapse_@training.TrainingId" onclick="toggleButtonText(this)">
-                                        Edit
+            <table cellspacing="10" cellpadding="10" class="table-hover table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Training Id</th>
+                        <th>Training Name</th>
+                        <th>Training Description</th>
+                        <th>Training Status</th>
+                        <th>Registration Dealine</th>
+                        <th>Seats Total</th>
+                        <th colspan="2" style="text-align: center;">Actions</th>
+                    </tr>
+                 </thead>
+                    @{
+                        foreach (var training in ViewBag.ListOfTrainingWithPrerequisites)
+                        {
+                            <tr>
+                                <td>@training.TrainingId</td>
+                                <td>@training.TrainingName</td>
+                                <td>@training.TrainingDescription</td>
+                                <td>@training.TrainingStatus</td>
+                                <td>@training.TrainingRegistrationDeadline</td>
+                                <td>@training.SeatsTotal</td>
+                                <td>
+                                    <div class="accordion" id="accordionTraining_@training.TrainingId">
+                                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@training.TrainingId" aria-expanded="false" aria-controls="collapse_@training.TrainingId" onclick="toggleButtonText(this)">
+                                            Edit
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" type="button" onclick="deleteTraining(@training.TrainingId)">
+                                        Delete
                                     </button>
-                                </div>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger" type="button" onclick="deleteTraining(@training.TrainingId)">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="7">
-                                <div id="collapse_@training.TrainingId" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <form class="training-update-form">
-                                                <div class="row">
-                                                    <div class="training-name-inputs col-md-6">
-                                                        <label for="TrainingNameInput_@training.TrainingId">Training Name:</label>
-                                                        <input type="text" id="TrainingNameInput_@training.TrainingId" value="@training.TrainingName" required>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="9">
+                                    <div id="collapse_@training.TrainingId" class="accordion-collapse collapse accordion-styling" data-bs-parent="#accordionExample">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <form class="training-update-form">
+                                                    <div class="row">
+                                                        <div class="training-name-inputs col-md-6">
+                                                            <label for="TrainingNameInput_@training.TrainingId">Training Name:</label>
+                                                            <input type="text" id="TrainingNameInput_@training.TrainingId" value="@training.TrainingName" required>
+                                                        </div>
+                                                        <div class="training-description-inputs col-md-6">
+                                                            <label for="TrainingDescription_@training.TrainingId">Training Description:</label>
+                                                            <textarea id="TrainingDescription_@training.TrainingId" required>@training.TrainingDescription</textarea>
+                                                        </div>
                                                     </div>
-                                                    <div class="training-description-inputs col-md-6">
-                                                        <label for="TrainingDescription_@training.TrainingId">Training Description:</label>
-                                                        <textarea id="TrainingDescription_@training.TrainingId" required>@training.TrainingDescription</textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="training-status-inputs  col-md-6">
-                                                        <label for="input-training-status">Training Status: </label>
-                                                        <select id="TrainingStatus_@training.TrainingId">
-                                                            <option value="@training.TrainingStatus">@training.TrainingStatus</option>
-                                                            @foreach (var status in ViewBag.ListOfTrainingStatus)
-                                                            {
-                                                                if (status == training.TrainingStatus)
+                                                    <div class="row">
+                                                        <div class="training-status-inputs  col-md-6">
+                                                            <label for="input-training-status">Training Status: </label>
+                                                            <select id="TrainingStatus_@training.TrainingId">
+                                                                <option value="@training.TrainingStatus">@training.TrainingStatus</option>
+                                                                @foreach (var status in ViewBag.ListOfTrainingStatus)
+                                                                {
+                                                                    if (status == training.TrainingStatus)
+                                                                    {
+                                                                        <option value="@status">@status</option>
+                                                                    }
+                                                                }
+                                                                @foreach (var status in ViewBag.ListOfTrainingStatus)
                                                                 {
                                                                     <option value="@status">@status</option>
                                                                 }
-                                                            }
-                                                            @foreach (var status in ViewBag.ListOfTrainingStatus)
-                                                            {
-                                                                <option value="@status">@status</option>
-                                                            }
-                                                        </select>
+                                                            </select>
+                                                        </div>
+                                                        <div class="registration-deadline-inputs  col-md-6">
+                                                            <label for="input-training-registration-deadline_@training.TrainingId">Training Registration Deadline: </label>
+                                                            <input type="date" id="input-training-registration-deadline_@training.TrainingId" value="@training.TrainingRegistrationDeadline.ToString("yyyy-MM-dd")" required>
+                                                        </div>
                                                     </div>
-                                                    <div class="registration-deadline-inputs  col-md-6">
-                                                        <label for="input-training-registration-deadline_@training.TrainingId">Training Registration Deadline: </label>
-                                                        <input type="date" id="input-training-registration-deadline_@training.TrainingId" value="@training.TrainingRegistrationDeadline.ToString("yyyy-MM-dd")" required>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="training-seats-inputs  col-md-6">
-                                                        <label for="input-training-seats">Training Seats: </label>
-                                                        <input type="number" id="input-training-seats_@training.TrainingId" value="@training.SeatsTotal" required>
-                                                    </div>
-                                                    <div class="department-priority-inputs  col-md-6">
-                                                        <label for="departmentpriority_@training.TrainingId">Training Priority: </label>
-                                                        <select id="departmentpriority_@training.TrainingId" required>
-                                                            @foreach (var department in ViewBag.ListOfDepartments)
-                                                            {
-                                                                if (department.DepartmentId == training.DepartmentPriority)
+                                                    <div class="row">
+                                                        <div class="training-seats-inputs  col-md-6">
+                                                            <label for="input-training-seats">Training Seats: </label>
+                                                            <input type="number" id="input-training-seats_@training.TrainingId" value="@training.SeatsTotal" required>
+                                                        </div>
+                                                        <div class="department-priority-inputs  col-md-6">
+                                                            <label for="departmentpriority_@training.TrainingId">Training Priority: </label>
+                                                            <select id="departmentpriority_@training.TrainingId" required>
+                                                                @foreach (var department in ViewBag.ListOfDepartments)
                                                                 {
-                                                                    <option value="@department.DepartmentId">@department.DepartmentName </option>
+                                                                    if (department.DepartmentId == training.DepartmentPriority)
+                                                                    {
+                                                                        <option value="@department.DepartmentId">@department.DepartmentName </option>
+                                                                    }
                                                                 }
-                                                            }
-                                                            @foreach (var department in ViewBag.ListOfDepartments)
-                                                            {
-                                                                <option value="@department.DepartmentId">@department.DepartmentName</option>
-                                                            }
-                                                        </select>
+                                                                @foreach (var department in ViewBag.ListOfDepartments)
+                                                                {
+                                                                    <option value="@department.DepartmentId">@department.DepartmentName</option>
+                                                                }
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="coach-inputs  col-md-6">
-                                                        <label for="coach-input_@training.TrainingId">Training Coach: </label>
-                                                        <select id="coach-input_@training.TrainingId" required>
-                                                            @foreach (var manager in ViewBag.ListOfManagers)
-                                                            {
-                                                                if (manager.UserId == training.CoachId)
+                                                    <div class="row">
+                                                        <div class="coach-inputs  col-md-6">
+                                                            <label for="coach-input_@training.TrainingId">Training Coach: </label>
+                                                            <select id="coach-input_@training.TrainingId" required>
+                                                                @foreach (var manager in ViewBag.ListOfManagers)
+                                                                {
+                                                                    if (manager.UserId == training.CoachId)
+                                                                    {
+                                                                        <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
+                                                                    }
+                                                                }
+                                                                @foreach (var manager in ViewBag.ListOfManagers)
                                                                 {
                                                                     <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
                                                                 }
-                                                            }
-                                                            @foreach (var manager in ViewBag.ListOfManagers)
-                                                            {
-                                                                <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
-                                                            }
-                                                        </select>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="training-prerequisite-update-container col-md-4" id="training-prerequisite-update-container_@training.TrainingId">
-                                            <div class="scrollable-prerequisites">
-                                                @foreach (var prerequisite in ViewBag.ListOfPrerequisites)
-                                                {
-                                                    var isPrerequisiteSelected = false;
-                                                    foreach (var selectedPrerequisite in training.PrerequisitesList)
+                                                </form>
+                                            </div>
+                                            <div class="training-prerequisite-update-container col-md-4" id="training-prerequisite-update-container_@training.TrainingId">
+                                                <div class="scrollable-prerequisites">
+                                                    @foreach (var prerequisite in ViewBag.ListOfPrerequisites)
                                                     {
-                                                        if (selectedPrerequisite.PrerequisiteId == prerequisite.PrerequisiteId)
+                                                        var isPrerequisiteSelected = false;
+                                                        foreach (var selectedPrerequisite in training.PrerequisitesList)
                                                         {
-                                                            isPrerequisiteSelected = true;
-                                                            break;
+                                                            if (selectedPrerequisite.PrerequisiteId == prerequisite.PrerequisiteId)
+                                                            {
+                                                                isPrerequisiteSelected = true;
+                                                                break;
+                                                            }
                                                         }
+                                                        <div class="form-check">
+                                                            <input type="checkbox" class="form-check-input prerequisite-checkbox_@training.TrainingId" id="prerequisite-checkbox_@(training.TrainingId)"
+                                                                   value="@prerequisite.PrerequisiteId" @(isPrerequisiteSelected ? "checked" : "")>
+                                                            <label class="form-check-label" for="prerequisite-checkbox_@(training.TrainingId)_@(prerequisite.PrerequisiteId)">
+                                                                @prerequisite.PrerequisiteDescription
+                                                            </label>
+                                                        </div>
                                                     }
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input prerequisite-checkbox_@training.TrainingId" id="prerequisite-checkbox_@(training.TrainingId)"
-                                                               value="@prerequisite.PrerequisiteId" @(isPrerequisiteSelected ? "checked" : "")>
-                                                        <label class="form-check-label" for="prerequisite-checkbox_@(training.TrainingId)_@(prerequisite.PrerequisiteId)">
-                                                            @prerequisite.PrerequisiteDescription
-                                                        </label>
-                                                    </div>
-                                                }
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="">
                                         <button class="btn btn-primary" type="button" onclick='updateTraining(@training.TrainingId)'>
                                             Save Changes
                                         </button>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
             </table>
         </div>
     </div>

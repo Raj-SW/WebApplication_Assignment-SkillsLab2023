@@ -2,142 +2,145 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/Content/Styling/AdminUpdateEmployeePartialViewStyling.css" />
 </head>
-<h3>Update Employees</h3>
 <div class="update-employees-container">
+<h3>Update Employees</h3>
     <div class="row">
         <div class="col-md">
-            <table cellspacing="10" cellpadding="10">
-                <tr>
-                    <th>User Id</th>
-                    <th>NIC</th>
-                    <th>User First Name</th>
-                    <th>User Last Name</th>
-                    <th>MobileNum</th>
-                    <th>Department</th>
-                    <th>Manager</th>
-                    <th>Roles</th>
-                </tr>
-                @{
-                    foreach (var User in ViewBag.ListOfUserModelsAndTheirRoles)
-                    {
-                        <tr>
-                            <td>@User.UserId</td>
-                            <td>@User.NIC</td>
-                            <td>@User.UserFirstName</td>
-                            <td>@User.UserLastName</td>
-                            <td>@User.MobileNum</td>
-                            <td>
-                                @foreach (var Department in ViewBag.ListOfDepartments)
-                                {
-                                    if (Department.DepartmentId == User.DepartmentId)
+            <table cellspacing="10" cellpadding="10" class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>User Id</th>
+                        <th>NIC</th>
+                        <th>User First Name</th>
+                        <th>User Last Name</th>
+                        <th>MobileNum</th>
+                        <th>Department</th>
+                        <th>Manager</th>
+                        <th></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                    @{
+                        foreach (var User in ViewBag.ListOfUserModelsAndTheirRoles)
+                        {
+                            <tr>
+                                <td>@User.UserId</td>
+                                <td>@User.NIC</td>
+                                <td>@User.UserFirstName</td>
+                                <td>@User.UserLastName</td>
+                                <td>@User.MobileNum</td>
+                                <td>
+                                    @foreach (var Department in ViewBag.ListOfDepartments)
                                     {
-                                        @Department.DepartmentName
-                                    }
-                                }
-                            </td>
-                            <td>
-                                @foreach (var Manager in ViewBag.ListOfManagers)
-                                {
-                                    if (User.ManagerId == Manager.UserId)
-                                    {
-                                        @Manager.UserFirstName @: @Manager.UserLastName
-                                    }
-                                }
-                            </td>
-                            <td>
-                                <ul>
-                                    @{
-                                        foreach (var role in ViewBag.ListOfUserRoles)
+                                        if (Department.DepartmentId == User.DepartmentId)
                                         {
-                                            if (User.Roles.Contains(role.RoleId))
-                                            {
-                                                <li>@role.RoleName</li>
-                                            }
+                                            @Department.DepartmentName
                                         }
                                     }
-                                </ul>
-                            </td>
-                            <td>
-                                <div class="accordion" id="accordionEmployeeEdit_@User.UserId">
-                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#EmployeeEditcollapse_@User.UserId" aria-expanded="false" aria-controls="collapse_@User.UserId" onclick="toggleButtonText(this)">
-                                        Edit
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="9">
-                                <div id="EmployeeEditcollapse_@User.UserId" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
-                                    <div class="employee-edit-form-container">
-                                        <form class="employee-edit-form row">
-                                            <div class="row">
+                                </td>
+                                <td>
+                                    @foreach (var Manager in ViewBag.ListOfManagers)
+                                    {
+                                        if (User.ManagerId == Manager.UserId)
+                                        {
+                                            @Manager.UserFirstName @: @Manager.UserLastName
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    <ul>
+                                        @{
+                                            foreach (var role in ViewBag.ListOfUserRoles)
+                                            {
+                                                if (User.Roles.Contains(role.RoleId))
+                                                {
+                                                    <li>@role.RoleName</li>
+                                                }
+                                            }
+                                        }
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="accordion" id="accordionEmployeeEdit_@User.UserId">
+                                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#EmployeeEditcollapse_@User.UserId" aria-expanded="false" aria-controls="collapse_@User.UserId" onclick="toggleButtonText(this)">
+                                            Edit
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="9">
+                                    <div id="EmployeeEditcollapse_@User.UserId" class="accordion-collapse collapse accordion-update-employee" data-bs-parent="#accordionExample">
+                                        <div class="employee-edit-form-container">
+                                            <form class="employee-edit-form row">
+                                                <div class="row">
 
-                                                <div class="employee-edit-department  col-md-4">
-                                                    <label for="">Department: </label>
-                                                    <select id="Department_@User.UserId">
-                                                        @foreach (var Department in ViewBag.ListOfDepartments)
-                                                        {
-                                                            if (Department.DepartmentId == @User.DepartmentId)
+                                                    <div class="employee-edit-department  col-md-4">
+                                                        <label for="">Department: </label>
+                                                        <select id="Department_@User.UserId">
+                                                            @foreach (var Department in ViewBag.ListOfDepartments)
+                                                            {
+                                                                if (Department.DepartmentId == @User.DepartmentId)
+                                                                {
+                                                                    <option value="@Department.DepartmentId">@Department.DepartmentName</option>
+                                                                }
+                                                            }
+                                                            @foreach (var Department in ViewBag.ListOfDepartments)
                                                             {
                                                                 <option value="@Department.DepartmentId">@Department.DepartmentName</option>
                                                             }
-                                                        }
-                                                        @foreach (var Department in ViewBag.ListOfDepartments)
-                                                        {
-                                                            <option value="@Department.DepartmentId">@Department.DepartmentName</option>
-                                                        }
-                                                    </select>
-                                                </div>
-                                                <div class="employee-edit-manager  col-md-4">
-                                                    <label for="employee-edit-manager-input_@User.UserId">Manager: </label>
-                                                    <select id="employee-edit-manager-input_@User.UserId" required>
-                                                        @foreach (var manager in ViewBag.ListOfManagers)
-                                                        {
-                                                            if (manager.UserId == User.ManagerId)
+                                                        </select>
+                                                    </div>
+                                                    <div class="employee-edit-manager  col-md-4">
+                                                        <label for="employee-edit-manager-input_@User.UserId">Manager: </label>
+                                                        <select id="employee-edit-manager-input_@User.UserId" required>
+                                                            @foreach (var manager in ViewBag.ListOfManagers)
+                                                            {
+                                                                if (manager.UserId == User.ManagerId)
+                                                                {
+                                                                    <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
+                                                                }
+                                                            }
+                                                            @foreach (var manager in ViewBag.ListOfManagers)
                                                             {
                                                                 <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
                                                             }
-                                                        }
-                                                        @foreach (var manager in ViewBag.ListOfManagers)
+                                                        </select>
+                                                    </div>
+                                                    <div class="scrollable-user-roles col-md-4">
+                                                        @foreach (var roles in ViewBag.ListOfUserRoles)
                                                         {
-                                                            <option value="@manager.UserId">@manager.UserFirstName @manager.UserLastName</option>
-                                                        }
-                                                    </select>
-                                                </div>
-                                                <div class="scrollable-user-roles col-md-4">
-                                                    @foreach (var roles in ViewBag.ListOfUserRoles)
-                                                    {
-                                                        var isRoleSelected = false;
-                                                        foreach (var selectedRole in User.Roles)
-                                                        {
-                                                            if (selectedRole == roles.RoleId)
+                                                            var isRoleSelected = false;
+                                                            foreach (var selectedRole in User.Roles)
                                                             {
-                                                                isRoleSelected = true;
-                                                                break;
+                                                                if (selectedRole == roles.RoleId)
+                                                                {
+                                                                    isRoleSelected = true;
+                                                                    break;
+                                                                }
                                                             }
+                                                            <div class="form-check-role">
+                                                                <input type="checkbox" class="form-user-roles-check-input" id="user-roles-checkbox_@User.UserId"
+                                                                       value="@roles.RoleId" @(isRoleSelected ? "checked" : "")>
+                                                                <label class="form-check-label" for="user-roles-checkbox_@User.UserId">
+                                                                    @roles.RoleName
+                                                                </label>
+                                                            </div>
                                                         }
-                                                        <div class="form-check-role">
-                                                            <input type="checkbox" class="form-user-roles-check-input" id="user-roles-checkbox_@User.UserId"
-                                                                   value="@roles.RoleId" @(isRoleSelected ? "checked" : "")>
-                                                            <label class="form-check-label" for="user-roles-checkbox_@User.UserId">
-                                                                @roles.RoleName
-                                                            </label>
-                                                        </div>
-                                                    }
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="btn-container row">
-                                                <button class="btn btn-primary col-md-2" type="button" onclick="saveEmployeeChanges(@User.UserId)">
-                                                    Save Changes
-                                                </button>
-                                            </div>
-                                        </form>
+                                                <div class="btn-container">
+                                                    <button class="btn btn-primary col-md-2" type="button" onclick="saveEmployeeChanges(@User.UserId)">
+                                                        Save Changes
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
             </table>
         </div>
     </div>
