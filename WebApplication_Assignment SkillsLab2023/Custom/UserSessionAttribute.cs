@@ -7,7 +7,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Custom
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.HttpContext.Session["CurentUser"]==null || filterContext.HttpContext.Session["CurrentRole"]==null/* || (filterContext.HttpContext.Session["CurrentRole"].ToString().CompareTo("Unassigned")==0)*/)
+            if (filterContext.HttpContext.Session["CurentUser"]==null || filterContext.HttpContext.Session["CurrentRole"]==null)
             {
                 filterContext.Result = new RedirectResult("~/Authentication/LoginPage");
             }

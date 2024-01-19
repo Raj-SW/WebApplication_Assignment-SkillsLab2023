@@ -45,12 +45,10 @@
             const responseData = await response.json();
 
             if (responseData.GlobalErrors.length > 0) {
-                // Display global errors using Toastr
                 responseData.GlobalErrors.forEach(error => {
                     toastr.error(error);
                 });
             } else if (responseData.FieldErrors) {
-                // Display field-specific errors using Toastr
                 for (const key in responseData.FieldErrors) {
                     if (responseData.FieldErrors.hasOwnProperty(key)) {
                         const errors = responseData.FieldErrors[key];
@@ -60,7 +58,6 @@
                     }
                 }
             } else {
-                // No errors, proceed with your logic
                 toastr.success(responseData.message);
                 window.location = responseData.url;
             }

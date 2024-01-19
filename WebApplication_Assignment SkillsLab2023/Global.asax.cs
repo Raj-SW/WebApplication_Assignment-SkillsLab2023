@@ -40,5 +40,10 @@ namespace WebApplication_Assignment_SkillsLab2023
 
             //BackgroundJob.Schedule<IEnrolmentBL>(enrolmentBl => enrolmentBl.AutomaticEnrolmentProcessingForAllTrainingAsync(), TimeSpan.FromMinutes(1));
         }
+        protected void Application_BeginRequest()
+        {
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetNoStore();
+        }
     }
 }

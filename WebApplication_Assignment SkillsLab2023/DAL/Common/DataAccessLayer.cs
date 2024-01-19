@@ -15,7 +15,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
         {
             connectionString = ConfigurationManager.AppSettings["DBConnection"];
             connection = new SqlConnection(connectionString);
-            OpenConnection(); // Wait for the asynchronous operation to complete
+            OpenConnection(); 
         }
         public async Task OpenConnectionAsync()
         {
@@ -34,7 +34,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
         }
         public void OpenConnection()
         {
-            //Task.Run(() => OpenConnectionAsync()).Wait(); // Wait for the asynchronous operation to complete
             if (connection.State == System.Data.ConnectionState.Open)
             {
                 connection.Close();

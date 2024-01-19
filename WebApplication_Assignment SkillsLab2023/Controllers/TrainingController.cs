@@ -13,6 +13,7 @@ using System.Linq;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
+    [UserSession]
     [CustomServerSideValidation]
     public class TrainingController : Controller
     {

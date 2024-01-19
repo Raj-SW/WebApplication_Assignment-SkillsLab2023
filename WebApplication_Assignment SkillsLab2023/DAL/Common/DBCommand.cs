@@ -25,7 +25,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                             T mappedObject = MapToObject<T>(reader);
                             resultList.Add(mappedObject);
                         }
-                    reader.Close();
+                        reader.Close();
                     }
                 }
             return resultList;
@@ -41,7 +41,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                 {
                     command.Parameters.AddRange(parameters.ToArray());
                 }
-                //await dataAccessLayer.OpenConnectionAsync();
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
@@ -81,21 +80,21 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
                     transaction.Rollback();
                     return false;
+                }
+                finally { 
+                    dataAccessLayer.CloseConnection();
                 }
             }
         }
         public async Task<bool> InsertUpdateDataAsync(string query, List<SqlParameter> parameters)
         {
             DataAccessLayer dataAccessLayer = new DataAccessLayer();
-            //await dataAccessLayer.OpenConnectionAsync();
             using (SqlTransaction transaction = dataAccessLayer.connection.BeginTransaction())
             {
                 try
                 {
-
                     int rowsAffected = 0;
 
                     using (SqlCommand command = new SqlCommand(query, dataAccessLayer.connection, transaction))
@@ -109,7 +108,6 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
                                 command.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
                             });
                         }
-
                         rowsAffected = await command.ExecuteNonQueryAsync();
                         transaction.Commit();
                     }

@@ -37,20 +37,16 @@ namespace WebApplication_Assignment_SkillsLab2023.CustomeServerSideValidations
         private static Dictionary<string, List<string>> GetFieldErrors(ModelStateDictionary modelState)
         {
             var errors = new Dictionary<string, List<string>>();
-
             foreach (var entry in modelState)
             {
                 var key = entry.Key;
                 var value = entry.Value;
-
                 var errorMessages = value.Errors.Select(error => error.ErrorMessage).ToList();
-
                 if (errorMessages.Any())
                 {
                     errors.Add(key, errorMessages);
                 }
             }
-
             return errors;
         }
     }

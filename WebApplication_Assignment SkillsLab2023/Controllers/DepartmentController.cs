@@ -10,6 +10,7 @@ using WebApplication_Assignment_SkillsLab2023.SessionManagement;
 
 namespace WebApplication_Assignment_SkillsLab2023.Controllers
 {
+    [UserSession]
     [CustomServerSideValidation]
     public class DepartmentController : Controller
     {
