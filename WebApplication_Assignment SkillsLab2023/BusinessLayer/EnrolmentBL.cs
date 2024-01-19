@@ -128,7 +128,7 @@ namespace WebApplication_Assignment_SkillsLab2023.BusinessLayer
             string employeeName = await _userBL.GetUserNamebyUserIdAsync(userId);
             string managerEmail = await _userBL.GetManagerEmailThroughEmployeeUserIdAsync(userId);
             string trainingName = await _trainingBL.GetTrainingNameByTrainingIdAsync(trainingId);
-            isSentEmployee = await EmailSender.SendEmailAsync($"Enrolment for {trainingName} - DF Learning Hub", $"Unfortunately, your enrolment for {trainingName} has been rejected by your manager ", employeeEmail);
+            isSentEmployee = await EmailSender.SendEmailAsync($"Enrolment for {trainingName} - DF Learning Hub", $"Unfortunately, your enrolment for {trainingName} has been rejected by your manager. Reason: {remarks} ", employeeEmail);
             isSentManager = await EmailSender.SendEmailAsync($"Employee Enrolment for {trainingName}", $"You have rejected training for employee: {employeeName}", managerEmail);
 
             return isSuccess;

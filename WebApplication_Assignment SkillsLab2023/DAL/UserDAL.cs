@@ -55,9 +55,12 @@ namespace WebApplication_Assignment_SkillsLab2023.DAL
             foreach(var User in usersListResult)
             {
                 List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("@UserId",User.UserId)};
-                var rolesResult = await _command.GetDataWithConditionsAsync<byte>(GET_ALL_ROLES_OF_A_USER_BY_USER_ID, parameters);
+                var rolesResult = await _command.GetDataWithConditionsAsync<UserRolesModel>(GET_ALL_ROLES_OF_A_USER_BY_USER_ID, parameters);
                 User.Roles = new List<byte>();
-                User.Roles= rolesResult;
+                foreach(var Role in rolesResult)
+                {
+                    User.Roles.Add(Role.RoleId);
+                }
             }
             return usersListResult;
         }

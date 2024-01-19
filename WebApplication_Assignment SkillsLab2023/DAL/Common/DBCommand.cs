@@ -162,7 +162,7 @@ namespace WebApplication_Assignment_SkillsLab2023.Common
             var type = typeof(T);
             foreach (var propertyName in GetColumnNames(reader))
             {
-                var property = type.GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                var property = type.GetProperty(propertyName);
 
                 if (property != null && property.CanWrite)
                 {
